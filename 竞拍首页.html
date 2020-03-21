@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>竞拍首页</title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #D3DCE6;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row {}
+			
+			.el-col {
+				border-radius: 4px;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #FFF;
+			}
+			/**
+			 * 卡片的样式
+			 */
+			
+			.el-carousel__item h3 {
+				color: #475669;
+				font-size: 14px;
+				opacity: 0.75;
+				line-height: 200px;
+				margin: 0;
+			}
+			
+			.el-carousel__item:nth-child(2n) {
+				background-color: #99a9bf;
+			}
+			
+			.el-carousel__item:nth-child(2n+1) {
+				background-color: #d3dce6;
+			}
+		</style>
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+	</head>
+
+	<body>
+		<div class="indexApp" v-cloak>
+			<el-container style='height:95vh; border: 1px solid #eee'>
+				<el-header style='border-bottom: 1px solid #eee'>
+					<el-row :gutter="20" type="flex" justify="center">
+						<el-col :span="6">
+							<el-link href="竞拍首页.html">
+								<h3>在线拍卖系统</h3></el-link>
+						</el-col>
+						<el-col :span="12">
+							<div class="grid-content bg-purple">
+								<el-menu class="el-menu-demo" mode="horizontal">
+									<el-menu-item index="3" @click="showView('拍卖品列表页.html')">今日拍卖</el-menu-item>
+								</el-menu>
+
+							</div>
+						</el-col>
+						<el-col :span="6">
+							<div class="grid-content bg-purple">
+								<el-menu class="el-menu-demo" mode="horizontal">
+									<el-menu-item index="4" v-if="user != null  " @click="showView('查看竞拍结果.html')">我的拍卖</el-menu-item>
+									<el-menu-item index="2" v-text="user != null ?user.username:''"></el-menu-item>
+									<el-menu-item index="1" @click="login" v-if="user ==null">登录</el-menu-item>
+									<el-menu-item index="1" @click="res" v-if="user ==null">注册</el-menu-item>
+									<el-menu-item index="2" v-if="user != null " @click="destroy">注销</el-menu-item>
+								</el-menu>
+							</div>
+						</el-col>
+					</el-row>
+				</el-header>
+				<el-main style="padding:0px 20px; margin-top: 20px;">
+					<el-row :gutter="20" justify="center">
+						<el-col :span="3">
+							<div class="grid-content bg-purple"></div>
+						</el-col>
+						<el-col :span="18">
+							<div class="">
+								<template>
+									<el-carousel :interval="4000" type="card" height="270px">
+										<el-carousel-item v-for="(item,index) in items" :key="index">
+											<a href="javascript:void(0)" @click="jinpai(item)">
+												<el-image style="width: 100%; height: 100%" :src="item.auctionpic" fit="fill"></el-image>
+											</a>
+										</el-carousel-item>
+									</el-carousel>
+								</template>
+							</div>
+						</el-col>
+						<el-col :span="3">
+							<div class="grid-content bg-purple"></div>
+						</el-col>
+					</el-row>
+					<el-row :gutter="20" justify="center">
+						<el-col :span="3">
+							<div class="grid-content bg-purple"></div>
+						</el-col>
+						<el-col :span="18">
+							<div class="">
+								<span id="">交易成功列表</span>
+								<template>
+									<el-table :data="tableData" stripe style="width: 100%" border>
+										<el-table-column prop="auctionname" label="名称">
+										</el-table-column>
+										<el-table-column prop="auctionstarttime" label="开始时间">
+										</el-table-column>
+										<el-table-column prop="auctionendtime" label="结束时间">
+										</el-table-column>
+										<el-table-column prop="auctionstartprice" label="起拍价">
+										</el-table-column>
+										<el-table-column prop="auctionprice" label="成交价">
+										</el-table-column>
+										<el-table-column prop="username" label="买家">
+										</el-table-column>
+									</el-table>
+								</template>
+							</div>
+						</el-col>
+						<el-col :span="3">
+							<div class="grid-content bg-purple"></div>
+						</el-col>
+					</el-row>
+				</el-main>
+				<el-footer style='height:10%;'>
+					<el-row :gutter="20" justify="center">
+						<el-col :span="24">
+							<div class="grid-content bg-purple">www.baidu.com</div>
+						</el-col>
+					</el-row>
+				</el-footer>
+			</el-container>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script>
+		var indexApp = new Vue({
+			data: {
+				tableData: [],
+				items: [],
+				user: JSON.parse(window.sessionStorage.getItem("user")),
+			},
+			methods: {
+				showView(url) {
+					$('.el-main').load(url);
+				},
+				jinpai(item) {
+					console.log(item)
+					window.sessionStorage.setItem("jinpai", JSON.stringify(item));
+					this.showView(`竞拍页.html`);
+				},
+				login() {
+					location.href = `竞拍者登录.html`;
+				},
+				res() {
+					location.href = `竞拍者注册页.html`;
+				},
+				destroy() {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/api/Auctionusers/destroy`, (data) => {
+						if(data.code == "200") {
+							window.sessionStorage.clear();
+							_this.user = null;
+							location.href = `${data.dizhi}`;
+						}
+					});
+				},
+				goToisUp(isup, n, s = "6") {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/api/Auctions/Auction/UpperShelf/${n}/${s}/${isup}`, (data) => {
+						_this.items = data;
+					});
+				},
+				goTofish(n = "1", s = "6") {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/api/AuctionRecords/${n}/${s}`, (data) => {
+						console.log(data)
+						_this.tableData = data;
+					});
+				}
+			},
+			mounted() {
+				let _this = this;
+				_this.goToisUp(1, 1);
+				_this.goTofish();
+
+			}
+		}).$mount(".indexApp");
+	</script>
+
+</html>
