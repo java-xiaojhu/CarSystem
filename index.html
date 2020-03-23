@@ -86,6 +86,7 @@
 								<el-menu-item index="6">数据</el-menu-item>
 								<el-menu-item index="7">财务</el-menu-item>
 								<el-menu-item index="8">人事</el-menu-item>
+								<el-menu-item index="9" @click="">系统</el-menu-item>
 							</el-menu>
 						</el-col>
 						<el-col :span="6">
@@ -111,16 +112,12 @@
 											<span>导航一</span>
 										</template>
 										<el-menu-item-group>
-											<el-menu-item index="1-1" @click="addTab('选项1','增加商品页.html')">选项1</el-menu-item>
-											<el-menu-item index="1-2" @click="addTab('选项2','new_file.html')">选项2</el-menu-item>
+											<el-menu-item index="1-1" @click="addTab('选项1','Emplimits.html')">选项1</el-menu-item>
+											<el-menu-item index="1-2" @click="addTab('选项2','Emplimits.html')">选项2</el-menu-item>
 											<el-menu-item index="1-3">选项2</el-menu-item>
 											<el-menu-item index="1-4">选项2</el-menu-item>
 										</el-menu-item-group>
 									</el-submenu>
-									<el-menu-item index="4">
-										<i class="el-icon-setting"></i>
-										<span slot="title">导航四</span>
-									</el-menu-item>
 								</el-menu>
 							</el-main>
 							<el-footer style="height: 70px; line-height: 30px; text-align: center;">
@@ -134,8 +131,7 @@
 						<el-main>
 							<template>
 								<el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" style="border: 1px solid #eee;height: 100%;">
-									<el-tab-pane v-for="(item, index) in editableTabs" :class="`pan${index}`" :key="item.name" :label="item.title" :name="item.name">
-										
+									<el-tab-pane v-for="(item, index) in editableTabs" :class="`pan${index}`" :key="item.name" :label="item.title" :name="item.name">										
 									</el-tab-pane>
 								</el-tabs>
 							</template>
@@ -153,6 +149,7 @@
 				editableTabsValue: '0',
 				editableTabs: [],
 				tabIndex: 0,
+				subMenus:[],
 			},
 			methods: {
 				handleOpen(key, keyPath) {
@@ -160,6 +157,10 @@
 				},
 				handleClose(key, keyPath) {
 					console.log(key, keyPath);
+				},
+				leftSubMenus(){
+					let _this=this;
+					//发送ajax获取用户的权限
 				},
 				addTab(targetName, url) {
 					var isok = true;
