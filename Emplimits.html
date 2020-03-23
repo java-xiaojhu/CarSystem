@@ -1,10 +1,191 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #245269;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #096E75;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row,
+			.el-col {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-col {
+				border-radius: 4px;
+				background-color: #FFF;
+			}
+			
+			.el-col-bag {
+				background-color: #245269;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #245269;
+			}
+			/*卡片*/
+			
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				padding: 18px 0;
+			}
+			
+			.box-card {
+				width: 480px;
+			}
+			
+			.noju {
+				padding: 0px;
+				margin: 0px;
+			}
+		</style>
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
 	</head>
+
 	<body>
-		
+		<div class="Emplimits" style="margin: 0px 50px;">
+			<el-row :gutter="20" justify="left">
+				<el-col :span="6">
+					<el-form ref="form" :model="sizeForm" label-width="70px" size="mini">
+						<el-form-item label="员工姓名">
+							<el-select v-model="value" placeholder="请选择">
+								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+								</el-option>
+							</el-select>
+						</el-form-item>
+					</el-form>
+				</el-col>
+				<el-col :span="18">
+
+				</el-col>
+			</el-row>
+			<el-row :gutter="20" justify="center">
+				<el-col :span="1">
+					<div id="">
+
+					</div>
+				</el-col>
+				<el-col :span="11">
+					<el-card class="box-card">
+						<h3>前台</h3>
+						<div v-for="o in 1" :key="o" class="text item noju">
+							<h5>前台结算</h5>
+							<el-form ref="form" :model="form" :inline="isok" label-width="auto">
+								<span v-for="o in 2" class="text item">
+									<el-form-item label="结算中心" >
+										<el-switch  v-model="value1" active-color="#13ce66" inactive-color="#ff4949" active-value="100" inactive-value="0"></el-switch>
+									</el-form-item>
+								</span>
+								<el-form-item label="结算中心">
+									<el-switch v-model="value2" active-color="#13ce66" inactive-color="#ff4949" active-value="100" inactive-value="0"></el-switch>
+								</el-form-item>
+							</el-form>
+						</div>
+					</el-card>
+				</el-col>
+				<el-col :span="1"></el-col>
+				<el-col :span="11">
+					<el-card class="box-card">
+						<h3>系统</h3>
+						<div v-for="o in 1" :key="o" class="text item noju">
+							<h5>权限控制</h5>
+							<el-form ref="form" :model="form" :inline="isok" label-width="auto">
+								<span v-for="o in 1" class="text item">
+									<el-form-item label="员工权限控制" >
+										<el-switch  v-model="value1" active-color="#13ce66" inactive-color="#ff4949" active-value="100" inactive-value="0"></el-switch>
+									</el-form-item>
+								</span>
+								<el-form-item label="角色权限控制">
+									<el-switch v-model="value2" active-color="#13ce66" inactive-color="#ff4949" active-value="100" inactive-value="0"></el-switch>
+								</el-form-item>
+							</el-form>
+						</div>
+					</el-card>
+				</el-col>
+
+			</el-row>
+
+		</div>
 	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script>
+		var Emplimits = new Vue({
+			data: {
+				systems: [],
+				value1: '100',
+				value2: '200',
+				form: {},
+				isok: true,
+				options: [{
+					value: '选项1',
+					label: '黄金糕'
+				}, {
+					value: '选项2',
+					label: '双皮奶'
+				}, {
+					value: '选项3',
+					label: '蚵仔煎'
+				}, {
+					value: '选项4',
+					label: '龙须面'
+				}, {
+					value: '选项5',
+					label: '北京烤鸭'
+				}],
+				value: ''
+			},
+			methods: {
+
+			},
+			mounted() {}
+		}).$mount(".Emplimits")
+	</script>
+
 </html>

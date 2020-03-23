@@ -48,9 +48,11 @@
 			
 			.el-col {
 				border-radius: 4px;
+				background-color: #FFF;
+			}
+			.el-col-bag{
 				background-color: #245269;
 			}
-			
 			.grid-content {
 				border-radius: 4px;
 				min-height: 36px;
@@ -72,11 +74,11 @@
 			<el-container style='height:100vh;'>
 				<el-header style="padding: 0px;">
 					<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
-						<el-col :span="6">
+						<el-col :span="6" class="el-col-bag">
 							<el-link href="竞拍首页.html">
 								<h3>北京昭德文软件系统</h3></el-link>
 						</el-col>
-						<el-col :span="12">
+						<el-col :span="12" class="el-col-bag">
 							<el-menu class="el-menu-demo" mode="horizontal" style="background-color: #245269;">
 								<el-menu-item index="1">维修</el-menu-item>
 								<el-menu-item index="2">商品</el-menu-item>
@@ -89,7 +91,7 @@
 								<el-menu-item index="9" @click="">系统</el-menu-item>
 							</el-menu>
 						</el-col>
-						<el-col :span="6">
+						<el-col :span="6" class="el-col-bag">
 							<el-menu class="el-menu-demo" mode="horizontal" style="background-color: #245269;">
 								<el-menu-item index="1">设置</el-menu-item>
 								<el-menu-item index="2">退出</el-menu-item>
