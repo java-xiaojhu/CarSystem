@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<h1>技工星级</h1>
+		<div id="mechanicStarApp">
+			<el-form :inline="true" :model="mechanicStarObj" class="demo-form-inline">
+				<el-form-item label="等级编码">
+					<el-input v-model="mechanicStarObj.levelNumber" placeholder="等级编码"></el-input>
+				</el-form-item>
+				<el-form-item label="等级名称">
+					<el-input v-model="mechanicStarObj.levelName" placeholder="等级名称"></el-input>
+				</el-form-item>
+				<el-form-item label="工资">
+					<el-input v-model="mechanicStarObj.wage" placeholder="工资"></el-input>
+				</el-form-item>
+				<mybuttonlist :obj="mechanicStarObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl">
+				</mybuttonlist>
+			</el-form>
+			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+			</mytable>
+			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total"></mypagination>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var mechanicStarApp = new Vue({
+			data: {
+				addurl: '/api/objs/add(新增url)',
+				delurl: '/api/objs/del(删除url)',
+				updateurl: '/api/objs/update(修改url)',
+				mechanicStarObj: {},
+				tableHead: [{
+						label: '等级编码',
+						property: 'levelNumber'
+					},
+					{
+						label: '等级名称',
+						property: 'levelName'
+					},
+					{
+						label: '工资',
+						property: 'wage'
+					}
+				],
+				pageList: {
+					pageNum: 1,
+					pageSize: 5,
+					total: 50,
+					list: [{
+						levelNumber: 1,
+						levelName: '一级学徒',
+						wage: 1000
+					}, {
+						levelNumber: 2,
+						levelName: '二级学徒',
+						wage: 2000
+					}, {
+						levelNumber: 3,
+						levelName: '三级学徒',
+						wage: 3000
+					}, {
+						levelNumber: 4,
+						levelName: '四级学徒',
+						wage: 4000
+					}, {
+						levelNumber: 5,
+						levelName: '五级学徒',
+						wage: 5000
+					}]
+				}
+
+			},
+			methods: {
+				updateObj(obj) {
+					this.mechanicStarObj = obj;
+				}
+			},
+			mounted() {
+
+			}
+		}).$mount("#mechanicStarApp");
+	</script>
+
+</html>
