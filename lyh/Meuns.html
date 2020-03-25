@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.mag{
+				margin: 0px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div class="meunsApp">
+			<el-form ref="form" :model="form" label-width="auto">
+				<el-row :gutter="20" type="flex" justify="center">
+					<el-col :span="12">
+						<el-card class="box-card">
+							<h3>前台</h3>
+							<div v-for="o in 1" :key="o" class="text item noju">
+								<el-row :gutter="20" type="flex" justify="center" class="mag" >
+									<el-col :span="13">
+										<h5 style="text-align: left;color: #ADADAD; line-height: 40px;font-size: 14px;">权限控制</h5>
+									</el-col>
+									<el-col :span="11">
+										<el-form-item label="操作" class="mag">
+											<el-checkbox-group v-model="form.type">
+												<el-checkbox label="查看" name="type"></el-checkbox>
+												<el-checkbox label="增删改" name="type"></el-checkbox>
+											</el-checkbox-group>
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<el-row :gutter="20" type="flex" justify="right"  class="mag">
+									<el-form-item  class="mag" label="功能" style="text-align: left;">
+										<el-checkbox-group v-model="form.type" style="">
+											<el-checkbox label="员工权限控制" name="type"></el-checkbox>
+											<el-checkbox label="角色权限控制" name="type"></el-checkbox>
+										</el-checkbox-group>
+									</el-form-item>
+								</el-row>
+							</div>
+						</el-card>
+					</el-col>
+					<el-col :span="12">
+						<el-card class="box-card">
+							<h3>前台</h3>
+							<div v-for="o in 1" :key="o" class="text item noju">
+								<el-row :gutter="20" type="flex" justify="center"  class="mag">
+									<el-col :span="13">
+										<h5 style="text-align: left;color: #ADADAD; line-height: 40px;font-size: 14px;">权限控制</h5>
+									</el-col>
+									<el-col :span="11">
+										<el-form-item label="操作"  class="mag">
+											<el-checkbox-group v-model="form.type">
+												<el-checkbox label="查看" name="type"></el-checkbox>
+												<el-checkbox label="增删改" name="type"></el-checkbox>
+											</el-checkbox-group>
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<el-row :gutter="20" type="flex" justify="left"  class="mag">
+									<el-form-item label="功能"  class="mag">
+										<el-checkbox-group v-model="form.type" style="text-align: left;">
+											<el-checkbox label="员工权限控制" name="type"></el-checkbox>
+											<el-checkbox label="角色权限控制" name="type"></el-checkbox>
+											<el-checkbox label="角色权限控制" name="type"></el-checkbox>
+											<el-checkbox label="角色权限控制" name="type"></el-checkbox>
+										</el-checkbox-group>
+									</el-form-item>
+								</el-row>
+							</div>
+						</el-card>
+					</el-col>
+				</el-row>
+			</el-form>
+		</div>
+
+	</body>
+	<script>
+		var meunsApp = new Vue({
+			data: {
+				systems: [],
+
+				form: {
+					type: [],
+				},
+				isok: true,
+			},
+			methods: {
+
+			},
+			mounted() {
+
+			}
+		}).$mount(".meunsApp")
+	</script>
+
+</html>

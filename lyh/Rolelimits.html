@@ -4,10 +4,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+
 	</head>
 
 	<body>
-		<div class="Emplimits" style="margin: 0px 50px;">
+		<div class="rolelimits" style="margin: 0px 50px;">
 			<el-table :data="tableData" border stripe style="width: 100%">
 				<el-table-column prop="date" label="日期" width="180">
 				</el-table-column>
@@ -31,7 +32,7 @@
 		</div>
 	</body>
 	<script>
-		var Emplimits = new Vue({
+		var rolelimits = new Vue({
 			data: {
 				tableData: [{
 					date: '2016-05-02',
@@ -68,7 +69,7 @@
 					let _this = this;
 					_this.isShow2 = true;
 				},
-					makeSure() {
+				makeSure() {
 					let _this = this;
 					this.$confirm('确定设置吗？')
 						.then(_ => {
@@ -84,9 +85,11 @@
 						})
 						.catch(_ => {});
 				},
+				
+				
 			},
 			mounted() {}
-		}).$mount(".Emplimits")
+		}).$mount(".rolelimits")
 	</script>
 
 </html>
