@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<h1>岗位定义</h1>
+		<div id="jobDescriptionApp">
+			<el-form :inline="true" :model="jobObj" class="demo-form-inline">
+				<el-form-item label="等级编码">
+					<el-input v-model="jobObj.jobNumber" placeholder="等级编码"></el-input>
+				</el-form-item>
+				<el-form-item label="等级名称">
+					<el-input v-model="jobObj.jobName" placeholder="等级名称"></el-input>
+				</el-form-item>
+				<mybuttonlist :obj="jobObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="jobObj.jobNumber==''||jobObj.jobName==''">
+				</mybuttonlist>
+			</el-form>
+			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+			</mytable>
+			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
+			</mypagination>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var jobDescriptionApp = new Vue({
+			data: {
+				addurl: '/api/objs/add(新增url)',
+				delurl: '/api/objs/del(删除url)',
+				updateurl: '/api/objs/update(修改url)',
+				jobObj: {
+					jobNumber: '',
+					jobName: ''
+				},
+				tableHead: [{
+						label: '岗位编码',
+						property: 'jobNumber'
+					},
+					{
+						label: '岗位名称',
+						property: 'jobName'
+					}
+				],
+				pageList: {
+					pageNum: 1,
+					pageSize: 5,
+					total: 50,
+					list: [{
+						jobNumber: 1,
+						jobName: '质检'
+					}, {
+						jobNumber: 2,
+						jobName: '质检'
+					}, {
+						jobNumber: 3,
+						jobName: '质检'
+					}, {
+						jobNumber: 4,
+						jobName: '质检'
+					}, {
+						jobNumber: 5,
+						jobName: '质检'
+					}]
+				}
+
+			},
+			methods: {
+				updateObj(obj) {
+					this.jobObj = obj;
+				},
+				selectPageList(num, size) {
+					alert(num + "\t" + size);
+				}
+			},
+			mounted() {
+
+			}
+		}).$mount("#jobDescriptionApp");
+	</script>
+
+</html>

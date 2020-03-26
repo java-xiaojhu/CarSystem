@@ -51,9 +51,11 @@
 				border-radius: 4px;
 				background-color: #FFF;
 			}
-			.el-col-bag{
+			
+			.el-col-bag {
 				background-color: #245269;
 			}
+			
 			.grid-content {
 				border-radius: 4px;
 				min-height: 36px;
@@ -63,8 +65,32 @@
 				padding: 10px 0;
 				background-color: #245269;
 			}
+			/*卡片*/
+			
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				margin-bottom: 18px;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both
+			}
+			
+			.box-card {
+				width: 100%;
+			}
 		</style>
 		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
 		<script type="text/javascript" src="js/vue.js"></script>
 		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
@@ -112,13 +138,56 @@
 									<el-submenu index="1">
 										<template slot="title">
 											<i class="el-icon-location"></i>
-											<span>导航一</span>
+											<span>权限控制</span>
 										</template>
 										<el-menu-item-group>
-											<el-menu-item index="1-1" @click="addTab('选项1','lyh/Emplimits.html')">选项1</el-menu-item>
-											<el-menu-item index="1-2" @click="addTab('选项2','lyh/Rolelimits.html')">选项2</el-menu-item>
-											<el-menu-item index="1-3">选项2</el-menu-item>
-											<el-menu-item index="1-4">选项2</el-menu-item>
+											<el-menu-item index="1-1" @click="addTab('选项1','lyh/Emplimits.html')">员工权限控制</el-menu-item>
+											<el-menu-item index="1-2" @click="addTab('选项2','lyh/Rolelimits.html')">角色权限控制</el-menu-item>
+										</el-menu-item-group>
+									</el-submenu>
+									<el-submenu index="3">
+										<template slot="title">
+											<i class="el-icon-user"></i>
+											<span>员工资料</span>
+										</template>
+										<el-menu-item-group>
+											<el-menu-item index="3-1">组织机构</el-menu-item>
+											<el-menu-item index="3-2" @click="addTab('岗位定义','pqw/jobDescription.html')">岗位定义</el-menu-item>
+											<el-menu-item index="3-3" @click="addTab('离职登记','pqw/exitRegistration.html')">离职登记</el-menu-item>
+											<el-menu-item index="3-4" @click="addTab('通讯名录','pqw/addressList.html')">通讯名录</el-menu-item>
+										</el-menu-item-group>
+									</el-submenu>
+									<el-submenu index="4">
+										<template slot="title">
+											<i class="el-icon-setting"></i>
+											<span>技工管理</span>
+										</template>
+										<el-menu-item-group>
+											<el-menu-item index="4-1" @click="addTab('技工星级','pqw/mechanicStar.html')">技工星级</el-menu-item>
+											<el-menu-item index="4-2" @click="addTab('班级技工','pqw/classMechanic.html')">班级技工</el-menu-item>
+											<el-menu-item index="4-3" @click="addTab('外勤车辆','pqw/fieldVehicle.html')">外勤车辆</el-menu-item>
+										</el-menu-item-group>
+									</el-submenu>
+									<el-submenu index="5">
+										<template slot="title">
+											<i class="el-icon-setting"></i>
+											<span>接车派工</span>
+										</template>
+										<el-menu-item-group>
+											<el-menu-item index="5-1" @click="addTab('维修接车','lzj/jieche.html')">维修接车</el-menu-item>
+											<el-menu-item index="5-2" @click="addTab('竣工检查','lzj/jungong.html')">竣工检查</el-menu-item>
+											<!--<el-menu-item index="5-3" @click="addTab('班级技工','pqw/classMechanic.html')">出厂登记</el-menu-item>
+											<el-menu-item index="5-4" @click="addTab('班级技工','pqw/classMechanic.html')">维修登记</el-menu-item>-->
+										</el-menu-item-group>
+									</el-submenu>
+									<el-submenu index="6">
+										<template slot="title">
+											<i class="el-icon-setting"></i>
+											<span>客户档案</span>
+										</template>
+										<el-menu-item-group>
+											<el-menu-item index="6-1" @click="addTab('维修接车','ckf/che.html')">客户资料</el-menu-item>
+											<el-menu-item index="6-2" @click="addTab('竣工检查','ckf/che1.html')">车辆资料</el-menu-item>			
 										</el-menu-item-group>
 									</el-submenu>
 								</el-menu>
@@ -133,16 +202,16 @@
 					<el-container>
 						<el-main>
 							<template>
-								
-								<el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" style="border: 1px solid #eee;height: 100%;">
-									 <el-tab-pane label="首页" name="first" class="firstpan" :closable="isok">
-									 	gg
-									 </el-tab-pane>
-									<el-tab-pane v-for="(item, index) in editableTabs" :class="`pan${index}`" :key="item.name" :label="item.title" :name="item.name">										
+								<el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" style="border: 1px solid #eee;height: 100%;">
+									<el-tab-pane :closable="index!=0" v-for="(item, index) in editableTabs" :class="`pan${index}`" :key="item.name" :label="item.title" :name="item.name">
 									</el-tab-pane>
 								</el-tabs>
 							</template>
-
+							<template>
+								<el-dialog @opened="handlerOpen" ref="modifdialog" :title="title" :visible.sync="isShow2" width="50%" :before-close="handleClose2" center>
+									<div class="view"></div>
+								</el-dialog>
+							</template>
 						</el-main>
 					</el-container>
 				</el-container>
@@ -150,14 +219,73 @@
 		</div>
 	</body>
 	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/echarts.js"></script>
+	<script type="text/javascript" src="pqw/Component/myTable.js"></script>
+	<script type="text/javascript" src="pqw/Component/myPagination.js"></script>
+	<script type="text/javascript" src="pqw/Component/myButtonList.js"></script>
 	<script type="text/javascript">
 		var indexApp = new Vue({
 			data: {
 				editableTabsValue: '0',
-				editableTabs: [],
 				tabIndex: 0,
-				subMenus:[],
-				isok:false,
+				isShow2: false,
+				title: '',
+				editableTabs: [{
+					title: '首页',
+					name: '0'
+				}],
+				subMenus: [],
+				tadaydesk: [{
+					"value": 1,
+					"name": "接车台次"
+				}, {
+					"value": 1,
+					"name": "结算台次"
+				}, {
+					"value": 1,
+					"name": "在修台次"
+				}, {
+					"value": 1,
+					"name": "返修台次"
+				}, {
+					"value": 1,
+					"name": "站内台次"
+				}, {
+					"value": 1,
+					"name": "站外台次"
+				}],
+				tadaywarehouse: [{
+					"value": 1,
+					"name": "销售数量"
+				}, {
+					"value": 1,
+					"name": "维修领料数量"
+				}, {
+					"value": 1,
+					"name": "销售金额"
+				}, {
+					"value": 1,
+					"name": "维修金额"
+				}, {
+					"value": 1,
+					"name": "总库存数量"
+				}, {
+					"value": 1,
+					"name": "总库存金额"
+				}],
+				tadaysettlment: [{
+					"value": 1,
+					"name": "现金"
+				}, {
+					"value": 1,
+					"name": "卡消费"
+				}, {
+					"value": 1,
+					"name": "其他"
+				}],
+				parameters: []
 			},
 			methods: {
 				handleOpen(key, keyPath) {
@@ -166,9 +294,20 @@
 				handleClose(key, keyPath) {
 					console.log(key, keyPath);
 				},
-				leftSubMenus(){
-					let _this=this;
+				leftSubMenus() {
+					let _this = this;
 					//发送ajax获取用户的权限
+				},
+				handleClose2(done) {
+					done();
+				},
+				handlerOpen() {
+					$(".view").load("view/view.html"); //ajax读取页面
+				},
+				viewStats(title, data) {
+					this.title = title;
+					this.parameters = data;
+					this.isShow2 = true;
 				},
 				addTab(targetName, url) {
 					var isok = true;
@@ -191,12 +330,13 @@
 						name: newTabName,
 					});
 					this.editableTabsValue = newTabName;
-					let _this=this;
+					let _this = this;
 					this.$nextTick(function() {
-						console.log($(`.pan${newTabName-1}`).load(url))
+						console.log(url)
+						console.log($(`.pan${newTabName}`).load(url))
+						$(`.pan${newTabName}`).load(url);
 					})
-
-				},			
+				},
 				removeTab(targetName) {
 					let tabs = this.editableTabs;
 					--this.tabIndex;
@@ -215,6 +355,9 @@
 					this.editableTabs = tabs.filter(tab => tab.name !== targetName);
 				}
 			},
+			mounted() {
+				$(`.pan0`).load('Main.html');
+			}
 		}).$mount(".indexApp");
 	</script>
 

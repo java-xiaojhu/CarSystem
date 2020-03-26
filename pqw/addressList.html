@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#addH1 {
+				display: inline-block;
+			}
+			
+			#addForm {
+				float: right;
+				padding-top: 21px;
+			}
+			
+			#addBottonList {
+				float: right;
+				margin-bottom: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="addressListApp">
+			<div>
+				<h1 id="addH1">通讯名录</h1>
+				<el-form id="addForm" :inline="true" class="demo-form-inline">
+					<el-form-item>
+						<el-input v-model="optionName" placeholder="部门/员工编号/姓名"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="warning" @click="selectPage">搜索</el-button>
+					</el-form-item>
+					</mybuttonlist>
+				</el-form>
+			</div>
+			<div id="addBottonList">
+				<el-button type="info" slot="reference" icon="el-icon-printer" @click="exportExcel">导出</el-button>
+			</div>
+			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+			</mytable>
+			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
+			</mypagination>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var addressListApp = new Vue({
+			data: {
+				optionName: '',
+				addObj: {},
+				pageNum: 1,
+				pageSize: 5,
+				tableHead: [{
+						label: '部门',
+						property: 'a'
+					},
+					{
+						label: '员工编号',
+						property: 'b'
+					}, {
+						label: '姓名',
+						property: 'c'
+					}, {
+						label: '分机/短号',
+						property: 'd'
+					}, {
+						label: '直拨',
+						property: 'e'
+					}, {
+						label: '手机',
+						property: 'f'
+					}, {
+						label: '邮箱',
+						property: 'g'
+					}
+				],
+				pageList: {
+					pageNum: 1,
+					pageSize: 5,
+					total: 50,
+					list: [{
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '10086',
+						e: '110',
+						f: '13786330987',
+						g: '1234567@qq.com!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '10086',
+						e: '110',
+						f: '13786330987',
+						g: '1234567@qq.com!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '10086',
+						e: '110',
+						f: '13786330987',
+						g: '1234567@qq.com!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '10086',
+						e: '110',
+						f: '13786330987',
+						g: '1234567@qq.com!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '10086',
+						e: '110',
+						f: '13786330987',
+						g: '1234567@qq.com!'
+					}]
+				}
+			},
+			methods: {
+				updateObj(obj) {
+					this.addObj = obj;
+				},
+				selectPageList(num, size) {
+					this.pageNum = num;
+					this.pageSize = size;
+					this.selectPage();
+				},
+				selectPage() {
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName);
+				},
+				exportExcel() {
+					this.$confirm('此操作将数据导出至Excel表并保存到桌面, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						this.$message.success('导出成功!');
+					}).catch(() => {
+						this.$message.info('已取消导出!');
+					});
+				}
+			},
+			mounted() {
+
+			}
+		}).$mount("#addressListApp");
+	</script>
+
+</html>

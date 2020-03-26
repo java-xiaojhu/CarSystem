@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#exitH1 {
+				display: inline-block;
+			}
+			
+			#exitForm {
+				float: right;
+				padding-top: 21px;
+			}
+			
+			#exitBottonList {
+				float: right;
+				margin-bottom: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="exitRegistrationApp">
+			<div>
+				<h1 id="exitH1">离职登记</h1>
+				<el-form id="exitForm" :inline="true" class="demo-form-inline">
+					<el-form-item>
+						<el-input v-model="optionName" placeholder="部门/员工编号/姓名"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="warning" @click="selectPage">搜索</el-button>
+					</el-form-item>
+					</mybuttonlist>
+				</el-form>
+			</div>
+			<div id="exitBottonList">
+				<el-button type="warning" icon="el-icon-user-solid" @click="leave">离职</el-button>
+				<el-button type="primary" icon="el-icon-refresh-right" @click="rollBack">回滚</el-button>
+				<el-button type="info" icon="el-icon-folder-opened" @click="open">打开</el-button>
+				<el-button type="danger" icon="el-icon-circle-close" @click="del">删除</el-button>
+				<el-popover placement="right" width="400" trigger="click">
+					<span>
+						以
+					</span>
+					<el-radio-group v-model="excelType" size="mini">
+						<el-radio-button label="部门"></el-radio-button>
+						<el-radio-button label="日期"></el-radio-button>
+					</el-radio-group>
+					<span>
+						分表制成一个文件导出
+					</span>
+					<el-button type="success" @click="exportExcel" style="float: right;">确定</el-button>
+					<el-button type="info" slot="reference" icon="el-icon-printer">导出</el-button>
+				</el-popover>
+			</div>
+			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+			</mytable>
+			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
+			</mypagination>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var exitRegistrationApp = new Vue({
+			data: {
+				optionName: '',
+				excelType: '部门',
+				exitObj: {},
+				pageNum: 1,
+				pageSize: 5,
+				tableHead: [{
+						label: '部门',
+						property: 'a'
+					},
+					{
+						label: '员工编号',
+						property: 'b'
+					}, {
+						label: '姓名',
+						property: 'c'
+					}, {
+						label: '性别',
+						property: 'd'
+					}, {
+						label: '职位',
+						property: 'e'
+					}, {
+						label: '离职日期',
+						property: 'f'
+					}, {
+						label: '离职原因',
+						property: 'g'
+					}
+				],
+				pageList: {
+					pageNum: 1,
+					pageSize: 5,
+					total: 50,
+					list: [{
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '男',
+						e: '尚书',
+						f: '2020-03-25',
+						g: 'ahhhhhh!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '男',
+						e: '尚书',
+						f: '2020-03-25',
+						g: 'ahhhhhh!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '男',
+						e: '尚书',
+						f: '2020-03-25',
+						g: 'ahhhhhh!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '男',
+						e: '尚书',
+						f: '2020-03-25',
+						g: 'ahhhhhh!'
+					}, {
+						a: '工部',
+						b: 'OEM0001',
+						c: '李冰',
+						d: '男',
+						e: '尚书',
+						f: '2020-03-25',
+						g: 'ahhhhhh!'
+					}]
+				}
+			},
+			methods: {
+				updateObj(obj) {
+					this.exitObj = obj;
+				},
+				selectPageList(num, size) {
+					this.pageNum = num;
+					this.pageSize = size;
+					this.selectPage();
+				},
+				selectPage() {
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName);
+				},
+				leave() {},
+				rollBack() {
+					if(this.exitObj.a == null) {
+						this.$message.error('请选择一条数据');
+						return;
+					}
+					this.$confirm('此操作将回滚数据, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						this.$message.success('回滚成功!');
+						this.selectPage();
+					}).catch(() => {
+						this.$message.info('已取消回滚!');
+					});
+				},
+				del() {
+					if(this.exitObj.a == null) {
+						this.$message.error('请选择一条数据');
+						return;
+					}
+					this.$confirm('此操作将删除数据, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						this.$message.success('删除成功!');
+						this.selectPage();
+					}).catch(() => {
+						this.$message.info('已取消删除!');
+					});
+				},
+				open() {
+					if(this.exitObj.a == null) {
+						this.$message.error('请选择一条数据');
+						return;
+					}
+				},
+				exportExcel() {
+					alert('你选择的是' + this.excelType);
+					this.$confirm('此操作将数据导出至Excel表并保存到桌面, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						this.$message.success('导出成功!');
+					}).catch(() => {
+						this.$message.info('已取消导出!');
+					});
+				}
+			},
+			mounted() {
+
+			}
+		}).$mount("#exitRegistrationApp");
+	</script>
+
+</html>

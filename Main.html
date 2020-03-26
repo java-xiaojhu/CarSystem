@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="mianApp">
+			<el-row :gutter="20" type="flex" justify="center">
+				<el-col :span="8">
+					<el-card class="box-card">
+						<div slot="header" class="clearfix text-left">
+							<span>今日前台</span>
+							<el-button style="float: right; padding: 3px 0" type="text" @click="viewStats('今日前台',tadaydesk)">查看统计</el-button>
+						</div>
+						<table class="table table-striped">
+							<tbody>
+								<tr v-for="item in tadaydesk">
+									<td>{{item.name}}</td>
+									<td>{{item.value}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="box-card">
+						<div slot="header" class="clearfix text-left">
+							<span>今日库房</span>
+							<el-button style="float: right; padding: 3px 0" type="text" @click="viewStats('今日库房',tadaywarehouse)">查看统计</el-button>
+						</div>
+						<table class="table table-striped text item">
+							<tbody>
+								<tr v-for="item in tadaywarehouse">
+									<td>{{item.name}}</td>
+									<td>{{item.value}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="box-card">
+						<div slot="header" class="clearfix text-left">
+							<span>今日结算</span>
+							<el-button style="float: right; padding: 3px 0" type="text" @click="viewStats('今日结算',tadaysettlment)">查看统计</el-button>
+						</div>
+						<table class="table table-striped text item">
+							<tbody>
+								<tr v-for="item in tadaysettlment">
+									<td>{{item.name}}</td>
+									<td>{{item.value}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</el-card>
+				</el-col>
+			</el-row>
+			<template>
+				<el-dialog @opened="handlerOpen" ref="modifdialog" :title="title" :visible.sync="isShow2" width="50%" :before-close="handleClose2" center>
+					<div class="view">
+					</div>
+				</el-dialog>
+			</template>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var mainApp = new Vue({
+			data: {
+				tadaydesk: [{
+					"value": 1,
+					"name": "接车台次"
+				}, {
+					"value": 1,
+					"name": "结算台次"
+				}, {
+					"value": 1,
+					"name": "在修台次"
+				}, {
+					"value": 1,
+					"name": "返修台次"
+				}, {
+					"value": 1,
+					"name": "站内台次"
+				}, {
+					"value": 1,
+					"name": "站外台次"
+				}],
+				tadaywarehouse: [{
+					"value": 1,
+					"name": "销售数量"
+				}, {
+					"value": 1,
+					"name": "维修领料数量"
+				}, {
+					"value": 1,
+					"name": "销售金额"
+				}, {
+					"value": 1,
+					"name": "维修金额"
+				}, {
+					"value": 1,
+					"name": "总库存数量"
+				}, {
+					"value": 1,
+					"name": "总库存金额"
+				}],
+				tadaysettlment: [{
+					"value": 1,
+					"name": "现金"
+				}, {
+					"value": 1,
+					"name": "卡消费"
+				}, {
+					"value": 1,
+					"name": "其他"
+				}],
+				parameters: [],
+				isShow2: false,
+				title: '',
+			},
+			methods: {
+				viewStats(title, data) {
+					this.title = title;
+					this.parameters = data;
+					this.isShow2 = true;
+				},
+				handleClose2(done) {
+					done();
+				},
+				handlerOpen() {
+					$(".view").load("view/view.html"); //ajax读取页面
+				},
+			}
+
+		}).$mount(".mianApp");
+	</script>
+
+</html>

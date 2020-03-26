@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>德招文软件</title>
+		<link rel="stylesheet" href="../css/index.css" />
+		<script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<style type="text/css">
+			.el-pagination {
+				text-align: center;
+				margin-top: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="homePageApp">
+			<el-row class="tac">
+				<el-col :span="4">
+					<el-menu :default-active="editableTabsValue" :unique-opened=true background-color="#096E75" text-color="#fff" active-text-color="#ffd04b">
+						<el-menu-item index="index" @click="moreState('index','index')">
+							<i class="el-icon-house"></i>
+							<span slot="title">首页</span>
+						</el-menu-item>
+						<el-submenu index="2">
+							<template slot="title">
+								<i class="el-icon-user"></i>
+								<span>员工资料</span>
+							</template>
+							<el-menu-item-group>
+								<el-menu-item index="2-1">组织机构</el-menu-item>
+								<el-menu-item index="jobDescription" @click="addTab('岗位定义','jobDescription')">岗位定义<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="exitRegistration" @click="addTab('离职登记','exitRegistration')">离职登记<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="addressList" @click="addTab('通讯名录','addressList')">通讯名录<i class="el-icon-check"></i></el-menu-item>
+							</el-menu-item-group>
+						</el-submenu>
+						<el-submenu index="3">
+							<template slot="title">
+								<i class="el-icon-setting"></i>
+								<span>技工管理</span>
+							</template>
+							<el-menu-item-group>
+								<el-menu-item index="mechanicStar" @click="addTab('技工星级','mechanicStar')">技工星级<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="classMechanic" @click="addTab('班级技工','classMechanic')">班级技工</el-menu-item>
+								<el-menu-item index="fieldVehicle" @click="addTab('外勤车辆','fieldVehicle')">外勤车辆<i class="el-icon-check"></i></el-menu-item>
+							</el-menu-item-group>
+						</el-submenu>
+					</el-menu>
+				</el-col>
+				<el-col :span="20">
+					<el-tabs v-model="editableTabsValue" type="border-card" @tab-remove="removeTab" :before-leave="moreState" @tab-click="handleClick">
+						<el-tab-pane :closable="index==0" v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+						</el-tab-pane>
+					</el-tabs>
+				</el-col>
+			</el-row>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/index.js"></script>
+	<script type="text/javascript" src="Component/myTable.js"></script>
+	<script type="text/javascript" src="Component/myPagination.js"></script>
+	<script type="text/javascript" src="Component/myButtonList.js"></script>
+	<script type="text/javascript">
+		var homePageApp = new Vue({
+			data: {
+				editableTabsValue: 'index',
+				editableTabs: [{
+					title: '首页',
+					name: 'index'
+				}]
+			},
+			methods: {
+				handleClick(tab, event) {
+					//console.log(tab, event); 
+				},
+				moreState(activeName, oldActiveName) {
+					//console.log(activeName);
+					//console.log(oldActiveName);
+					this.editableTabsValue = activeName;
+				},
+				removeTab(targetName) {
+					let tabs = this.editableTabs;
+					let activeName = this.editableTabsValue;
+					if(activeName === targetName) {
+						tabs.forEach((tab, index) => {
+							if(tab.name === targetName) {
+								let nextTab = tabs[index + 1] || tabs[index - 1];
+								if(nextTab) {
+									activeName = nextTab.name;
+								}
+							}
+						});
+					}
+					this.editableTabsValue = activeName;
+					this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+				},
+				addTab(titleName, tabName) {
+					var isToo = true;
+					this.editableTabs.forEach((tab, index) => {
+						if(tab.name === tabName) {
+							isToo = false; //相同就不增加tab。
+						}
+					});
+					if(isToo) {
+						this.editableTabs.push({
+							title: titleName,
+							name: tabName
+						});
+						this.$nextTick(function() {
+							$(`#pane-${tabName}`).load(tabName + ".html");
+						});
+					}
+					this.editableTabsValue = tabName;
+				}
+			},
+			mounted() {
+				$("#pane-index").load("index.html");
+				$("div[class='el-col el-col-4']").css({
+					"height": "740px",
+					"overflow": "scroll",
+					"background-color": "#096E75"
+				});
+				$("div[class='el-tabs__content']").css({
+					"height": "670px",
+					"overflow": "scroll"
+				});
+			}
+		}).$mount("#homePageApp");
+	</script>
+
+</html>

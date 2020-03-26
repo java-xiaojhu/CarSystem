@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>	
+	</head>
+
+	<body>
+		<div id="cheVm">
+
+			<el-row :span="24">
+				<el-col :span="2">
+					<div style="margin-top: 5px;">
+						<h3>客户档案</h3>
+					</div>
+				</el-col>
+				<el-col :span="10 ">
+					&nbsp;
+				</el-col>
+				<el-col :span="6">
+					<el-input placeholder="匹配名称/名称简码/手机/会员卡号/车牌号"></el-input>
+				</el-col>
+				<el-col :span="2">
+					<el-button type="primary" round @click="chaxun">搜索</el-button>
+				</el-col>
+				<p></p>
+				<h></h>
+				<el-dialog title="新增客户" :visible.sync="isShow2" width="80%" center>
+					<el-form :model="xzkh" :rules="rules" ref="ruleForm" :inline="isok" label-width="auto" class="demo-ruleForm">
+						<el-form-item label="客户编码" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户名称" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="联系人" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户地址" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户生日" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="账期(天)" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="挂账额度" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="专属顾问" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="顾问电话" prop="name">
+							<el-input v-model="xzkh.clientiphone"></el-input>
+						</el-form-item>
+						<el-form-item label="省" prop="name">
+							<el-input v-model="xzkh.clientbz"></el-input>
+						</el-form-item>
+						<el-form-item label="市" prop="name">
+							<el-input v-model="xzkh.clientname"></el-input>
+						</el-form-item>
+						<el-form-item label="区" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="备注" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="纳税人识别号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="注册电话" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="开户银行" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="银行账号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="注册地址" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他一" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他二" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他三" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他四" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						
+					</el-form>
+                <span slot="footer" class="dialog-footer" >
+	    			<el-button type="primary" @click="isShow2 = false">保存</el-button>
+  			    </span>
+				</el-dialog>
+				<el-dialog title="修改客户" :visible.sync="isShow3" width="80%" center>
+					<el-form :model="xzkh" :rules="rules" ref="ruleForm" :inline="isok" label-width="auto" class="demo-ruleForm">
+						<el-form-item label="客户编码" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户名称" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="联系人" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户地址" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户生日" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="账期(天)" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="挂账额度" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="专属顾问" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="顾问电话" prop="name">
+							<el-input v-model="xzkh.clientiphone"></el-input>
+						</el-form-item>
+						<el-form-item label="省" prop="name">
+							<el-input v-model="xzkh.clientbz"></el-input>
+						</el-form-item>
+						<el-form-item label="市" prop="name">
+							<el-input v-model="xzkh.clientname"></el-input>
+						</el-form-item>
+						<el-form-item label="区" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="备注" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="纳税人识别号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="注册电话" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="开户银行" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="银行账号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="注册地址" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他一" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他二" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他三" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="其他四" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						
+					</el-form>
+                <span slot="footer" class="dialog-footer" >
+	    			<el-button type="primary" @click="isShow2 = false">确定修改</el-button>
+  			    </span>
+				</el-dialog>
+				<el-dialog title="新增客户和车" :visible.sync="isShow1" width="80%" center>
+
+					<el-form :model="xzkh" :rules="rules" ref="ruleForm" :inline="isok" label-width="auto" class="demo-ruleForm">
+						<el-form-item label="客户编码" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户名称" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="联系人" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户地址" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="客户生日" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="账期(天)" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="挂账额度" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="专属顾问" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="顾问电话" prop="name">
+							<el-input v-model="xzkh.clientiphone"></el-input>
+						</el-form-item>
+						<el-form-item label="省" prop="name">
+							<el-input v-model="xzkh.clientbz"></el-input>
+						</el-form-item>
+						<el-form-item label="市" prop="name">
+							<el-input v-model="xzkh.clientname"></el-input>
+						</el-form-item>
+						<el-form-item label="区" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="备注" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车牌号码" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车牌品牌" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆型号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="驾驶员" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="驾驶员电话" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="出生日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车辆归属" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="驾证到期" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车架号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车架号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="发动机号" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆年款" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="里程" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="发动机品牌" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="载重" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="购买日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="上牌日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车证到期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="燃油类别" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="" prop="name">
+							<el-checkbox v-model="checked">在我投保车</el-checkbox>
+						</el-form-item>
+						<el-form-item label="交强险保险公司" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="交强险" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="商业险保险公司" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="商业险到期" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+					</el-form>
+					<span slot="footer" class="dialog-footer" >
+	    			<el-button type="primary" @click="isShow2 = false">立即创建</el-button>
+	    			<el-button  @click="resetForm('ruleForm')">重置</el-button>
+  			</span>
+				</el-dialog>
+				<el-dialog title="车辆资料编辑" :visible.sync="isShow4" width="80%" center>
+					<el-form :model="xzkh" :rules="rules" ref="ruleForm" :inline="isok" label-width="auto" class="demo-ruleForm">
+						<el-form-item label="车牌号码" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆品牌" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆型号" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="驾驶员" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="驾驶员电话" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="出生日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车辆归属" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="驾证到期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车架号" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="发动机号" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆年款" prop="name">
+							<el-input v-model="xzkh.clientiphone"></el-input>
+						</el-form-item>
+						<el-form-item label="里程" prop="name">
+							<el-input v-model="xzkh.clientiphone"></el-input>
+						</el-form-item>
+						<el-form-item label="发动机品牌" prop="name">
+							<el-input v-model="xzkh.clientbz"></el-input>
+						</el-form-item>
+						<el-form-item label="载重" prop="name">
+							<el-input v-model="xzkh.clientname"></el-input>
+						</el-form-item>
+						<el-form-item label="购买日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="上牌日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车险到期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="燃油类别" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车系" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="" prop="name">
+							<el-checkbox v-model="checked">在我投保车</el-checkbox>
+						</el-form-item>
+						<el-form-item label="交强险保险公司" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="交强险" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="商业险保险公司" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="商业险到期" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="下次保养里程" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="下次保养日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="客户名称" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+					</el-form>
+					<span slot="footer" class="dialog-footer" >
+	    			<el-button type="primary" @click="isShow2 = false">立即创建</el-button>
+  			</span>
+				</el-dialog>
+				<el-dialog title="修改车资料" :visible.sync="isShow5" width="80%" center>
+					<el-form :model="xzkh" :rules="rules" ref="ruleForm" :inline="isok" label-width="auto" class="demo-ruleForm">
+						<el-form-item label="车牌号码" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆品牌" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆型号" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="驾驶员" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="驾驶员电话" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="出生日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车辆归属" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="驾证到期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车架号" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="发动机号" prop="name">
+							<el-input v-model="xzkh.clientid"></el-input>
+						</el-form-item>
+						<el-form-item label="车辆年款" prop="name">
+							<el-input v-model="xzkh.clientiphone"></el-input>
+						</el-form-item>
+						<el-form-item label="里程" prop="name">
+							<el-input v-model="xzkh.clientiphone"></el-input>
+						</el-form-item>
+						<el-form-item label="发动机品牌" prop="name">
+							<el-input v-model="xzkh.clientbz"></el-input>
+						</el-form-item>
+						<el-form-item label="载重" prop="name">
+							<el-input v-model="xzkh.clientname"></el-input>
+						</el-form-item>
+						<el-form-item label="购买日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="上牌日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="车险到期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="燃油类别" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="车系" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="" prop="name">
+							<el-checkbox v-model="checked">在我投保车</el-checkbox>
+						</el-form-item>
+						<el-form-item label="交强险保险公司" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="交强险" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="商业险保险公司" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="商业险到期" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="下次保养里程" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+						<el-form-item label="下次保养日期" required>
+							<el-col :span="11">
+								<el-form-item prop="clientbirthday">
+									<el-date-picker type="date" placeholder="选择日期" v-model="xzkh.clientbirthday" style="width: 100%;"></el-date-picker>
+								</el-form-item>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="客户名称" prop="name">
+							<el-input v-model="xzkh.clientaddress"></el-input>
+						</el-form-item>
+					</el-form>
+					<span slot="footer" class="dialog-footer" >
+	    			<el-button type="primary" @click="isShow2 = false">确认修改</el-button>
+  			</span>
+				</el-dialog>
+				<el-row>
+					<el-col :span="24">
+						<div>
+							<el-col :span="8">
+								<div class="grid-content"></div>
+							</el-col>
+							<el-col :span="8">
+								<div style="margin-top: 11px;">
+									<template>
+										<el-tabs v-model="activeName" @tab-click="handleClick">
+											<el-tab-pane label="客户编辑" name="first">
+												<div class="grid-content bg-purple">
+													<span><a>客户编辑</a>&nbsp;&nbsp;<a @click="addPerson">增加客户和车</a>&nbsp;&nbsp;<a @click="addPerson1">增加客户</a>&nbsp;&nbsp;<a @click="addPerson2">修改客户</a>&nbsp;&nbsp;<a>删除客户</a></span>
+												</div>
+											</el-tab-pane>
+											<el-tab-pane label="车资料" name="second">
+												<div class="grid-content" style="margin-right: 10px;">
+													<span><a>车资料</a>&nbsp;&nbsp;&nbsp;<a @click="addPerson3">增加车资料</a>&nbsp;&nbsp;&nbsp;<a>修改车资料</a>&nbsp;&nbsp;&nbsp;<a>删除车资料</a></span>
+												</div>
+											</el-tab-pane>
+											<el-tab-pane label="客户分类" name="third">角色管理</el-tab-pane>
+											<el-tab-pane label="查询" name="fourth">查询</el-tab-pane>
+										</el-tabs>
+									</template>
+								</div>
+							</el-col>
+							<el-col :span="4">
+								<div class="grid-content" style="margin-top: 11px;">
+									<h1><a>导出</a></h1>
+								</div>
+							</el-col>
+							<template>
+								<el-table v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" :data="kh.list" height="250" border style="width: 100%">
+
+									<el-table-column fixed prop="clientid" label="客户编号" width="150">
+									</el-table-column>
+
+									<el-table-column prop="clientname" label="客户名称" width="120">
+									</el-table-column>
+									<el-table-column prop="clientaddress" label="详细地址" width="120">
+									</el-table-column>
+									<el-table-column prop="clientiphone" label="联系人" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbirthday" label="手机" width="200">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户生日" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户类别" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="会员卡号" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="入会日期" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="会员到期" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="备注" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="建档日期" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="服务顾问" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="业务员电话" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="账期(天)" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="挂账额度" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="累计积分" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="定金余额" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户省" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户市" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户区" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="纳税人识别号" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="注册电话" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="开户银行" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="银行账号" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="注册地址" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="定金余额" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="其他一" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="其他二" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="其他三" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="其他四" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="单据类型" width="120">
+									</el-table-column>
+								</el-table>
+							</template>
+						</div>
+					</el-col>
+				</el-row>
+
+				<template>
+
+					<el-tabs v-model="activeName" @tab-click="handleClick">
+						<el-tab-pane type="primary" @click="openFullScreen1" v-loading.fullscreen.lock="fullscreenLoading" label="车辆信息" name="first">
+							<el-row>
+								<el-col :span="24">
+									<div class="grid-content bg-purple-dark">
+										<template>
+											<el-table :data="cl.list" border style="width: 100%" height="250">
+												<el-table-column fixed prop="vehiclecp" label="车牌号码" width="150">
+												</el-table-column>
+
+												<el-table-column prop="vehiclepp" label="车辆品牌" width="120">
+												</el-table-column>
+												<el-table-column prop="vehiclexh" label="车辆型号" width="120">
+												</el-table-column>
+												<el-table-column prop="vehiclejsy" label="驾驶员" width="120">
+												</el-table-column>
+												<el-table-column prop="vehicledh" label="驾驶员电话" width="280">
+												</el-table-column>
+												<el-table-column prop="vehiclegs" label="出生日期" width="120">
+												</el-table-column>
+												<el-table-column prop="vehiclefname" label="车辆归属" width="120">
+												</el-table-column>
+												<el-table-column prop="vehiclefdj" label="驾证到期" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="车架号" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="发动机号" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="发动机品牌" width="120">
+												</el-table-column>
+											</el-table>
+										</template>
+									</div>
+								</el-col>
+							</el-row>
+						</el-tab-pane>
+						<el-tab-pane type="primary" @click="openFullScreen1" v-loading.fullscreen.lock="fullscreenLoading" label="历史消费" name="third">
+							<el-row>
+								<el-col :span="24">
+									<div class="grid-content bg-purple-dark">
+										<template>
+											<el-table :data="cl.list" border style="width: 100%">
+												<el-table-column fixed prop="clientid" label="编号" width="150">
+												</el-table-column>
+
+												<el-table-column prop="clientname" label="客户姓名" width="120">
+												</el-table-column>
+												<el-table-column prop="clientaddress" label="详细地址" width="120">
+												</el-table-column>
+												<el-table-column prop="clientiphone" label="电话号码" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbirthday" label="出生日期" width="280">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="备注" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="邮编" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="邮编" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="邮编" width="120">
+												</el-table-column>
+											
+											</el-table>
+										</template>
+									</div>
+								</el-col>
+							</el-row>
+						</el-tab-pane>
+						<el-tab-pane type="primary" @click="openFullScreen1" v-loading.fullscreen.lock="fullscreenLoading" label="历史回访" name="second">
+							<el-row>
+								<el-col :span="24">
+									<div class="grid-content bg-purple-dark">
+										<template>
+											<el-table :data="cl.list" border style="width: 100%">
+												<el-table-column fixed prop="clientid" label="编号" width="150">
+												</el-table-column>
+
+												<el-table-column prop="clientname" label="客户姓名" width="120">
+												</el-table-column>
+												<el-table-column prop="clientaddress" label="详细地址" width="120">
+												</el-table-column>
+												<el-table-column prop="clientiphone" label="电话号码" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbirthday" label="出生日期" width="280">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="备注" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="邮编" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="邮编" width="120">
+												</el-table-column>
+												<el-table-column prop="clientbz" label="邮编" width="120">
+												</el-table-column>
+											</el-table>
+										</template>
+									</div>
+								</el-col>
+							</el-row>
+						</el-tab-pane>
+				</template>
+
+		</div>
+	</body>
+
+	<script>
+		var cheVm = new Vue({
+			el: '#cheVm',
+			data: {
+				kh: {},
+				lb: {},
+				cl: {},
+				xzkh: {
+					clientid: "",
+					clientname: "",
+					clientiphone: "",
+					clientbirthday: "",
+					clientbz: "",
+					clientlb: "",
+					clientaddress: ""
+
+				},
+				xgkh: {
+					clientid: "",
+					clientname: "",
+					clientiphone: "",
+					clientbirthday: "",
+					clientbz: "",
+					clientlb: "",
+					clientaddress: ""
+
+				},
+
+				visible: false,
+				isShow1: false,
+				isShow2: false,
+				isShow3: false,
+				ruleForm: {
+					name: '',
+					region: '',
+					date1: '',
+					date2: '',
+					delivery: false,
+					type: [],
+					resource: '',
+					desc: ''
+				},
+				isok: true,
+				rules: {
+					clientid: [{
+							required: true,
+							message: '请输入编号',
+							trigger: 'blur'
+						},
+
+					],
+					clientname: [{
+							required: true,
+							message: '请输入客户姓名',
+							trigger: 'blur'
+						},
+
+					],
+					clientiphone: [{
+							required: true,
+							message: '请输入客户电话',
+							trigger: 'blur'
+						},
+
+					],
+					clientbz: [{
+							required: true,
+							message: '请输入活动名称',
+							trigger: 'blur'
+						},
+
+					],
+					clientaddress: [{
+						required: true,
+						message: '请输入地址',
+						trigger: 'change'
+					}],
+					clientbirthday: [{
+						type: 'date',
+						required: true,
+						message: '请选择日期',
+						trigger: 'change'
+					}],
+
+					clientlb: [{
+						type: 'array',
+						required: true,
+						message: '请至少选择一个',
+						trigger: 'change'
+					}]
+				}
+			},
+			methods: {
+				open() {
+
+					this.$alert('这是一段内容', '标题名称', {
+						confirmButtonText: '确定',
+						callback: action => {
+							this.$message({
+								type: 'info',
+								message: `action: ${ action }`
+
+							});
+							this.$notify({
+								title: '成功',
+								message: '这是一条成功的提示消息',
+								type: 'success'
+							});
+						}
+					});
+
+				},
+
+				handleClose(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				submitForm(formName) {
+					this.$refs[formName].validate((valid) => {
+						if(valid) {
+							alert('submit!');
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+				},
+				resetForm(formName) {
+					this.$refs[formName].resetFields();
+				},
+				addPerson() {
+
+					const loading = this.$loading({
+						lock: true,
+						text: '努力更新中....',
+						spinner: 'el-icon-loading',
+						background: 'rgba(0, 0, 0, 0.5)'
+					});
+					//延迟2秒，模拟网络延迟
+					setTimeout(() => {
+						this.isShow1 = true
+						loading.close(); //关闭加载块【非常重要】
+
+					}, 2000);
+
+				},
+                addPerson1() {
+
+					const loading = this.$loading({
+						lock: true,
+						text: '努力更新中....',
+						spinner: 'el-icon-loading',
+						background: 'rgba(0, 0, 0, 0.5)'
+					});
+					//延迟2秒，模拟网络延迟
+					setTimeout(() => {
+						this.isShow2 = true
+						loading.close(); //关闭加载块【非常重要】
+
+					}, 2000);
+
+				},
+				  addPerson2() {
+
+					const loading = this.$loading({
+						lock: true,
+						text: '努力更新中....',
+						spinner: 'el-icon-loading',
+						background: 'rgba(0, 0, 0, 0.5)'
+					});
+					//延迟2秒，模拟网络延迟
+					setTimeout(() => {
+						this.isShow3 = true
+						loading.close(); //关闭加载块【非常重要】
+
+					}, 2000);
+
+				},
+				  addPerson3() {
+
+					const loading = this.$loading({
+						lock: true,
+						text: '努力更新中....',
+						spinner: 'el-icon-loading',
+						background: 'rgba(0, 0, 0, 0.5)'
+					});
+					//延迟2秒，模拟网络延迟
+					setTimeout(() => {
+						this.isShow4 = true
+						loading.close(); //关闭加载块【非常重要】
+
+					}, 2000);
+
+				},
+				addPerson4() {
+
+					const loading = this.$loading({
+						lock: true,
+						text: '努力更新中....',
+						spinner: 'el-icon-loading',
+						background: 'rgba(0, 0, 0, 0.5)'
+					});
+					//延迟2秒，模拟网络延迟
+					setTimeout(() => {
+						this.isShow5 = true
+						loading.close(); //关闭加载块【非常重要】
+
+					}, 2000);
+
+				},
+				mounted() {
+
+				}
+			}
+		});
+	</script>
+
+</html>

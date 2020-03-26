@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="jungongApp">
+			<el-row :gutter="20">
+				<el-col :span="8">
+					<div class="grid-content bg-purple">
+						<h2>竣工检验</h2></div>
+				</el-col>
+				<el-col :span="4">
+					<div class="grid-content bg-purple">
+					</div>
+				</el-col>
+				<el-col :span="6">
+					<div class="grid-content bg-purple">
+						<el-input placeholder="" v-model="input" clearable>
+						</el-input>
+					</div>
+				</el-col>
+				<el-col :span="6">
+					<div class="grid-content bg-purple">
+						<el-button type="primary" plain>搜索</el-button>
+						<el-button type="warning" plain>关闭</el-button>
+					</div>
+				</el-col>
+			</el-row>
+
+			<el-row :gutter="20">
+				<el-col :span="18">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+			</el-row>
+			<div>
+				<el-row :gutter="20">
+					<el-col :span="6">
+						<div class="grid-content bg-purple">
+							<template>
+								<div class="block">
+									<span class="demonstration">开单日期:</span>
+									<el-date-picker v-model="value1" type="date" placeholder="选择日期">
+									</el-date-picker>
+								</div>
+							</template>
+						</div>
+					</el-col>
+					<el-col :span="5">
+						<div class="grid-content bg-purple">
+							<template>
+								<div class="block">
+									<span class="demonstration">到:</span>
+									<el-date-picker v-model="value1" type="date" placeholder="选择日期">
+									</el-date-picker>
+								</div>
+							</template>
+						</div>
+					</el-col>
+
+				</el-row>
+				<el-row :gutter="20">
+					<el-col :span="18">
+						<div class="grid-content bg-purple"></div>
+					</el-col>
+				</el-row>
+				<el-row :gutter="20">
+					<el-col :span="5">
+						<div class="grid-content bg-purple">维修单号:<input type="text"></div>
+					</el-col>
+					<el-col :span="5">
+						<div class="grid-content bg-purple">单据状态:
+							<el-dropdown>
+								<span class="el-dropdown-link">
+    下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+  </span>
+								<el-dropdown-menu slot="dropdown">
+									<el-dropdown-item>黄金糕</el-dropdown-item>
+									<el-dropdown-item>狮子头</el-dropdown-item>
+									<el-dropdown-item>螺蛳粉</el-dropdown-item>
+									<el-dropdown-item disabled>双皮奶</el-dropdown-item>
+									<el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+								</el-dropdown-menu>
+							</el-dropdown>
+						</div>
+					</el-col>
+					<el-col :span="5">
+						<div class="grid-content bg-purple">车牌号:<input type="text"></div>
+					</el-col>
+					<el-col :span="5">
+						<div class="grid-content bg-purple">车架号:<input type="text"></div>
+					</el-col>
+				</el-row>
+
+			</div>
+			<div style="padding-top: 100px;">
+
+				<el-table :data="tableData" border style="width: 100%">
+					<el-table-column prop="wxdh" label="维修单号" width="180">
+					</el-table-column>
+					<el-table-column prop="djlx" label="单据类型" width="180">
+					</el-table-column>
+					<el-table-column prop="yw" label="业务类型">
+					</el-table-column>
+					<el-table-column prop="wxzt" label="维修状态" width="180">
+					</el-table-column>
+					<el-table-column prop="czxm" label="车主姓名" width="180">
+					</el-table-column>
+					<el-table-column prop="cph" label="车牌号">
+					</el-table-column>
+					<el-table-column prop="cx" label="车型" width="180">
+					</el-table-column>
+					<el-table-column prop="cjh" label="车架号" width="180">
+					</el-table-column>
+					<el-table-column prop="jcsj" label="接车时间">
+					</el-table-column>
+					<el-table-column prop="yjwg" label="预计完工" width="180">
+					</el-table-column>
+					<el-table-column prop="wgsj" label="完工时间">
+					</el-table-column>
+				</el-table>
+				</template>
+			</div>
+	</body>
+	<script type="text/javascript">
+		var jungongApp = new Vue({
+			data: {
+				editableTabsValue: '0',
+				editableTabs: [],
+				tabIndex: 0,
+				subMenus: [],
+			},
+			methods: {
+				handleOpen(key, keyPath) {
+					console.log(key, keyPath);
+				},
+				handleClose(key, keyPath) {
+					console.log(key, keyPath);
+				},
+				leftSubMenus() {
+					let _this = this;
+					//发送ajax获取用户的权限
+				},
+				addTab(targetName, url) {
+					var isok = true;
+					this.editableTabs.forEach(function(val, index, arr) {
+						if(val.title == targetName) {
+							isok = false;
+						}
+					})
+					if(!isok) {
+						this.$message({
+							message: '该页面已加载！',
+							type: 'error'
+						});
+						return isok;
+					}
+					console.log(isok)
+					let newTabName = ++this.tabIndex + '';
+					this.editableTabs.push({
+						title: targetName,
+						name: newTabName,
+					});
+					this.editableTabsValue = newTabName;
+					let _this = this;
+					this.$nextTick(function() {
+						console.log($(`.pan${newTabName-1}`).load(url))
+					})
+
+				},
+				removeTab(targetName) {
+					let tabs = this.editableTabs;
+					--this.tabIndex;
+					let activeName = this.editableTabsValue;
+					if(activeName === targetName) {
+						tabs.forEach((tab, index) => {
+							if(tab.name === targetName) {
+								let nextTab = tabs[index + 1] || tabs[index - 1];
+								if(nextTab) {
+									activeName = nextTab.name;
+								}
+							}
+						});
+					}
+					this.editableTabsValue = activeName;
+					this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+				}
+			},
+		}).$mount(".jungongApp");
+	</script>
+
+</html>
