@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#fieldVehicleApp .el-form-item:not(:last-child) {
+				width: 14%;
+				margin-right: 0px;
+			}
+			
+			#fieldVehicleApp .el-input:not(:last-child) {
+				width: 120px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>外勤车辆</h1>
+		<div id="fieldVehicleApp">
+			<el-form :inline="true" :model="carObj" class="demo-form-inline">
+				<el-form-item label="车牌号">
+					<el-input v-model="carObj.a" style="width: 120px;"></el-input>
+				</el-form-item>
+				<el-form-item label="品牌">
+					<el-input v-model="carObj.b" style="width: 120px;"></el-input>
+				</el-form-item>
+				<el-form-item label="车型">
+					<el-input v-model="carObj.c" style="width: 120px;"></el-input>
+				</el-form-item>
+				<el-form-item label="当前里程">
+					<el-input v-model="carObj.d" style="width: 100px;"></el-input>
+				</el-form-item>
+				<el-form-item label="班组">
+					<el-cascader v-model="carObj.e" :show-all-levels="false" :options="options" :props="{ expandTrigger: 'hover' }" @change="handleChange" style="width: 120px;" clearable>
+					</el-cascader>
+				</el-form-item>
+				<mybuttonlist :obj="carObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="carObj.a==''||carObj.b==''||carObj.c==''||carObj.d==''||carObj.e.length==0">
+				</mybuttonlist>
+			</el-form>
+			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+				<el-table-column slot="operating" label="归属班组" align="center">
+					<template slot-scope="scope">{{scope.row.e | changeTeamName}}</template>
+				</el-table-column>
+			</mytable>
+			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
+			</mypagination>
+		</div>
+	</body>
+	<script type="text/javascript">
+		let that;
+		var fieldVehicleApp = new Vue({
+			data: {
+				addurl: '/api/objs/add(新增url)',
+				delurl: '/api/objs/del(删除url)',
+				updateurl: '/api/objs/update(修改url)',
+				carObj: {
+					a: '',
+					b: '',
+					c: '',
+					d: '',
+					e: []
+				},
+				options: [{
+					value: 1,
+					label: '10-志健',
+					children: [{
+						value: 1,
+						label: '华山队',
+					}, {
+						value: 2,
+						label: '武昌队',
+					}]
+				}, {
+					value: 2,
+					label: '11-华纳',
+					children: [{
+						value: 1,
+						label: '阿达队',
+					}, {
+						value: 2,
+						label: '与iy队',
+					}, {
+						value: 3,
+						label: '史丹佛队',
+					}]
+				}],
+				tableHead: [{
+						label: '车牌号',
+						property: 'a'
+					},
+					{
+						label: '品牌',
+						property: 'b'
+					},
+					{
+						label: '车型',
+						property: 'c'
+					},
+					{
+						label: '当前里程',
+						property: 'd'
+					}
+				],
+				pageList: {
+					pageNum: 1,
+					pageSize: 5,
+					total: 50,
+					list: [{
+						a: '湘A3580',
+						b: '一汽大众',
+						c: 'A380',
+						d: 100,
+						e: [1, 1]
+					}, {
+						a: '湘A3580',
+						b: '一汽大众',
+						c: 'A380',
+						d: 100,
+						e: [1, 2]
+					}, {
+						a: '湘A3580',
+						b: '一汽大众',
+						c: 'A380',
+						d: 100,
+						e: [2, 1]
+					}, {
+						a: '湘A3580',
+						b: '一汽大众',
+						c: 'A380',
+						d: 100,
+						e: [2, 2]
+					}, {
+						a: '湘A3580',
+						b: '一汽大众',
+						c: 'A380',
+						d: 100,
+						e: [2, 3]
+					}]
+				}
+			},
+			methods: {
+				updateObj(obj) {
+					this.carObj = obj;
+				},
+				selectPageList(num, size) {
+					alert(num + "\t" + size);
+				},
+				handleChange(value) {
+					if(value.length > 0) {
+						this.carObj.e = value[1];
+					}
+					console.log(value);
+				}
+			},
+			beforeCreate() {
+				that = this;
+			},
+			filters: {
+				changeTeamName: function(val) {
+					//console.log(val);
+					let teamName;
+					that.options.forEach(item => {
+						if(item.value == val[0]) {
+							item.children.forEach(obj => {
+								if(obj.value == val[1]) {
+									teamName = obj.label;
+								}
+							});
+						}
+					});
+					return teamName;
+				}
+			},
+			mounted() {
+
+			}
+		}).$mount("#fieldVehicleApp");
+	</script>
+
+</html>

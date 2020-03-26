@@ -19,12 +19,13 @@
 				<el-form-item label="工资">
 					<el-input v-model="mechanicStarObj.wage" placeholder="工资"></el-input>
 				</el-form-item>
-				<mybuttonlist :obj="mechanicStarObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl">
+				<mybuttonlist :obj="mechanicStarObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="mechanicStarObj.levelNumber==''||mechanicStarObj.levelName==''||mechanicStarObj.wage==''">
 				</mybuttonlist>
 			</el-form>
 			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
 			</mytable>
-			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total"></mypagination>
+			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
+			</mypagination>
 		</div>
 	</body>
 	<script type="text/javascript">
@@ -33,7 +34,11 @@
 				addurl: '/api/objs/add(新增url)',
 				delurl: '/api/objs/del(删除url)',
 				updateurl: '/api/objs/update(修改url)',
-				mechanicStarObj: {},
+				mechanicStarObj: {
+					levelNumber: '',
+					levelName: '',
+					wage: ''
+				},
 				tableHead: [{
 						label: '等级编码',
 						property: 'levelNumber'
@@ -78,6 +83,9 @@
 			methods: {
 				updateObj(obj) {
 					this.mechanicStarObj = obj;
+				},
+				selectPageList(num, size) {
+					alert(num + "\t" + size);
 				}
 			},
 			mounted() {

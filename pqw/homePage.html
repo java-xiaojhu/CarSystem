@@ -31,9 +31,9 @@
 							</template>
 							<el-menu-item-group>
 								<el-menu-item index="2-1">组织机构</el-menu-item>
-								<el-menu-item index="2-2">岗位定义</el-menu-item>
-								<el-menu-item index="2-3">离职登记</el-menu-item>
-								<el-menu-item index="2-4">通讯名录</el-menu-item>
+								<el-menu-item index="jobDescription" @click="addTab('岗位定义','jobDescription')">岗位定义<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="exitRegistration" @click="addTab('离职登记','exitRegistration')">离职登记<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="addressList" @click="addTab('通讯名录','addressList')">通讯名录<i class="el-icon-check"></i></el-menu-item>
 							</el-menu-item-group>
 						</el-submenu>
 						<el-submenu index="3">
@@ -44,7 +44,7 @@
 							<el-menu-item-group>
 								<el-menu-item index="mechanicStar" @click="addTab('技工星级','mechanicStar')">技工星级<i class="el-icon-check"></i></el-menu-item>
 								<el-menu-item index="classMechanic" @click="addTab('班级技工','classMechanic')">班级技工</el-menu-item>
-								<el-menu-item index="3-3">外勤车辆</el-menu-item>
+								<el-menu-item index="fieldVehicle" @click="addTab('外勤车辆','fieldVehicle')">外勤车辆<i class="el-icon-check"></i></el-menu-item>
 							</el-menu-item-group>
 						</el-submenu>
 					</el-menu>
