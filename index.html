@@ -186,8 +186,18 @@
 											<span>客户档案</span>
 										</template>
 										<el-menu-item-group>
-											<el-menu-item index="6-1" @click="addTab('维修接车','ckf/che.html')">客户资料</el-menu-item>
-											<el-menu-item index="6-2" @click="addTab('竣工检查','ckf/che1.html')">车辆资料</el-menu-item>			
+											<el-menu-item index="6-1" @click="addTab('客户资料','ckf/che.html')">客户资料</el-menu-item>
+											<el-menu-item index="6-2" @click="addTab('车辆资料','ckf/che1.html')">车辆资料</el-menu-item>			
+										</el-menu-item-group>
+									</el-submenu>
+									<el-submenu index="7">
+										<template slot="title">
+											<i class="el-icon-setting"></i>
+											<span>前台结算</span>
+										</template>
+										<el-menu-item-group>
+											<el-menu-item index="7-1" @click="addTab('结算中心','sh/jszx.html')">结算中心</el-menu-item>
+											<el-menu-item index="7-2" @click="addTab('会员充值卡','sh/hyczk.html')">会员充值卡</el-menu-item>			
 										</el-menu-item-group>
 									</el-submenu>
 								</el-menu>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #245269;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #096E75;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row,
+			.el-col {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-col {
+				border-radius: 4px;
+				background-color: #FFF;
+			}
+			
+			.el-col-bag {
+				background-color: #245269;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #245269;
+			}
+		</style>
+		<link rel="stylesheet" href="../css/index.css" />
+		<script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/jq_ajax_config.js"></script>
+	</head>
+
+	<body>
+		<div class="wxdApp">
+			<el-row :gutter="20">
+				<el-col :span="4">
+					<div class="grid-content bg-purple">
+						<h2>维修单</h2>
+					</div>
+				</el-col>
+				<el-col :span="20">
+					<div class="grid-content bg-purple">
+						<el-button style="background-color:#00FFFF;">取消</el-button>
+					</div>
+				</el-col>
+			</el-row>
+			<el-divider></el-divider>
+			<div id="" style="margin-left: 50px;">
+				<el-col :span="5">
+					<p style="color: #31B0D5;">
+						单号：<span>0000RE4545</span>
+					</p>
+				</el-col>
+				<el-col :span="19">
+					<el-link icon="el-icon-printer">委托书</el-link>
+					&nbsp;&nbsp;
+					<el-link icon="el-icon-document">结算单</el-link>
+					&nbsp;&nbsp;
+					<el-link icon="el-icon-picture-outline">照片 </el-link>
+					&nbsp;&nbsp;
+					<el-link icon="el-icon-document-copy">附单</el-link>
+				</el-col>
+			</div>
+
+			<div id="" style="margin-left: 50px;">
+				<template>
+					<el-row :gutter="24">
+						<el-col :span="14">
+							<div class="block">
+								<span class="demonstration" style="color: blue;">车牌号码 :</span>
+								<el-input v-model="cphm" placeholder="请输入内容" style="width: 100px;"></el-input>
+								&nbsp;&nbsp;
+								<span class="demonstration" style="color: blue;">车架号 :</span>
+								<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+								&nbsp;&nbsp;
+								<span class="demonstration" style="color: blue;">车辆型号 :</span>
+								<el-input v-model="clxh" placeholder="请输入内容" style="width: 100px;"></el-input>
+								&nbsp;&nbsp;
+								<span class="demonstration" style="color: blue;">车辆品牌 :</span>
+								<el-input v-model="clpp" placeholder="请输入内容" style="width: 100px;"></el-input>
+							</div>
+						</el-col>
+					</el-row>
+				</template>
+			</div>
+			<div style="margin-right: -50px;">
+				<template>
+					<el-row :gutter="24">
+						<el-col :span="14">
+							<el-row style="margin-top: 10px;">
+								<div class="block">
+									<span class="demonstration" style="color: blue;">发动机号 :</span>
+									<el-input v-model="cphm" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">发动机品牌 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">服务顾问 :</span>
+									<el-select v-model="value" placeholder="请选择" label-width="50px">
+										<el-option label="区域一" value="shanghai"></el-option>
+										<el-option label="区域二" value="beijing"></el-option>
+										</el-option>
+									</el-select>
+								</div>
+							</el-row>
+						</el-col>
+					</el-row>
+				</template>
+			</div>
+			<div style="margin-right: -30px;">
+				<template>
+					<el-row :gutter="19">
+						<el-col :span="12">
+							<el-row style="margin-top: 10px;">
+								<div class="block">
+									<span class="demonstration" style="color: blue;">车主姓名 :</span>
+									<el-input v-model="cphm" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">驾驶员 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">联系电话 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+								</div>
+							</el-row>
+						</el-col>
+					</el-row>
+				</template>
+			</div>
+			<div style="margin-right: -130px;">
+				<template>
+					<el-row :gutter="19">
+						<el-col :span="14">
+							<el-row style="margin-top: 10px;">
+								<div class="block">
+									<span class="demonstration" style="color: blue;">进厂里程 :</span>
+									<el-input v-model="cphm" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">进厂油量 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">上次里程 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+									<span class="demonstration" style="color: blue;">进厂时间 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+								</div>
+							</el-row>
+						</el-col>
+					</el-row>
+				</template>
+			</div>
+			<div style="margin-right: -0px;">
+				<template>
+					<el-row :gutter="20">
+						<el-col :span="20">
+							<el-row style="margin-top: 10px;">
+								<div class="block">
+									<span class="demonstration" style="color: blue;">业务类别 :</span>
+									<el-select v-model="value" placeholder="请选择" label-width="50px">
+										<el-option label="区域一" value="shanghai"></el-option>
+										<el-option label="区域二" value="beijing"></el-option>
+										</el-option>
+									</el-select>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">施工班次 :</span>
+									<el-select v-model="value" placeholder="请选择" label-width="50px">
+										<el-option label="区域一" value="shanghai"></el-option>
+										<el-option label="区域二" value="beijing"></el-option>
+										</el-option>
+									</el-select>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">接车人 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">预计完工 :</span>
+									<el-date-picker v-model="value1" type="date" placeholder="选择日期">
+									</el-date-picker>
+								</div>
+							</el-row>
+						</el-col>
+					</el-row>
+				</template>
+			</div>
+			<div style="margin-left: 10px;">
+				<template>
+					<el-row :gutter="20">
+						<el-col :span="20">
+							<el-row style="margin-top: 10px;">
+								<div class="block">
+									<span class="demonstration" style="color: blue;">结算方式 :</span>
+									<el-select v-model="value" placeholder="请选择" label-width="50px">
+										<el-option label="区域一" value="shanghai"></el-option>
+										<el-option label="区域二" value="beijing"></el-option>
+										</el-option>
+									</el-select>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">赔款公司 :</span>
+									<el-select v-model="value" placeholder="请选择" label-width="50px">
+										<el-option label="区域一" value="shanghai"></el-option>
+										<el-option label="区域二" value="beijing"></el-option>
+										</el-option>
+									</el-select>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">完工时间	 :</span>
+									<el-input v-model="cjh" placeholder="请输入内容" style="width: 100px;"></el-input>
+									&nbsp;&nbsp;
+									<span class="demonstration" style="color: blue;">上次进厂 :</span>
+									<el-date-picker v-model="value1" type="date" placeholder="选择日期">
+									</el-date-picker>
+								</div>
+							</el-row>
+						</el-col>
+					</el-row>
+				</template>
+			</div>
+			<div style="margin-left: 210px;">
+				<template>
+					<el-row :gutter="24">
+						<el-col :span="16">
+							<span class="demonstration" style="color: blue;">报修陈述	 :</span>
+							<el-input type="textarea" autosize placeholder="请输入内容" v-model="textarea1">
+							</el-input>
+						</el-col>
+					</el-row>
+				</template>
+			</div>
+			<div style="margin-right: 220px;">
+				<el-row :gutter="20	">
+				<el-col :span="12">
+					<div id="">
+						<el-link >维修项目</el-link>&nbsp;&nbsp;&nbsp;
+						<el-link >领料情况</el-link>&nbsp;&nbsp;&nbsp;
+						<el-link >附加项目</el-link>&nbsp;&nbsp;&nbsp;
+						<el-link >结算信息</el-link>
+					</div>
+				</el-col>
+				<el-col :span="19" style="margin-left: 210px;">
+					<template>
+						<el-table :data="tableData" stripe style="width: 100%">
+							<el-table-column prop="date" label="选择">
+							</el-table-column>
+							<el-table-column prop="name" label="项目编码">
+							</el-table-column>
+							<el-table-column prop="address" label="项目名称">
+							</el-table-column>
+							<el-table-column prop="address" label="数量">
+							</el-table-column>
+							<el-table-column prop="address" label="价类">
+							</el-table-column>
+							<el-table-column prop="address" label="优惠前单价">
+							</el-table-column>
+							<el-table-column prop="address" label="优惠后单价">
+							</el-table-column>
+							<el-table-column prop="address" label="优惠后金额">
+							</el-table-column>
+							<el-table-column prop="address" label="故障描述">
+							</el-table-column>
+							<el-table-column prop="address" label="故障原因">
+							</el-table-column>
+							<el-table-column prop="address" label="维修班组">
+							</el-table-column>
+							<el-table-column prop="address" label="作业人员">
+							</el-table-column>
+						</el-table>
+					</template>
+				</el-col>
+				</el-row>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/index.js"></script>
+	<script type="text/javascript">
+		var wxdApp = new Vue({
+			data: {
+				pickerOptions: {
+					disabledDate(time) {
+						return time.getTime() > Date.now();
+					},
+					shortcuts: [{
+						text: '今天',
+						onClick(picker) {
+							picker.$emit('pick', new Date());
+						}
+					}, {
+						text: '昨天',
+						onClick(picker) {
+							const date = new Date();
+							date.setTime(date.getTime() - 3600 * 1000 * 24);
+							picker.$emit('pick', date);
+						}
+					}, {
+						text: '一周前',
+						onClick(picker) {
+							const date = new Date();
+							date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+							picker.$emit('pick', date);
+						}
+					}]
+				},
+				value1: '',
+				value2: '',
+			},
+			methods: {
+
+			}
+		}).$mount(".wxdApp")
+	</script>
+
+</html>
