@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title></title>	
+		<title></title>
 	</head>
 
 	<body>
@@ -98,9 +98,9 @@
 						<el-form-item label="其他四" prop="name">
 							<el-input v-model="xzkh.clientaddress"></el-input>
 						</el-form-item>
-						
+
 					</el-form>
-                <span slot="footer" class="dialog-footer" >
+					<span slot="footer" class="dialog-footer">
 	    			<el-button type="primary" @click="isShow2 = false">保存</el-button>
   			    </span>
 				</el-dialog>
@@ -176,9 +176,9 @@
 						<el-form-item label="其他四" prop="name">
 							<el-input v-model="xzkh.clientaddress"></el-input>
 						</el-form-item>
-						
+
 					</el-form>
-                <span slot="footer" class="dialog-footer" >
+					<span slot="footer" class="dialog-footer">
 	    			<el-button type="primary" @click="isShow2 = false">确定修改</el-button>
   			    </span>
 				</el-dialog>
@@ -317,7 +317,7 @@
 							<el-input v-model="xzkh.clientaddress"></el-input>
 						</el-form-item>
 					</el-form>
-					<span slot="footer" class="dialog-footer" >
+					<span slot="footer" class="dialog-footer">
 	    			<el-button type="primary" @click="isShow2 = false">立即创建</el-button>
 	    			<el-button  @click="resetForm('ruleForm')">重置</el-button>
   			</span>
@@ -430,7 +430,7 @@
 							<el-input v-model="xzkh.clientaddress"></el-input>
 						</el-form-item>
 					</el-form>
-					<span slot="footer" class="dialog-footer" >
+					<span slot="footer" class="dialog-footer">
 	    			<el-button type="primary" @click="isShow2 = false">立即创建</el-button>
   			</span>
 				</el-dialog>
@@ -542,7 +542,7 @@
 							<el-input v-model="xzkh.clientaddress"></el-input>
 						</el-form-item>
 					</el-form>
-					<span slot="footer" class="dialog-footer" >
+					<span slot="footer" class="dialog-footer">
 	    			<el-button type="primary" @click="isShow2 = false">确认修改</el-button>
   			</span>
 				</el-dialog>
@@ -579,10 +579,8 @@
 							</el-col>
 							<template>
 								<el-table v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" :data="kh.list" height="250" border style="width: 100%">
-
 									<el-table-column fixed prop="clientid" label="客户编号" width="150">
 									</el-table-column>
-
 									<el-table-column prop="clientname" label="客户名称" width="120">
 									</el-table-column>
 									<el-table-column prop="clientaddress" label="详细地址" width="120">
@@ -714,7 +712,7 @@
 												</el-table-column>
 												<el-table-column prop="clientbz" label="邮编" width="120">
 												</el-table-column>
-											
+
 											</el-table>
 										</template>
 									</div>
@@ -771,8 +769,8 @@
 					clientbirthday: "",
 					clientbz: "",
 					clientlb: "",
-					clientaddress: ""
-
+					clientaddress: "",
+					checked:[]
 				},
 				xgkh: {
 					clientid: "",
@@ -789,6 +787,8 @@
 				isShow1: false,
 				isShow2: false,
 				isShow3: false,
+				isShow4: false,
+				isShow5: false,
 				ruleForm: {
 					name: '',
 					region: '',
@@ -850,8 +850,10 @@
 				}
 			},
 			methods: {
+				chaxun(){
+					//查询方法
+				},
 				open() {
-
 					this.$alert('这是一段内容', '标题名称', {
 						confirmButtonText: '确定',
 						callback: action => {
@@ -906,7 +908,7 @@
 					}, 2000);
 
 				},
-                addPerson1() {
+				addPerson1() {
 
 					const loading = this.$loading({
 						lock: true,
@@ -922,7 +924,7 @@
 					}, 2000);
 
 				},
-				  addPerson2() {
+				addPerson2() {
 
 					const loading = this.$loading({
 						lock: true,
@@ -938,7 +940,7 @@
 					}, 2000);
 
 				},
-				  addPerson3() {
+				addPerson3() {
 
 					const loading = this.$loading({
 						lock: true,
