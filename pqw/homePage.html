@@ -14,6 +14,10 @@
 			}
 		</style>
 	</head>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7a685c6af0220205d48017704f9fdf5be93f4dc1
 	<body>
 		<div id="homePageApp">
 			<el-row class="tac">
@@ -50,7 +54,11 @@
 				</el-col>
 				<el-col :span="20">
 					<el-tabs v-model="editableTabsValue" type="border-card" @tab-remove="removeTab" :before-leave="moreState" @tab-click="handleClick">
+<<<<<<< HEAD
 						<el-tab-pane :closable="index==0" v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+=======
+						<el-tab-pane :closable="index!=0" v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+>>>>>>> 7a685c6af0220205d48017704f9fdf5be93f4dc1
 						</el-tab-pane>
 					</el-tabs>
 				</el-col>
