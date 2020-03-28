@@ -11,10 +11,10 @@
 		<div id="jobDescriptionApp">
 			<el-form :inline="true" :model="jobObj" class="demo-form-inline">
 				<el-form-item label="等级编码">
-					<el-input v-model="jobObj.jobNumber" placeholder="等级编码"></el-input>
+					<el-input v-model="jobObj.jobNumber" placeholder="等级编码" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="等级名称">
-					<el-input v-model="jobObj.jobName" placeholder="等级名称"></el-input>
+					<el-input v-model="jobObj.jobName" placeholder="等级名称" clearable></el-input>
 				</el-form-item>
 				<mybuttonlist :obj="jobObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="jobObj.jobNumber==''||jobObj.jobName==''">
 				</mybuttonlist>

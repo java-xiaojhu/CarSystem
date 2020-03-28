@@ -11,13 +11,13 @@
 		<div id="mechanicStarApp">
 			<el-form :inline="true" :model="mechanicStarObj" class="demo-form-inline">
 				<el-form-item label="等级编码">
-					<el-input v-model="mechanicStarObj.levelNumber" placeholder="等级编码"></el-input>
+					<el-input v-model="mechanicStarObj.levelNumber" placeholder="等级编码" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="等级名称">
-					<el-input v-model="mechanicStarObj.levelName" placeholder="等级名称"></el-input>
+					<el-input v-model="mechanicStarObj.levelName" placeholder="等级名称" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="工资">
-					<el-input v-model="mechanicStarObj.wage" placeholder="工资"></el-input>
+					<el-input v-model="mechanicStarObj.wage" placeholder="工资" clearable></el-input>
 				</el-form-item>
 				<mybuttonlist :obj="mechanicStarObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="mechanicStarObj.levelNumber==''||mechanicStarObj.levelName==''||mechanicStarObj.wage==''">
 				</mybuttonlist>
