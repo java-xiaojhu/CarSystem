@@ -14,6 +14,7 @@
 			}
 		</style>
 	</head>
+
 	<body>
 		<div id="homePageApp">
 			<el-row class="tac">
@@ -29,10 +30,10 @@
 								<span>员工资料</span>
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="2-1">组织机构</el-menu-item>
-								<el-menu-item index="jobDescription" @click="addTab('岗位定义','jobDescription')">岗位定义<i class="el-icon-check"></i></el-menu-item>
-								<el-menu-item index="exitRegistration" @click="addTab('离职登记','exitRegistration')">离职登记<i class="el-icon-check"></i></el-menu-item>
-								<el-menu-item index="addressList" @click="addTab('通讯名录','addressList')">通讯名录<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="Organization" @click="addTab('组织机构','Organization')">组织机构</el-menu-item>
+								<el-menu-item index="JobDescription" @click="addTab('岗位定义','JobDescription')">岗位定义<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="ExitRegistration" @click="addTab('离职登记','ExitRegistration')">离职登记<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="AddressList" @click="addTab('通讯名录','AddressList')">通讯名录<i class="el-icon-check"></i></el-menu-item>
 							</el-menu-item-group>
 						</el-submenu>
 						<el-submenu index="3">
@@ -41,16 +42,16 @@
 								<span>技工管理</span>
 							</template>
 							<el-menu-item-group>
-								<el-menu-item index="mechanicStar" @click="addTab('技工星级','mechanicStar')">技工星级<i class="el-icon-check"></i></el-menu-item>
-								<el-menu-item index="classMechanic" @click="addTab('班级技工','classMechanic')">班级技工</el-menu-item>
-								<el-menu-item index="fieldVehicle" @click="addTab('外勤车辆','fieldVehicle')">外勤车辆<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="MechanicStar" @click="addTab('技工星级','MechanicStar')">技工星级<i class="el-icon-check"></i></el-menu-item>
+								<el-menu-item index="ClassMechanic" @click="addTab('班级技工','ClassMechanic')">班级技工</el-menu-item>
+								<el-menu-item index="FieldVehicle" @click="addTab('外勤车辆','FieldVehicle')">外勤车辆<i class="el-icon-check"></i></el-menu-item>
 							</el-menu-item-group>
 						</el-submenu>
 					</el-menu>
 				</el-col>
 				<el-col :span="20">
 					<el-tabs v-model="editableTabsValue" type="border-card" @tab-remove="removeTab" :before-leave="moreState" @tab-click="handleClick">
-						<el-tab-pane :closable="index==0" v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+						<el-tab-pane :closable="index!=0" v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
 						</el-tab-pane>
 					</el-tabs>
 				</el-col>
@@ -61,6 +62,7 @@
 	<script type="text/javascript" src="Component/myTable.js"></script>
 	<script type="text/javascript" src="Component/myPagination.js"></script>
 	<script type="text/javascript" src="Component/myButtonList.js"></script>
+	<script type="text/javascript" src="Component/myCascader.js"></script>
 	<script type="text/javascript">
 		var homePageApp = new Vue({
 			data: {

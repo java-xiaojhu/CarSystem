@@ -21,21 +21,19 @@
 		<div id="fieldVehicleApp">
 			<el-form :inline="true" :model="carObj" class="demo-form-inline">
 				<el-form-item label="车牌号">
-					<el-input v-model="carObj.a" style="width: 120px;"></el-input>
+					<el-input v-model="carObj.a" style="width: 120px;" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="品牌">
-					<el-input v-model="carObj.b" style="width: 120px;"></el-input>
+					<el-input v-model="carObj.b" style="width: 120px;" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="车型">
-					<el-input v-model="carObj.c" style="width: 120px;"></el-input>
+					<el-input v-model="carObj.c" style="width: 120px;" clearable></el-input>
 				</el-form-item>
 				<el-form-item label="当前里程">
-					<el-input v-model="carObj.d" style="width: 100px;"></el-input>
+					<el-input v-model="carObj.d" style="width: 100px;" clearable></el-input>
 				</el-form-item>
-				<el-form-item label="班组">
-					<el-cascader v-model="carObj.e" :show-all-levels="false" :options="options" :props="{ expandTrigger: 'hover' }" @change="handleChange" style="width: 120px;" clearable>
-					</el-cascader>
-				</el-form-item>
+				<mycascader :options="options" :value="carObj.e" :laber="laber" @handleChange="handlechange">
+				</mycascader>
 				<mybuttonlist :obj="carObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="carObj.a==''||carObj.b==''||carObj.c==''||carObj.d==''||carObj.e.length==0">
 				</mybuttonlist>
 			</el-form>
@@ -55,6 +53,7 @@
 				addurl: '/api/objs/add(新增url)',
 				delurl: '/api/objs/del(删除url)',
 				updateurl: '/api/objs/update(修改url)',
+				laber:'班组',
 				carObj: {
 					a: '',
 					b: '',
@@ -147,11 +146,8 @@
 				selectPageList(num, size) {
 					alert(num + "\t" + size);
 				},
-				handleChange(value) {
-					if(value.length > 0) {
-						this.carObj.e = value[1];
-					}
-					console.log(value);
+				handlechange(value) {
+					this.carObj.e = value;
 				}
 			},
 			beforeCreate() {

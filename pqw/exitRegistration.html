@@ -27,7 +27,7 @@
 				<h1 id="exitH1">离职登记</h1>
 				<el-form id="exitForm" :inline="true" class="demo-form-inline">
 					<el-form-item>
-						<el-input v-model="optionName" placeholder="部门/员工编号/姓名"></el-input>
+						<el-input v-model="optionName" placeholder="部门/员工编号/姓名" clearable></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="warning" @click="selectPage">搜索</el-button>
@@ -59,11 +59,18 @@
 			</mytable>
 			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
 			</mypagination>
+			<el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :before-close="handleClose" center>
+				<div id='load'>这是一段信息</div>
+				<!--slot="footer" class="dialog-footer" -->
+			</el-dialog>
 		</div>
 	</body>
 	<script type="text/javascript">
 		var exitRegistrationApp = new Vue({
 			data: {
+				dialogVisible: false,
+				loadUrl: 'classMechanic',
+				title: '',
 				optionName: '',
 				excelType: '部门',
 				exitObj: {},
@@ -141,19 +148,29 @@
 				}
 			},
 			methods: {
-				updateObj(obj) {
+				updateObj(obj) { //传表格组件数据
 					this.exitObj = obj;
 				},
-				selectPageList(num, size) {
+				selectPageList(num, size) { //传分页组件数据
 					this.pageNum = num;
 					this.pageSize = size;
 					this.selectPage();
 				},
-				selectPage() {
+				selectPage() { //父页查询
 					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName);
 				},
-				leave() {},
-				rollBack() {
+				handleClose(done) {
+					done();
+				},
+				leave() { //离职
+					this.load('离职登记', 'ExitMenu');
+				},
+				load(title, loadUrl) { //dialog对话框加载方法
+					this.title = title;
+					this.loadUrl = loadUrl;
+					this.dialogVisible = true;
+				},
+				rollBack() { //回滚
 					if(this.exitObj.a == null) {
 						this.$message.error('请选择一条数据');
 						return;
@@ -169,7 +186,7 @@
 						this.$message.info('已取消回滚!');
 					});
 				},
-				del() {
+				del() { //删除
 					if(this.exitObj.a == null) {
 						this.$message.error('请选择一条数据');
 						return;
@@ -185,13 +202,14 @@
 						this.$message.info('已取消删除!');
 					});
 				},
-				open() {
+				open() { //打开员工卡片
 					if(this.exitObj.a == null) {
 						this.$message.error('请选择一条数据');
 						return;
 					}
+					this.load('员工卡片', 'EmployeeCard');
 				},
-				exportExcel() {
+				exportExcel() { //导出execl
 					alert('你选择的是' + this.excelType);
 					this.$confirm('此操作将数据导出至Excel表并保存到桌面, 是否继续?', '提示', {
 						confirmButtonText: '确定',
@@ -204,9 +222,10 @@
 					});
 				}
 			},
-			mounted() {
-
-			}
+			updated: function() { //v-if执行后加载页面
+				$("#load").load(this.loadUrl + '.html');
+			},
+			mounted() {}
 		}).$mount("#exitRegistrationApp");
 	</script>
 

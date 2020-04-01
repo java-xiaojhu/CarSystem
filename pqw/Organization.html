@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#addH1 {
+				display: inline-block;
+			}
+			
+			#addForm {
+				float: right;
+				padding-top: 21px;
+			}
+			
+			#addBottonList {
+				float: right;
+				margin-bottom: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="organizationApp">
+			<el-row class="tac">
+				<div>
+					<h1 id="addH1">组织机构</h1>
+					<el-form id="addForm" :inline="true" class="demo-form-inline">
+						<el-form-item>
+							<el-input v-model="optionName" placeholder="姓名" clearable></el-input>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="warning" @click="selectPage">搜索</el-button>
+						</el-form-item>
+						</mybuttonlist>
+					</el-form>
+				</div>
+				<el-col :span="5">
+					<el-input placeholder="输入关键字进行过滤" v-model="filterText">
+					</el-input>
+					<el-tree class="filter-tree" icon-class="el-icon-arrow-right" :data="treeData" :props="defaultProps" highlight-current accordion @node-click="handleNodeClick" :filter-node-method="filterNode" ref="tree">
+					</el-tree>
+				</el-col>
+				<el-col :span="19">
+					<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+						<el-table-column slot="index" label="机构" align="center">
+							<template slot-scope="scope">{{scope.row.a}}</template>
+						</el-table-column>
+						<el-table-column slot="operating" label="籍贯" align="center">
+							<template slot-scope="scope">{{scope.row.j}}</template>
+						</el-table-column>
+					</mytable>
+					<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
+					</mypagination>
+				</el-col>
+			</el-row>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var organizationApp = new Vue({
+			data: {
+				filterText: '',
+				optionName: '',
+				organiObj: {},
+				pageNum: 1,
+				pageSize: 5,
+				tableHead: [{
+					label: '部门代码',
+					property: 'b'
+				}, {
+					label: '部门名称',
+					property: 'c'
+				}, {
+					label: '工号',
+					property: 'd'
+				}, {
+					label: '姓名',
+					property: 'e'
+				}, {
+					label: '性别',
+					property: 'f'
+				}, {
+					label: '岗位名称',
+					property: 'g'
+				}, {
+					label: '身体状况',
+					property: 'h'
+				}, {
+					label: '身高',
+					property: 'i'
+				}],
+				pageList: {
+					pageNum: 1,
+					pageSize: 5,
+					total: 50,
+					list: [{
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}]
+				},
+				treeData: [{
+					id: 1,
+					label: '北京德招文卡车系统',
+					children: [{
+						id: 2,
+						label: '成高',
+						children: [{
+							id: 3,
+							label: '管钱部',
+						}, {
+							id: 4,
+							label: '人事部'
+						}]
+					}]
+				}],
+				defaultProps: {
+					children: 'children',
+					label: 'label'
+				}
+			},
+			watch: {
+				filterText(val) {
+					this.$refs.tree.filter(val);
+				}
+			},
+			methods: {
+				updateObj(obj) {
+					this.organiObj = obj;
+				},
+				selectPageList(num, size) {
+					this.pageNum = num;
+					this.pageSize = size;
+					this.selectPage();
+				},
+				selectPage() {
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName);
+				},
+				filterNode(value, data) {
+					if(!value) return true;
+					return data.label.indexOf(value) !== -1;
+				},
+				handleNodeClick(data) {
+					this.$message.success('选择成功!' + JSON.stringify(data));
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName + "\t" + data.id);
+				}
+			},
+			mounted() {
+
+			}
+		}).$mount("#organizationApp");
+	</script>
+
+</html>

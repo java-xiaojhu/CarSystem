@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<div id="classMechanicApp">
+			<mytable :tablehead="tableHead" :pagelist="pageList.list"></mytable>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var homePageApp = new Vue({
+			data: {
+				tableHead: [{
+						label: '等级编码',
+						property: 'levelNumber'
+					},
+					{
+						label: '等级名称',
+						property: 'levelName'
+					}, {
+						label: '工资',
+						property: 'wage'
+					}
+				],
+				pageList: {
+					list: [{
+						levelNumber: 1,
+						levelName: '一级学徒',
+						wage: '1000'
+					}, {
+						levelNumber: 1,
+						levelName: '一级学徒',
+						wage: '1000'
+					}, {
+						levelNumber: 1,
+						levelName: '一级学徒',
+						wage: '1000'
+					}, {
+						levelNumber: 1,
+						levelName: '一级学徒',
+						wage: '1000'
+					}, {
+						levelNumber: 1,
+						levelName: '一级学徒',
+						label: '10%'
+					}]
+				}
+
+			},
+			methods: {},
+			mounted() {
+
+			}
+		}).$mount("#classMechanicApp");
+	</script>
+
+</html>

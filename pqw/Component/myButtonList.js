@@ -27,6 +27,7 @@ Vue.component('mybuttonlist', {
 			});
 		},
 		update(obj, updateurl, isnull) {
+			this.objs = JSON.parse(JSON.stringify(obj));
 			if(isnull) {
 				this.$message.error('没有选择数据,或者数据不完整!');
 				return;
@@ -42,6 +43,7 @@ Vue.component('mybuttonlist', {
 			});
 		},
 		del(obj, delurl, isnull) {
+			this.objs = JSON.parse(JSON.stringify(obj));
 			if(isnull) {
 				this.$message.error('没有选择数据,或者数据不完整!');
 				return;
