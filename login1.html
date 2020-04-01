@@ -1,0 +1,101 @@
+<!doctype html>
+<html class="x-admin-sm">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>后台登录-X-admin2.2</title>
+		<link rel="stylesheet" href="./css/font.css">
+		<link rel="stylesheet" href="./css/login.css">
+		<link rel="stylesheet" href="./css/xadmin.css">
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
+	</head>
+
+	<body class="login-bg" style="background: url(images/1.jpg) no-repeat;background-size: cover;">
+		<div class="login layui-anim layui-anim-up">
+			<div class="message">德召文汽修系统</div>
+			<div id="darkbannerwrap"></div>
+			<el-form :model="ruleForm" :rules="userRules" ref="ruleForm" class="demo-ruleForm" label-width="auto">
+				<el-form-item prop="username">
+					<el-col :span="24">
+						<!--非常重要-->
+						<el-input v-model.trim="ruleForm.username"></el-input>
+					</el-col>
+				</el-form-item>
+				<hr class="hr15">
+				<el-form-item prop="password">
+					<el-col :span="24">
+						<!--非常重要-->
+						<el-input v-model.trim="ruleForm.password"></el-input>
+					</el-col>
+				</el-form-item>
+				<hr class="hr15">
+				<el-button type="success" style="width: 100%;" @click="ulogin">登录</el-button>
+				<hr class="hr20">
+			</el-form>
+		</div>
+
+	</body>
+
+	<script type="text/javascript" src="js/index.js"></script>
+	<script>
+		var login = new Vue({
+			data: {
+				ruleForm: {
+					username: '',
+					password: '',
+				},
+				userRules: {
+					username: [{
+						required: true,
+						message: '请输入员工编号',
+						trigger: 'blur'
+					}],
+					password: [{
+						required: true,
+						message: '请输入密码',
+						trigger: 'blur'
+					}]
+				}
+
+			},
+			methods: {
+				ulogin() {
+					let _this = this;
+					this.$refs['ruleForm'].validate(valid => {
+						if(valid) {
+							const loading = this.$loading({
+								lock: true,
+								text: '努力更新中....',
+								spinner: 'el-icon-loading',
+								background: 'rgba(0, 0, 0, 0.5)'
+							});
+							console.log(_this.ruleForm.username, _this.ruleForm.password)
+							$.getJSON(`http://127.0.0.1:8080/lyh/Emps/loginIn/${_this.ruleForm.username}/${ _this.ruleForm.password}`, (data) => {
+								if(data.code == "200") {
+									console.log(data.user)
+									window.sessionStorage.setItem("user", JSON.stringify(data.user));
+									location.href = `index.html`;
+								} else if(data.code == "300") {
+									_this.$message({
+										type: 'error',
+										message: `${data.msg}`
+									});
+								}
+								loading.close(); //关闭加载块【非常重要】
+							});
+						} else {
+							//验证失败
+							this.$alert('请按格式正确填写信息', '系统提示');
+						}
+
+					});
+				}
+			}
+
+		}).$mount(".login");
+	</script>
+
+</html>

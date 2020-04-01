@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8" />
 		<title></title>
@@ -14,7 +15,8 @@
 			
 			[v-cloak] {
 				display: none !important;
-			}			
+			}
+			
 			.el-aside {
 				background-color: #096E75;
 				color: #333;
@@ -46,7 +48,7 @@
 			}
 			
 			.el-col {
-				border-radius: 4px;
+				/*border-radius: 4px;*/
 				background-color: #FFF;
 			}
 			
@@ -92,10 +94,12 @@
 		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
 		<script type="text/javascript" src="js/vue.js"></script>
 		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
+		<script type="text/javascript" src="js/menu_const.js"></script>
+		<script type="text/javascript" src="js/view_filter.js" ></script>
 	</head>
 
 	<body>
-		<div class="indexApp">
+		<div class="indexApp" v-cloak>
 			<el-container style='height:100vh;'>
 				<el-header style="padding: 0px;">
 					<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
@@ -105,20 +109,13 @@
 						</el-col>
 						<el-col :span="12" class="el-col-bag">
 							<el-menu class="el-menu-demo" mode="horizontal" style="background-color: #245269;">
-								<el-menu-item index="1">维修</el-menu-item>
-								<el-menu-item index="2">商品</el-menu-item>
-								<el-menu-item index="3">前台</el-menu-item>
-								<el-menu-item index="5">客服</el-menu-item>
-								<el-menu-item index="6">数据</el-menu-item>
-								<el-menu-item index="7">财务</el-menu-item>
-								<el-menu-item index="8">人事</el-menu-item>
-								<el-menu-item index="9" @click="">系统</el-menu-item>
+								<el-menu-item v-for="(menu,index) in Menus" :index="`${index+1}`" @click="leftSubMenus(menu.children1)">{{menu.text}}</el-menu-item>
 							</el-menu>
 						</el-col>
 						<el-col :span="6" class="el-col-bag">
 							<el-menu class="el-menu-demo" mode="horizontal" style="background-color: #245269;">
 								<el-menu-item index="1">设置</el-menu-item>
-								<el-menu-item index="2">退出</el-menu-item>
+								<el-menu-item index="2" @click="logOut">退出</el-menu-item>
 							</el-menu>
 						</el-col>
 					</el-row>
@@ -128,81 +125,26 @@
 						<el-container style='height:91.6vh;'>
 							<el-main style="background-color: #096E75;padding: 0px;">
 								<el-menu default-active="2" style="text-align: left;" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#096E75" text-color="#fff" active-text-color="#ffd04b">
-									<el-menu-item index="2">
+									<el-menu-item index="0">
 										<i class="el-icon-menu"></i>
 										<span slot="title">首页</span>
 									</el-menu-item>
-									<el-submenu index="1">
+									<el-submenu v-for="(subm,index) in subMenus" :index="`${index+1}`">
 										<template slot="title">
 											<i class="el-icon-location"></i>
-											<span>权限控制</span>
+											<span>{{subm.text}}</span>
 										</template>
 										<el-menu-item-group>
-											<el-menu-item index="1-1" @click="addTab('选项1','lyh/Emplimits.html')">员工权限控制</el-menu-item>
-											<el-menu-item index="1-2" @click="addTab('选项2','lyh/Rolelimits.html')">角色权限控制</el-menu-item>
+											<el-menu-item v-for="(subname,index1) in subm.children2" :index="`${index+1}-${index1+1}`" @click="addTab(subname.text,subname.id)">{{subname.text}}</el-menu-item>
 										</el-menu-item-group>
 									</el-submenu>
-									<el-submenu index="3">
-										<template slot="title">
-											<i class="el-icon-user"></i>
-											<span>员工资料</span>
-										</template>
-										<el-menu-item-group>
-											<el-menu-item index="3-1">组织机构</el-menu-item>
-											<el-menu-item index="3-2" @click="addTab('岗位定义','pqw/jobDescription.html')">岗位定义</el-menu-item>
-											<el-menu-item index="3-3" @click="addTab('离职登记','pqw/exitRegistration.html')">离职登记</el-menu-item>
-											<el-menu-item index="3-4" @click="addTab('通讯名录','pqw/addressList.html')">通讯名录</el-menu-item>
-										</el-menu-item-group>
-									</el-submenu>
-									<el-submenu index="4">
-										<template slot="title">
-											<i class="el-icon-setting"></i>
-											<span>技工管理</span>
-										</template>
-										<el-menu-item-group>
-											<el-menu-item index="4-1" @click="addTab('技工星级','pqw/mechanicStar.html')">技工星级</el-menu-item>
-											<el-menu-item index="4-2" @click="addTab('班级技工','pqw/classMechanic.html')">班级技工</el-menu-item>
-											<el-menu-item index="4-3" @click="addTab('外勤车辆','pqw/fieldVehicle.html')">外勤车辆</el-menu-item>
-										</el-menu-item-group>
-									</el-submenu>
-									<el-submenu index="5">
-										<template slot="title">
-											<i class="el-icon-setting"></i>
-											<span>接车派工</span>
-										</template>
-										<el-menu-item-group>
-											<el-menu-item index="5-1" @click="addTab('维修接车','lzj/jieche.html')">维修接车</el-menu-item>
-											<el-menu-item index="5-2" @click="addTab('竣工检查','lzj/jungong.html')">竣工检查</el-menu-item>
-											<!--<el-menu-item index="5-3" @click="addTab('班级技工','pqw/classMechanic.html')">出厂登记</el-menu-item>
-											<el-menu-item index="5-4" @click="addTab('班级技工','pqw/classMechanic.html')">维修登记</el-menu-item>-->
-										</el-menu-item-group>
-									</el-submenu>
-									<el-submenu index="6">
-										<template slot="title">
-											<i class="el-icon-setting"></i>
-											<span>客户档案</span>
-										</template>
-										<el-menu-item-group>
-											<el-menu-item index="6-1" @click="addTab('客户资料','ckf/che.html')">客户资料</el-menu-item>
-											<el-menu-item index="6-2" @click="addTab('车辆资料','ckf/che1.html')">车辆资料</el-menu-item>			
-										</el-menu-item-group>
-									</el-submenu>
-									<el-submenu index="7">
-										<template slot="title">
-											<i class="el-icon-setting"></i>
-											<span>前台结算</span>
-										</template>
-										<el-menu-item-group>
-											<el-menu-item index="7-1" @click="addTab('结算中心','sh/jszx.html')">结算中心</el-menu-item>
-											<el-menu-item index="7-2" @click="addTab('会员充值卡','sh/hyczk.html')">会员充值卡</el-menu-item>			
-										</el-menu-item-group>
-									</el-submenu>
+
 								</el-menu>
 							</el-main>
 							<el-footer style="height: 70px; line-height: 30px; text-align: center;">
-								<span>操作:超级管理员</span>
+								<span>操作:{{rname}}</span>
 								<br />
-								<span>日期:</span>
+								<span>日期:{{nowtime}}</span>
 							</el-footer>
 						</el-container>
 					</el-aside>
@@ -235,6 +177,9 @@
 	<script type="text/javascript">
 		var indexApp = new Vue({
 			data: {
+				user: {},
+				rname: '',
+				nowtime: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
 				editableTabsValue: '0',
 				tabIndex: 0,
 				isShow2: false,
@@ -243,6 +188,7 @@
 					title: '首页',
 					name: '0'
 				}],
+				Menus: [],
 				subMenus: [],
 				tadaydesk: [{
 					"value": 1,
@@ -301,9 +247,10 @@
 				handleClose(key, keyPath) {
 					console.log(key, keyPath);
 				},
-				leftSubMenus() {
+				leftSubMenus(twoMenu) {
 					let _this = this;
-					//发送ajax获取用户的权限
+					console.log(twoMenu)
+					this.subMenus = twoMenu;
 				},
 				handleClose2(done) {
 					done();
@@ -316,7 +263,7 @@
 					this.parameters = data;
 					this.isShow2 = true;
 				},
-				addTab(targetName, url) {
+				addTab(targetName, code) {
 					var isok = true;
 					this.editableTabs.forEach(function(val, index, arr) {
 						if(val.title == targetName) {
@@ -339,9 +286,9 @@
 					this.editableTabsValue = newTabName;
 					let _this = this;
 					this.$nextTick(function() {
-						console.log(url)
-						console.log($(`.pan${newTabName}`).load(url))
-						$(`.pan${newTabName}`).load(url);
+						console.log(code)
+
+						$(`.pan${newTabName}`).load(menuMapping[code]);
 					})
 				},
 				removeTab(targetName) {
@@ -360,10 +307,30 @@
 					}
 					this.editableTabsValue = activeName;
 					this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+				},
+				logOut() {
+					$.getJSON(`http://127.0.0.1:8080/lyh/Emps/loginOut`, (data) => {
+						console.log(data)
+						if(data.code=="200"){
+							window.sessionStorage.clear();
+							location.href="login1.html"
+						}						
+					});
 				}
 			},
 			mounted() {
+				let _this = this;
+				//发送ajax获取用户的权限
+				$.getJSON(`http://127.0.0.1:8080/lyh/Emps/getFunTree`, (data) => {
+					console.log(data)
+					_this.Menus = data;
+				});
+
+				this.user = JSON.parse(window.sessionStorage.getItem("user"));
+				console.log(this.user)
+				this.rname = this.user.tabRole.rname;
 				$(`.pan0`).load('Main.html');
+
 			}
 		}).$mount(".indexApp");
 	</script>

@@ -34,23 +34,7 @@
 	<script>
 		var rolelimits = new Vue({
 			data: {
-				tableData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}],
+				tableData: [],
 				isShow2: false,
 			},
 			methods: {
@@ -77,7 +61,7 @@
 						})
 						.catch(_ => {});
 				},
-				canceloff(){
+				canceloff() {
 					let _this = this;
 					this.$confirm('确认关闭？')
 						.then(_ => {
@@ -85,10 +69,14 @@
 						})
 						.catch(_ => {});
 				},
-				
-				
+
 			},
-			mounted() {}
+			mounted() {
+				let _this = this;
+				$.getJSON(`http://127.0.0.1:8080/lyh/Roles`, (data) => {
+					_this.tableData = data;
+				});
+			}
 		}).$mount(".rolelimits")
 	</script>
 

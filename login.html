@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>登录页面</title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #245269;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #096E75;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row,
+			.el-col {
+				padding: 0px;
+				margin: 0px;
+				text-align: center;
+			}
+			
+			.el-col {
+				border-radius: 4px;
+				background-color: #FFF;
+			}
+			
+			.el-col-bag {
+				background-color: #245269;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #245269;
+			}
+			/*卡片*/
+			
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				margin-bottom: 18px;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both
+			}
+			
+			.box-card {
+				width: 100%;
+			}
+		</style>
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
+
+	</head>
+
+	<body>
+		<div class="loginAPP">
+			<el-container style='height:100vh;'>
+				<el-main style="background: url(images/1.jpg) no-repeat;background-size: cover;">
+					<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+						<div class="" style="width: 300px;  margin-top:300px;">
+							<h1>
+								
+							</h1>
+							<div class="form-group has-success has-feedback">
+								<label class="control-label sr-only" for="inputGroupSuccess4">Input group with success</label>
+								<div class="input-group">
+									<span class="input-group-addon el-icon-user-solid"></span>
+									<input type="text" class="form-control" id="inputGroupSuccess4" aria-describedby="inputGroupSuccess4Status">
+								</div>
+							</div>
+							<div class="form-group has-success has-feedback">
+								<label class="control-label sr-only" for="inputGroupSuccess4">Input group with success</label>
+								<div class="input-group">
+									<span class="input-group-addon el-icon-unlock"></span>
+									<input type="text" class="form-control" id="inputGroupSuccess4" aria-describedby="inputGroupSuccess4Status">
+								</div>
+							</div>
+							<el-button type="success" style="width: 100%;">登录</el-button>
+						</div>
+					</el-row>
+				</el-main>
+			</el-container>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script>
+		var longinApp = new Vue({
+			data: {},
+			methods: {},
+			mounted() {
+
+			}
+
+		}).$mount(".loginAPP");
+	</script>
+
+</html>
