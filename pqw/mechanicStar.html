@@ -10,19 +10,22 @@
 		<h1>技工星级</h1>
 		<div id="mechanicStarApp">
 			<el-form :inline="true" :model="mechanicStarObj" class="demo-form-inline">
-				<el-form-item label="等级编码">
-					<el-input v-model="mechanicStarObj.levelNumber" placeholder="等级编码" clearable></el-input>
-				</el-form-item>
 				<el-form-item label="等级名称">
-					<el-input v-model="mechanicStarObj.levelName" placeholder="等级名称" clearable></el-input>
+					<el-input v-model="mechanicStarObj.starclassname" placeholder="等级名称" clearable></el-input>
 				</el-form-item>
-				<el-form-item label="工资">
-					<el-input v-model="mechanicStarObj.wage" placeholder="工资" clearable></el-input>
+				<el-form-item label="提成">
+					<el-input-number v-model="mechanicStarObj.royalty" :precision="2" :step="0.01" :max="1" :min="0.0"></el-input-number>
 				</el-form-item>
-				<mybuttonlist :obj="mechanicStarObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="mechanicStarObj.levelNumber==''||mechanicStarObj.levelName==''||mechanicStarObj.wage==''">
+				<mybuttonlist :obj="mechanicStarObj" @deleteobj="deleteObj" @changeobj="changeObj" @saveobj="saveObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="mechanicStarObj.starclassname==''||mechanicStarObj.royalty==NaN">
 				</mybuttonlist>
 			</el-form>
 			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+				<el-table-column slot="index" label="序号" align="center">
+					<template slot-scope="scope">{{scope.$index+1}}</template>
+				</el-table-column>
+				<el-table-column slot="operating" label="提成" align="center">
+					<template slot-scope="scope">{{scope.row.royalty*100}}%</template>
+				</el-table-column>
 			</mytable>
 			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
 			</mypagination>
@@ -31,65 +34,75 @@
 	<script type="text/javascript">
 		var mechanicStarApp = new Vue({
 			data: {
-				addurl: '/api/objs/add(新增url)',
-				delurl: '/api/objs/del(删除url)',
-				updateurl: '/api/objs/update(修改url)',
+				addurl: 'http://127.0.0.1:8080/pqw/Starclass/addStarClass',
+				delurl: 'http://127.0.0.1:8080/pqw/Starclass/deleteStarClass',
+				updateurl: 'http://127.0.0.1:8080/pqw/Starclass/updateStarClass',
 				mechanicStarObj: {
-					levelNumber: '',
-					levelName: '',
-					wage: ''
+					starclassid: 0,
+					starclassname: '',
+					royalty: 0.0
 				},
 				tableHead: [{
-						label: '等级编码',
-						property: 'levelNumber'
-					},
-					{
-						label: '等级名称',
-						property: 'levelName'
-					},
-					{
-						label: '工资',
-						property: 'wage'
-					}
-				],
-				pageList: {
-					pageNum: 1,
-					pageSize: 5,
-					total: 50,
-					list: [{
-						levelNumber: 1,
-						levelName: '一级学徒',
-						wage: 1000
-					}, {
-						levelNumber: 2,
-						levelName: '二级学徒',
-						wage: 2000
-					}, {
-						levelNumber: 3,
-						levelName: '三级学徒',
-						wage: 3000
-					}, {
-						levelNumber: 4,
-						levelName: '四级学徒',
-						wage: 4000
-					}, {
-						levelNumber: 5,
-						levelName: '五级学徒',
-						wage: 5000
-					}]
-				}
-
+					label: '等级名称',
+					property: 'starclassname'
+				}],
+				pageList: {}
 			},
 			methods: {
 				updateObj(obj) {
 					this.mechanicStarObj = obj;
 				},
 				selectPageList(num, size) {
-					alert(num + "\t" + size);
+					this.mechanicStarObj = {
+						starclassid: 0,
+						starclassname: '',
+						royalty: 0.0
+					};
+					$.getJSON(`http://127.0.0.1:8080/pqw/Starclass/pageList/${num}/${size}`, (data) => {
+						this.pageList = data;
+					});
+				},
+				saveObj(obj) {
+					if(this.pageList.list.length < this.pageList.pageSize) {
+						this.pageList.list.push(obj);
+					}
+					this.mechanicStarObj = {
+						starclassid: 0,
+						starclassname: '',
+						royalty: 0.0
+					};
+				},
+				changeObj(obj) {
+					this.pageList.list.forEach((item, index) => {
+						if(item.starclassid == obj.starclassid) {
+							this.pageList.list.splice(index, 1, obj);
+						}
+					});
+					this.mechanicStarObj = {
+						starclassid: 0,
+						starclassname: '',
+						royalty: 0.0
+					};
+				},
+				deleteObj(obj) {
+					if(this.pageList.list.length == 1 && this.pageList.pageNum > 1) {
+						this.pageList.list.splice(1, 1);
+						$.getJSON(`http://127.0.0.1:8080/pqw/Starclass/pageList/${this.pageList.pageNum-1}/${this.pageList.pageSize}`, (data) => {
+							this.pageList = data;
+						});
+					}
+					this.pageList.list.forEach((item, index) => {
+						if(item.starclassid == obj.starclassid) {
+							this.pageList.list.splice(index, 1);
+						}
+					});
 				}
 			},
 			mounted() {
-
+				_this = this;
+				$.getJSON(`http://127.0.0.1:8080/pqw/Starclass/pageList/1/5`, (data) => {
+					_this.pageList = data;
+				});
 			}
 		}).$mount("#mechanicStarApp");
 	</script>

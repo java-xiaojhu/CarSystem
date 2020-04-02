@@ -28,7 +28,7 @@
 					<h1 id="addH1">组织机构</h1>
 					<el-form id="addForm" :inline="true" class="demo-form-inline">
 						<el-form-item>
-							<el-input v-model="optionName" placeholder="姓名" clearable></el-input>
+							<el-input v-model="optionName" placeholder="部门/员工编号/姓名" clearable></el-input>
 						</el-form-item>
 						<el-form-item>
 							<el-button type="warning" @click="selectPage">搜索</el-button>
@@ -37,12 +37,62 @@
 					</el-form>
 				</div>
 				<el-col :span="5">
-					<el-input placeholder="输入关键字进行过滤" v-model="filterText">
+					<div>
+						<el-popover placement="bottom" @show="clearObj" trigger="click">
+							<h1>部门定义</h1>
+							<span v-if="checkObj.no==''" style="color: red;">
+								请选择一个部门!
+							</span>
+							<el-form v-if="checkObj.no!=''" label-width="70px" :model="addObj">
+								<el-form-item label="部门编码">
+									<el-input v-model="addObj.no" clearable></el-input>
+								</el-form-item>
+								<el-form-item label="部门名称">
+									<el-input v-model="addObj.name" clearable></el-input>
+								</el-form-item>
+								<el-form-item label="新增位置">
+									<el-radio-group v-model="radio1" size="medium">
+										<el-radio-button label="下级"></el-radio-button>
+										<el-radio-button label="同级"></el-radio-button>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item>
+									<el-button @click="addSubmit">确定</el-button>
+								</el-form-item>
+							</el-form>
+							<el-button type="primary" slot="reference">新增</el-button>
+						</el-popover>
+						<el-popover placement="bottom" trigger="click">
+							<h1>部门修改</h1>
+							<span v-if="checkObj.no==''" style="color: red;">
+								请选择一个部门!
+							</span>
+							<el-form v-if="checkObj.no!=''" label-width="70px" :model="checkObj">
+								<el-form-item label="部门编码">
+									<el-input v-model="checkObj.no" disabled></el-input>
+								</el-form-item>
+								<el-form-item label="部门名称">
+									<el-input v-model="checkObj.name" clearable></el-input>
+								</el-form-item>
+								<el-form-item>
+									<el-button @click="updateSubmit">确定</el-button>
+								</el-form-item>
+							</el-form>
+							<el-button type="warning" slot="reference">修改</el-button>
+						</el-popover>
+						<el-button type="danger" @click="delDep">删除</el-button>
+					</div>
+					<el-input placeholder="输入关键字进行过滤" clearable v-model="filterText" style="width: 90%;margin-top: 10px;">
 					</el-input>
 					<el-tree class="filter-tree" icon-class="el-icon-arrow-right" :data="treeData" :props="defaultProps" highlight-current accordion @node-click="handleNodeClick" :filter-node-method="filterNode" ref="tree">
 					</el-tree>
 				</el-col>
 				<el-col :span="19">
+					<div>
+						<el-button type="primary" @click="addEmp">新增员工</el-button>
+						<el-button type="warning" @click="updateEmp">修改员工</el-button>
+						<el-button type="danger" @click="delEmp">删除员工</el-button>
+					</div>
 					<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
 						<el-table-column slot="index" label="机构" align="center">
 							<template slot-scope="scope">{{scope.row.a}}</template>
@@ -55,14 +105,33 @@
 					</mypagination>
 				</el-col>
 			</el-row>
+			<el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :before-close="handleClose" center>
+				<div id='load1'>这是一段信息</div>
+				<!--slot="footer" class="dialog-footer" -->
+			</el-dialog>
 		</div>
 	</body>
 	<script type="text/javascript">
 		var organizationApp = new Vue({
 			data: {
+				dialogVisible: false,
+				title: '',
+				loadUrl: '',
 				filterText: '',
 				optionName: '',
-				organiObj: {},
+				addObj: {
+					no: '',
+					name: ''
+				},
+				checkObj: {
+					no: '',
+					name: ''
+				},
+				isShow: false,
+				radio1: '下级',
+				organiObj: {
+					a: ''
+				},
 				pageNum: 1,
 				pageSize: 5,
 				tableHead: [{
@@ -180,6 +249,14 @@
 				updateObj(obj) {
 					this.organiObj = obj;
 				},
+				handleClose(done) {
+					done();
+				},
+				load(title, loadUrl) { //dialog对话框加载方法
+					this.title = title;
+					this.loadUrl = loadUrl;
+					this.dialogVisible = true;
+				},
 				selectPageList(num, size) {
 					this.pageNum = num;
 					this.pageSize = size;
@@ -192,10 +269,72 @@
 					if(!value) return true;
 					return data.label.indexOf(value) !== -1;
 				},
-				handleNodeClick(data) {
+				handleNodeClick(data, nodes, tree) {
+					console.log(data);
+					console.log(nodes);
+					console.log(tree);
+					this.checkObj.no = '0328';
+					this.optionName = '';
 					this.$message.success('选择成功!' + JSON.stringify(data));
-					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName + "\t" + data.id);
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + data.id);
+				},
+				addSubmit() {
+					this.$message.success('选择成功!' + this.radio1 + '\t' + JSON.stringify(this.addObj));
+				},
+				updateSubmit() {
+					this.$message.success('选择成功!' + JSON.stringify(this.checkObj));
+				},
+				addEmp() {
+					if(this.checkObj.no == '') {
+						this.$message.error('请选择一个部门!');
+					} else {
+						this.load('新增员工', 'AddEmployee');
+					}
+				},
+				delDep() {
+					if(this.checkObj.no == '') {
+						this.$message.error('请选择一个部门!');
+					} else {
+						this.$confirm('此操作将删除数据, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							this.$message.success('删除成功!');
+						}).catch(() => {
+							this.$message.info('已取消删除!');
+						});
+					}
+				},
+				clearObj() {
+					this.addObj = {};
+					this.radio1 = '下级';
+				},
+				updateEmp() {
+					if(this.organiObj.a == '') {
+						this.$message.error('请选择一名员工!');
+					} else {
+						this.load('员工修改', 'UpdateEmployee');
+					}
+				},
+				delEmp() {
+					if(this.organiObj.a == '') {
+						this.$message.error('请选择一名员工!');
+					} else {
+						this.$confirm('此操作将删除数据, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							this.$message.success('删除成功!');
+						}).catch(() => {
+							this.$message.info('已取消删除!');
+						});
+					}
 				}
+			},
+			updated: function() { //v-if执行后加载页面
+				$("#load1").load(this.loadUrl + '.html');
 			},
 			mounted() {
 
