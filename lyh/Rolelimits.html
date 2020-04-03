@@ -9,25 +9,25 @@
 
 	<body>
 		<div class="rolelimits" style="margin: 0px 50px;">
-			<el-table :data="tableData" border stripe style="width: 100%">
-				<el-table-column prop="date" label="日期" width="180">
+			<el-table :data="tableData" border stripe style="width: 100%;">
+				<el-table-column prop="role.rid" label="编号" width="180">
 				</el-table-column>
-				<el-table-column prop="name" label="姓名" width="180">
+				<el-table-column prop="role.rname" label="角色名称" width="180">
 				</el-table-column>
-				<el-table-column prop="address" label="地址">
+				<el-table-column prop="role.rode" label="角色编码">
 				</el-table-column>
 				<el-table-column label="操作">
 					<template slot-scope="temp">
-						<el-button type="success" size="mini" @click="rolelimit(temp.row)">设置</el-button>
+						<el-button type="success" size="mini" @click="rolelimit(temp.row.role,temp.row.functions)">设置</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-dialog @opened="handlerOpen" ref="modifdialog" title="功能权限菜单" :visible.sync="isShow2" width="70%" :before-close="handleClose2" center>
+			<template>
+				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
+				</el-pagination>
+			</template>
+			<el-dialog @opened="handlerOpen" ref="modifdialog" title="功能权限菜单" :visible.sync="rolelimitsisShow2" width="70%" :before-close="handleClose2" center>
 				<div id="cnt">修改商品页</div>
-				<span slot="footer" class="dialog-footer">
-	    			<el-button @click="canceloff" size="mini">取 消</el-button>
-	    			<el-button type="primary" @click="makeSure" size="mini">确 定</el-button>
-  				</span>
 			</el-dialog>
 		</div>
 	</body>
@@ -35,47 +35,48 @@
 		var rolelimits = new Vue({
 			data: {
 				tableData: [],
-				isShow2: false,
+				rolelimitsisShow2: false,
+				currentPage3: 0,
+				pageSize:'',
+				total:'',
 			},
 			methods: {
+				//分页
+				handleSizeChange(val) {
+					console.log(`每页 ${val} 条`);
+				},handleCurrentChange(val) {
+					console.log(`当前页: ${val}`);
+					this.goToPage(val)
+				},
 				handleClose2(done) {
 					this.$confirm('确认关闭？')
 						.then(_ => {
 							done();
 						})
 						.catch(_ => {});
-				},
+				},				
 				handlerOpen() {
 					$("#cnt").load("lyh/Meuns.html"); //ajax读取页面
 				},
-				rolelimit(role) {
-					console.log(role);
+				rolelimit(role, functions) {
+					console.log("存入的用户权限" + role + functions);
 					let _this = this;
-					_this.isShow2 = true;
+					window.sessionStorage.setItem("role", JSON.stringify(role));
+					window.sessionStorage.setItem("rolepermissions", JSON.stringify(functions));
+					_this.rolelimitsisShow2 = true;
 				},
-				makeSure() {
+				roleGoToPage() {
 					let _this = this;
-					this.$confirm('确定设置吗？')
-						.then(_ => {
-							_this.isShow2 = false;
-						})
-						.catch(_ => {});
-				},
-				canceloff() {
-					let _this = this;
-					this.$confirm('确认关闭？')
-						.then(_ => {
-							_this.isShow2 = false;
-						})
-						.catch(_ => {});
-				},
+					$.getJSON(`http://127.0.0.1:8080/lyh/Roles/`, (data) => {
+						console.log(data)
+						_this.tableData = data;
+					});
 
+				}
 			},
 			mounted() {
 				let _this = this;
-				$.getJSON(`http://127.0.0.1:8080/lyh/Roles`, (data) => {
-					_this.tableData = data;
-				});
+				this.roleGoToPage();
 			}
 		}).$mount(".rolelimits")
 	</script>

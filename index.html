@@ -85,9 +85,7 @@
 				clear: both
 			}
 			
-			.box-card {
-				width: 100%;
-			}
+		
 		</style>
 		<link rel="stylesheet" href="css/index.css" />
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -95,7 +93,7 @@
 		<script type="text/javascript" src="js/vue.js"></script>
 		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
 		<script type="text/javascript" src="js/menu_const.js"></script>
-		<script type="text/javascript" src="js/view_filter.js" ></script>
+		<script type="text/javascript" src="js/view_filter.js"></script>
 	</head>
 
 	<body>
@@ -277,7 +275,6 @@
 						});
 						return isok;
 					}
-					console.log(isok)
 					let newTabName = ++this.tabIndex + '';
 					this.editableTabs.push({
 						title: targetName,
@@ -286,8 +283,6 @@
 					this.editableTabsValue = newTabName;
 					let _this = this;
 					this.$nextTick(function() {
-						console.log(code)
-
 						$(`.pan${newTabName}`).load(menuMapping[code]);
 					})
 				},
@@ -311,10 +306,10 @@
 				logOut() {
 					$.getJSON(`http://127.0.0.1:8080/lyh/Emps/loginOut`, (data) => {
 						console.log(data)
-						if(data.code=="200"){
+						if(data.code == "200") {
 							window.sessionStorage.clear();
-							location.href="login1.html"
-						}						
+							location.href = "login1.html"
+						}
 					});
 				}
 			},
@@ -327,7 +322,6 @@
 				});
 
 				this.user = JSON.parse(window.sessionStorage.getItem("user"));
-				console.log(this.user)
 				this.rname = this.user.tabRole.rname;
 				$(`.pan0`).load('Main.html');
 
