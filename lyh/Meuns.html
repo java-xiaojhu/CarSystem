@@ -26,15 +26,17 @@
 								<h5 style="text-align: left;color: #ADADAD; line-height: 40px;font-size: 14px;">{{chil1.text}}</h5>
 							</el-col>
 							<el-col :span="11">
-								<el-form-item style="font-size: 14px;" class="mag" :class="`pcx${index}${index1}`">			
-									<el-checkbox label="全选" :checked="yanzhen(chil1.text)"  @change="handleCheckAllChange(chil1.fid,chil1.children2,index,index1)"></el-checkbox>						
+								<el-form-item style="font-size: 14px;" class="mag" :class="`pcx${index}${index1}`">	
+									<el-checkbox-group v-model="fcheckeds">
+										<el-checkbox :label="chil1.fid" :checked="yanzhen(chil1.text)"  @change="handleCheckAllChange(chil1.fid,chil1.children2)">全选</el-checkbox>						
+									</el-checkbox-group>									
 								</el-form-item>
 							</el-col>
 						</el-row>
 						<el-row :gutter="20" type="flex" justify="right" class="mag">
 							<el-form-item class="mag" label="功能" style="text-align: left;">
 								<el-checkbox-group v-model="checkeds" style="">
-									<el-checkbox :label="chil2.fid" :checked="yanzhen(chil2.text)"   :class="`cx${index}${index1}`" v-for="(chil2,index2) in chil1.children2" @change="children(chil2.fid,chil1.fid,index,index1,chil1.children2)">{{chil2.text}}</el-checkbox>
+									<el-checkbox :label="chil2.fid" :checked="yanzhen(chil2.text)"   :class="`cx${index}${index1}`" v-for="(chil2,index2) in chil1.children2" @change="children(chil1.fid,chil1.children2)">{{chil2.text}}</el-checkbox>
 								</el-checkbox-group>
 							</el-form-item>
 						</el-row>
@@ -55,20 +57,19 @@
 				systems: [],
 				rolepermissionsL: [],
 				checkeds:[],
+				fcheckeds:[],
 				isok: true,
 				upcheckeds:[],
+				linshi:[],
 				checkmap:new Map(),
 				fcheckmap:new Map(),
 				isok2:true,
 				role:{},			
 			},
 			methods: {
-				children(chil,pfid,index,index1,children2){					
-					console.log(this.checkeds);
+				children(pfid,children2){								
 					let _this=this;	
-					this.upcheckeds.push(chil);
 					let isok=false;
-					//this
 					let res=0;
 					this.checkeds.forEach((value,index) =>{
 						 children2.forEach((val, index) =>{
@@ -87,18 +88,19 @@
 					if(isok){
 						if(res==0){
 							_this.fcheckmap.delete(pfid);
-							this.$nextTick(()=>{
-								$(`.pcx${index}${index1}`).find(".el-checkbox__input").removeClass("is-checked");
-							});	
+							_this.fcheckeds.forEach((cvalue,index)=>{
+								if(cvalue==pfid){
+									_this.fcheckeds.splice(index,1);
+								}	
+							});
 						}
 					}else{
 							_this.fcheckmap.set(pfid,pfid);
-							this.$nextTick(()=>{
-								$(`.pcx${index}${index1}`).find(".el-checkbox__input").addClass("is-checked");
-							});
+							_this.fcheckeds.push(pfid); 
+							_this.fcheckeds=[...new Set(_this.fcheckeds)];//数组去重
 					}	
 				},
-				handleCheckAllChange(fid,val,index,index1) {
+				handleCheckAllChange(fid,val) {
 					let _this=this;	
 					let isok=false;
 					_this.checkmap.forEach((value, key) =>{
@@ -109,16 +111,20 @@
 					})
 					if(isok){
 						_this.checkmap.delete(fid);
-						this.$nextTick(()=>{
-							$(`.cx${index}${index1}`).find(".el-checkbox__input").removeClass("is-checked");
-						});						
+						val.forEach((value,index)=>{
+							_this.checkeds.forEach((cvalue,index)=>{
+								if(cvalue==value.fid){
+									_this.checkeds.splice(index,1);
+								}	
+							});
+						});					
 					}else{
 						_this.checkmap.set(fid,val);
-						this.$nextTick(()=>{
-							$(`.cx${index}${index1}`).find(".el-checkbox__input").addClass("is-checked");
+						val.forEach((value,index)=>{
+							_this.checkeds.push(value.fid);
 						});
+						
 					}
-					console.log(this.checkmap);
 			   },
 			   yanzhen(oneval){
 			   		let isok=false;		
@@ -143,36 +149,21 @@
 					this.$confirm('确定设置吗？')
 						.then(_ => {
 							let setArr = new Set();
-							_this.checkmap.delete('0');
-							_this.fcheckmap.delete('0');
-							console.log(_this.checkmap)
-								console.log(_this.fcheckmap)
-								console.log(_this.checkeds);
-							_this.checkmap.forEach((value, key) =>{
-								setArr.add(key)						
-								value.forEach((zivalue, key) =>{
-									setArr.add(zivalue.fid)
-								})
-							});
-							_this.fcheckmap.forEach((value, key) =>{
-								setArr.add(key)
-								value.forEach((fvalue, key) =>{
-									setArr.add(fvalue.fid)
-								})
+							console.log(_this.fcheckeds)
+							_this.fcheckeds.forEach((value, index) =>{
+								setArr.add(value)						
 							});
 							_this.checkeds.forEach((value, index) =>{
 								setArr.add(value);								
 							});
-							setArr.delete(undefined);
 							setArr.forEach((value, key) =>{
 								let fpem={};
 								fpem["rid"]=_this.role.rid;
 								fpem["fid"]=value;
 								_this.upcheckeds.push(fpem);
 							})
-							
-							
 							_this.role["tblperms"]=_this.upcheckeds;
+							console.log("新增的权限")
 							console.log(_this.upcheckeds);
 							$.ajax({
 									type: "put",
@@ -187,8 +178,14 @@
 												message: data.msg,
 												type: 'success'
 											});
-											rolelimits.rolelimitsisShow2 = false;
-											rolelimits.roleGoToPage();
+											if(_this.role.isok){
+												Emplimits.EmplimitsisShow2=false;
+												Emplimits.empGoToPage();
+											}else{
+												rolelimits.rolelimitsisShow2 = false;
+												rolelimits.roleGoToPage();
+											}										
+											
 										} else if(data.code == "300") {
 											_this.$message({
 												message: data.msg,
@@ -207,7 +204,12 @@
 					let _this = this;
 					this.$confirm('确认关闭？')
 						.then(_ => {
-							rolelimits.rolelimitsisShow2 = false;
+							if(_this.role.isok){
+								Emplimits.EmplimitsisShow2=false;
+							}else{
+								rolelimits.rolelimitsisShow2 = false;
+							}
+							
 						})
 						.catch(_ => {});
 				},
@@ -220,10 +222,13 @@
 					console.log(data)
 					_this.systems = data;
 				});
-				_this.checkmap.set('0',0);
-				_this.fcheckmap.set('0',0);
+				_this.checkmap.set('0',[]);
+				_this.fcheckmap.set('0',[]);
 				console.log(this.rolepermissionsL)
 				
+			},
+			beforeUpdate: function () {
+			  	this.linshi=this.fcheckeds;
 			}
 			
 			

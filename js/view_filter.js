@@ -6,7 +6,7 @@ var rsTxt=$.ajax({
 }).responseText;
 
 if(rsTxt==""){
-	location.href="error.html";
+	location.href="/CarSystem/error.html";
 }
 
 //本地缓存验证session

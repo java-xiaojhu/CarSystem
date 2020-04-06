@@ -16,18 +16,25 @@
 				</el-table-column>
 				<el-table-column prop="role.rode" label="角色编码">
 				</el-table-column>
-				<el-table-column label="操作">
+				<el-table-column align="center">
+					<template slot="header" slot-scope="scope">
+						<el-button type="success" size="mini" @click="insertRole()">新增</el-button>
+					</template>
 					<template slot-scope="temp">
-						<el-button type="success" size="mini" @click="rolelimit(temp.row.role,temp.row.functions)">设置</el-button>
+						<el-button type="primary" size="mini" @click="rolelimit(temp.row.role,temp.row.functions)">设置权限</el-button>
+						<el-button type="warning" size="mini" @click="modifyRole(temp.row.role,temp.row.functions)">修改</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 			<template>
-				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
+				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="4" layout="prev, pager, next, jumper" :total="pageInfo.total">
 				</el-pagination>
 			</template>
 			<el-dialog @opened="handlerOpen" ref="modifdialog" title="功能权限菜单" :visible.sync="rolelimitsisShow2" width="70%" :before-close="handleClose2" center>
 				<div id="cnt">修改商品页</div>
+			</el-dialog>
+			<el-dialog @opened="handlerOpen1" ref="SaveModify" :title="tilte" :visible.sync="rolelimitsisShow3" width="60%" :before-close="handleClose1" center>
+				<div id="SaveModify">修改商品页</div>
 			</el-dialog>
 		</div>
 	</body>
@@ -36,17 +43,19 @@
 			data: {
 				tableData: [],
 				rolelimitsisShow2: false,
+				rolelimitsisShow3: false,
 				currentPage3: 0,
-				pageSize:'',
-				total:'',
+				pageInfo: {},
+				tilte: ''
 			},
 			methods: {
 				//分页
 				handleSizeChange(val) {
 					console.log(`每页 ${val} 条`);
-				},handleCurrentChange(val) {
+				},
+				handleCurrentChange(val) {
 					console.log(`当前页: ${val}`);
-					this.goToPage(val)
+					this.roleGoToPage(val)
 				},
 				handleClose2(done) {
 					this.$confirm('确认关闭？')
@@ -54,9 +63,19 @@
 							done();
 						})
 						.catch(_ => {});
-				},				
+				},
 				handlerOpen() {
 					$("#cnt").load("lyh/Meuns.html"); //ajax读取页面
+				},
+				handleClose1(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen1() {
+					$("#SaveModify").load("lyh/SaveOrModifyRole.html"); //ajax读取页面
 				},
 				rolelimit(role, functions) {
 					console.log("存入的用户权限" + role + functions);
@@ -65,13 +84,35 @@
 					window.sessionStorage.setItem("rolepermissions", JSON.stringify(functions));
 					_this.rolelimitsisShow2 = true;
 				},
-				roleGoToPage() {
+				roleGoToPage(n = "1") {
 					let _this = this;
-					$.getJSON(`http://127.0.0.1:8080/lyh/Roles/`, (data) => {
+					$.getJSON(`http://127.0.0.1:8080/lyh/Roles/${n}`, (data) => {
 						console.log(data)
-						_this.tableData = data;
+						_this.pageInfo = data;
+						_this.tableData = [];
+						if(data.curr == data.last) {
+							data.next = data.last + 1;
+						}
+						data.list.forEach((val, index) => {
+							if(((data.curr - 1) * 4) <= index && index < ((data.next - 1) * 4)) {
+								_this.tableData.push(val);
+							}
+						})
+						console.log(_this.tableData)
 					});
-
+				},
+				insertRole() {
+					let _this = this;
+					window.sessionStorage.removeItem("role"); 
+					window.sessionStorage.setItem("role", JSON.stringify(null));
+					_this.rolelimitsisShow3 = true;
+				},
+				modifyRole(role) {
+					let _this = this;
+					role["id"]=2;
+					window.sessionStorage.removeItem("role"); 
+					window.sessionStorage.setItem("role", JSON.stringify(role));
+					_this.rolelimitsisShow3 = true;
 				}
 			},
 			mounted() {

@@ -4,14 +4,99 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #245269;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #096E75;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row,
+			.el-col {
+				padding: 0px;
+				margin: 0px;
+				text-align: center;
+			}
+			
+			.el-col {
+				/*border-radius: 4px;*/
+				background-color: #FFF;
+			}
+			
+			.el-col-bag {
+				background-color: #245269;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #245269;
+			}
+			/*卡片*/
+			
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				margin-bottom: 18px;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both
+			}
+		</style>
+		<link rel="stylesheet" href="../css/index.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/jq_ajax_config.js"></script>
 	</head>
 
 	<body>
 		<div class="jiecheApp">
 			<el-row :gutter="20">
 				<el-col :span="8">
-					<div class="grid-content bg-purple">
-						<h2>接车登记</h2></div>
+					<div id="">&nbsp;</div>
 				</el-col>
 				<el-col :span="4">
 					<div class="grid-content bg-purple">
@@ -25,8 +110,7 @@
 				</el-col>
 				<el-col :span="6">
 					<div class="grid-content bg-purple">
-						<el-button type="primary" round>搜索</el-button>
-						<el-button type="success" round>关闭</el-button>
+						<el-button type="primary" >搜索</el-button>					
 					</div>
 				</el-col>
 			</el-row>
@@ -39,30 +123,19 @@
 					<div class="grid-content bg-purple">
 						<a>维修接车</a>
 						<a>救援开单</a>
-						<a>关注公众号</a>
 					</div>
 				</el-col>
-
 			</el-row>
 			<div>
-				<el-row :gutter="20">
-					<el-col :span="8">
-						<div class="grid-content bg-purple">公众号会员码:<input type="text"></div>
-					</el-col>
-					<el-col :span="8">
-						<div class="grid-content bg-purple">车牌号:<input type="text"></div>
-					</el-col>
-
-				</el-row>
 				<el-row :gutter="20">
 					<el-col :span="8">
 						<div class="grid-content bg-purple">
 							<a>车主信息</a>
 							<template>
 								<el-table :data="tableData" border style="width: 100%">
-									<el-table-column prop="name" label="姓名" width="180">
+									<el-table-column prop="name" label="姓名">
 									</el-table-column>
-									<el-table-column prop="address" label="地址" width="180">
+									<el-table-column prop="address" label="地址">
 									</el-table-column>
 									<el-table-column prop="nameche" label="驾驶员">
 									</el-table-column>
@@ -75,9 +148,9 @@
 							<a>车辆信息</a>
 							<template>
 								<el-table :data="tableData" border style="width: 100%">
-									<el-table-column prop="pp" label="品牌" width="180">
+									<el-table-column prop="pp" label="品牌">
 									</el-table-column>
-									<el-table-column prop="fdj" label="发动机" width="180">
+									<el-table-column prop="fdj" label="发动机">
 									</el-table-column>
 									<el-table-column prop="byrq" label="保养日期">
 									</el-table-column>
@@ -93,27 +166,31 @@
 					<el-tab-pane label="作业中车辆">
 						<template>
 							<el-table :data="tableData" border style="width: 100%">
-								<el-table-column prop="dj" label="单据状态" width="180">
+								<el-table-column prop="dj" label="单据状态" >
 								</el-table-column>
-								<el-table-column prop="yw" label="业务类型" width="180">
+								<el-table-column prop="yw" label="业务类型">
 								</el-table-column>
 								<el-table-column prop="khname" label="客户名称">
 								</el-table-column>
-								<el-table-column prop="cph" label="车牌号" width="180">
+								<el-table-column prop="cph" label="车牌号">
 								</el-table-column>
-								<el-table-column prop="sj" label="手机" width="180">
+								<el-table-column prop="sj" label="手机">
 								</el-table-column>
 								<el-table-column prop="hyk" label="会员卡好">
 								</el-table-column>
-								<el-table-column prop="wxdh" label="维修单号" width="180">
+								<el-table-column prop="wxdh" label="维修单号">
 								</el-table-column>
-								<el-table-column prop="djlx" label="单据类型" width="180">
+								<el-table-column prop="djlx" label="单据类型">
 								</el-table-column>
 								<el-table-column prop="kdsj" label="开单时间">
 								</el-table-column>
-								<el-table-column prop="yjwg" label="预计完工" width="180">
+								<el-table-column prop="yjwg" label="预计完工">
 								</el-table-column>
 								<el-table-column prop="wgsj" label="完工时间">
+								</el-table-column>
+								<el-table-column prop="wgsj" label="结算时间">
+								</el-table-column>
+								<el-table-column prop="wgsj" label="接车人">
 								</el-table-column>
 							</el-table>
 						</template>
@@ -121,11 +198,14 @@
 					<el-tab-pane label="维修历史">维修历史</el-tab-pane>
 					<el-tab-pane label="维修项目">维修项目</el-tab-pane>
 					<el-tab-pane label="领料情况">领料情况</el-tab-pane>
-					<el-tab-pane label="历史回访">历史回访</el-tab-pane>
 			</div>
 			</el-tabs>
 		</div>
 	</body>
+	<script type="text/javascript" src="../js/index.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/echarts.js"></script>
 	<script type="text/javascript">
 		var jiecheApp = new Vue({
 			data: {

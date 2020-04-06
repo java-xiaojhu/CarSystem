@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="cheVm">
+			<el-row :span="24">
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+					<el-col :span="2">
+						<div style="margin-top: 5px;">
+						</div>
+					</el-col>
+					<el-col :span="10 ">
+						&nbsp;
+					</el-col>
+					<el-col :span="6">
+						<el-input placeholder="匹配名称/名称简码/手机/会员卡号/车牌号"></el-input>
+					</el-col>
+					<el-col :span="2">
+						<el-button type="primary" round @click="chaxun">搜索</el-button>
+					</el-col>
+				</el-row>
+				<el-row :gutter="20" type="flex" justify="center" style="margin-top: 20px; margin-bottom: 20px;">
+					<el-col :span="24">
+						<div>
+							<template>
+								<el-table v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" :data="kehus" height="250" border style="width: 100%">
+									<el-table-column fixed prop="clientid" label="客户编号" width="150">
+									</el-table-column>
+									<el-table-column prop="clientname" label="客户名称" width="120">
+									</el-table-column>
+									<el-table-column prop="clientaddress" label="详细地址" width="120">
+									</el-table-column>
+									<el-table-column prop="clientiphone" label="联系人" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbirthday" label="手机" width="200">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户生日" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户类别" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="会员卡号" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="入会日期" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="会员到期" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="备注" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="建档日期" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="服务顾问" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="业务员电话" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="账期(天)" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="挂账额度" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="累计积分" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="定金余额" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="客户地址" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="纳税人识别号" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="注册电话" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="开户银行" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="银行账号" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="注册地址" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="定金余额" width="120">
+									</el-table-column>
+									<el-table-column prop="clientbz" label="单据类型" width="120">
+									</el-table-column>
+									<el-table-column fixed="right" width="200">
+										<template slot="header" slot-scope="scope">
+											<el-button type="text" size="mini" @click="SaveKeCar()">增加客户和车</el-button>
+											<el-button type="text" size="mini" @click="SaveKehu()">增加客户</el-button>
+										</template>
+										<template slot-scope="scope">
+											<el-button @click="modifyKehu(scope.row)" type="text" size="small">修改客户</el-button>
+											<el-button @click="removeKehu(scope.row)" type="text" size="small">删除客户</el-button>
+										</template>
+									</el-table-column>
+								</el-table>
+							</template>
+						</div>
+					</el-col>
+				</el-row>
+			</el-row>
+			<template>
+				<el-tabs @tab-click="handleClick">
+					<el-tab-pane type="primary" @click="openFullScreen1" v-loading.fullscreen.lock="loading" label="车辆信息" name="first">
+						<el-row>
+							<el-col :span="24">
+								<div class="grid-content bg-purple-dark">
+									<template>
+										<el-table :data="cars" border style="width: 100%" height="250">
+											<el-table-column fixed prop="vehiclecp" label="车牌号码" width="150">
+											</el-table-column>
+											<el-table-column prop="vehiclepp" label="车辆品牌" width="120">
+											</el-table-column>
+											<el-table-column prop="vehiclexh" label="车辆型号" width="120">
+											</el-table-column>
+											<el-table-column prop="vehiclejsy" label="驾驶员" width="120">
+											</el-table-column>
+											<el-table-column prop="vehicledh" label="驾驶员电话" width="280">
+											</el-table-column>
+											<el-table-column prop="vehiclegs" label="出生日期" width="120">
+											</el-table-column>
+											<el-table-column prop="vehiclefname" label="车辆归属" width="120">
+											</el-table-column>
+											<el-table-column prop="vehiclefdj" label="驾证到期" width="120">
+											</el-table-column>
+											<el-table-column prop="clientbz" label="车架号" width="120">
+											</el-table-column>
+											<el-table-column prop="clientbz" label="发动机号" width="120">
+											</el-table-column>
+											<el-table-column prop="clientbz" label="发动机品牌" width="120">
+											</el-table-column>
+											<el-table-column fixed="right" width="100">
+												<template slot="header" slot-scope="scope">
+													<el-button type="success" size="mini" @click="SaveCar()">增加车资料</el-button>
+												</template>
+												<template slot-scope="scope">
+													<el-button @click="modifyCar(scope.row)" type="text" size="small">修改车资料</el-button>
+													<el-button @click="removeCar(scope.row)" type="text" size="small">删除车资料</el-button>
+												</template>
+											</el-table-column>
+										</el-table>
+									</template>
+								</div>
+							</el-col>
+						</el-row>
+					</el-tab-pane>
+					<el-tab-pane type="primary" @click="openFullScreen1" v-loading.fullscreen.lock="loading" label="历史消费" name="third">
+						<el-row>
+							<el-col :span="24">
+								<div class="grid-content bg-purple-dark">
+									<template>
+										<el-table :data="historyconsumptions" border style="width: 100%">
+											<el-table-column fixed prop="clientid" label="编号" width="150">
+											</el-table-column>
+											<el-table-column prop="clientname" label="客户姓名" width="120">
+											</el-table-column>
+											<el-table-column prop="clientaddress" label="详细地址" width="120">
+											</el-table-column>
+											<el-table-column prop="clientiphone" label="电话号码" width="120">
+											</el-table-column>
+											<el-table-column prop="clientbirthday" label="出生日期" width="280">
+											</el-table-column>
+											<el-table-column prop="clientbz" label="备注" width="120">
+											</el-table-column>
+											<el-table-column prop="clientbz" label="邮编" width="120">
+											</el-table-column>
+											<el-table-column prop="clientbz" label="邮编" width="120">
+											</el-table-column>
+											<el-table-column prop="clientbz" label="邮编" width="120">
+											</el-table-column>
+										</el-table>
+									</template>
+								</div>
+							</el-col>
+						</el-row>
+					</el-tab-pane>
+				</el-tabs>
+			</template>
+			<el-dialog @opened="handlerOpen" ref="modifdialog1" title="新增客户" :visible.sync="saveisShow2" width="80%" :before-close="handleClose" center>
+				<div id="savetkehu">新增客户</div>
+			</el-dialog>
+			<el-dialog @opened="handlerOpen1" ref="modifdialog2" title="修改客户" :visible.sync="updateisShow3" width="80%" :before-close="handleClose1" center>
+				<div id="modifyKehu">修改客户</div>
+			</el-dialog>
+			<el-dialog @opened="handlerOpen2" ref="modifdialog3" title="新增客户和车" :visible.sync="saveCarKehuisShow4" width="80%" :before-close="handleClose2" center>
+				<div id="insertKehuCar">新增客户和车</div>
+			</el-dialog>
+			<el-dialog @opened="handlerOpen3" ref="modifdialog4" title="车辆资料编辑" :visible.sync="saveCarisShow5" width="80%" :before-close="handleClose3" center>
+				<div id="insertCar">车辆资料编辑</div>
+			</el-dialog>
+			<el-dialog @opened="handlerOpen4" ref="modifdialog5" title="修改车资料" :visible.sync="updateCarisShow6" width="80%" :before-close="handleClose4" center>
+				<div id="updateCar">修改车资料</div>
+			</el-dialog>
+		</div>
+	</body>
+	<script>
+		var cheVm = new Vue({
+			data: {
+				saveisShow2: false, //新增客户
+				updateisShow3: false, //修改客户
+				saveCarKehuisShow4: false, //新增客户和车
+				saveCarisShow5: false, //车辆资料编辑
+				updateCarisShow6: false, //修改车资料
+				kehus: [],
+				cars: [],
+				historyconsumptions: [],
+				loading: false,
+
+			},
+			methods: {
+				//新增客户
+				handleClose(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen() {
+					$("#savetkehu").load("ckf/InsertKehu.html"); //ajax读取页面
+				},
+				//修改客户
+				handleClose1(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen1() {
+					$("#modifyKehu").load("ckf/UpdateKehu.html"); //ajax读取页面
+				},
+				//新增客户和车
+				handleClose2(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen2() {
+					$("#insertKehuCar").load("ckf/InsertKehuCar.html"); //ajax读取页面
+				},
+				//车辆资料编辑
+				handleClose3(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen3() {
+					$("#insertCar").load("ckf/insertCar.html"); //ajax读取页面
+				},
+				//修改车资料
+				handleClose4(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen4() {
+					$("#updateCar").load("ckf/UpdateCar.html"); //ajax读取页面
+				},
+				SaveKeCar() {
+					//新增客户和车
+					let _this=this;
+					_this.saveCarKehuisShow4=true;
+				},
+				SaveKehu() {
+					//新增客户
+					let _this=this;
+					_this.saveisShow2=true;
+				},
+				modifyKehu() {
+					//修改客户
+					let _this=this;
+					_this.updateisShow3=true;
+				},
+				modifyCar() {
+					//修改车资料
+					let _this=this;
+					_this.updateCarisShow6=true;
+				},
+				removeCar() {
+					//删除车资料
+					let _this=this;
+				},
+				SaveCar(){
+					//新增车
+					let _this=this;
+					_this.saveCarisShow5=true;
+				},
+				chaxun() {
+					//查询
+				},
+				openFullScreen1() {
+					this.fullscreenLoading = true;
+					setTimeout(() => {
+						this.fullscreenLoading = false;
+					}, 2000);
+				},
+				handleClick(tab, event) {
+					//面板
+					console.log(tab, event);
+				}
+			},
+			mounted() {
+
+			}
+		}).$mount("#cheVm");
+	</script>
+
+</html>

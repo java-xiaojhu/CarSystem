@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="updateKehuApp">
+			<el-form :model="kehu" :rules="rules" ref="ruleForm" :inline="isok" label-width="auto" class="demo-ruleForm">
+				<el-form-item label="客户编码" prop="name">
+					<el-input v-model="kehu.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="客户名称" prop="name">
+					<el-input v-model="kehu.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="联系人" prop="name">
+					<el-input v-model="kehu.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="客户地址" prop="name">
+					<el-input v-model="kehu.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="客户生日" required>
+					<el-col :span="11">
+						<el-form-item prop="clientbirthday">
+							<el-date-picker type="date" placeholder="选择日期" v-model="kehu.clientbirthday" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="账期(天)" prop="name">
+					<el-input v-model="kehu.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="挂账额度" prop="name">
+					<el-input v-model="kehu.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="专属顾问" prop="name">
+					<el-input v-model="kehu.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="顾问电话" prop="name">
+					<el-input v-model="kehu.clientiphone"></el-input>
+				</el-form-item>
+				<el-form-item label="省" prop="name">
+					<el-input v-model="kehu.clientbz"></el-input>
+				</el-form-item>
+				<el-form-item label="市" prop="name">
+					<el-input v-model="kehu.clientname"></el-input>
+				</el-form-item>
+				<el-form-item label="区" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="备注" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="纳税人识别号" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="注册电话" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="开户银行" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="银行账号" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="注册地址" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="其他一" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="其他二" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="其他三" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="其他四" prop="name">
+					<el-input v-model="kehu.clientaddress"></el-input>
+				</el-form-item>
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+					<el-col :span="24">
+						<el-button @click="canceloff" size="mini">取 消</el-button>
+						<el-button type="primary" @click="makeSure" size="mini">确 定</el-button>
+					</el-col>
+				</el-row>
+
+			</el-form>
+		</div>
+	</body>
+	<script>
+		var updateKehuApp = new Vue({
+			data: {
+				kehu: {
+					clientid: "",
+					clientname: "",
+					clientiphone: "",
+					clientbirthday: "",
+					clientbz: "",
+					clientlb: "",
+					clientaddress: "",
+					checked: []
+				},
+				isok: true,
+				rules: {
+					clientid: [{
+							required: true,
+							message: '请输入编号',
+							trigger: 'blur'
+						},
+
+					],
+					clientname: [{
+							required: true,
+							message: '请输入客户姓名',
+							trigger: 'blur'
+						},
+
+					],
+					clientiphone: [{
+							required: true,
+							message: '请输入客户电话',
+							trigger: 'blur'
+						},
+
+					],
+					clientbz: [{
+							required: true,
+							message: '请输入活动名称',
+							trigger: 'blur'
+						},
+
+					],
+					clientaddress: [{
+						required: true,
+						message: '请输入地址',
+						trigger: 'change'
+					}],
+					clientbirthday: [{
+						type: 'date',
+						required: true,
+						message: '请选择日期',
+						trigger: 'change'
+					}],
+
+					clientlb: [{
+						type: 'array',
+						required: true,
+						message: '请至少选择一个',
+						trigger: 'change'
+					}]
+				}
+			},
+			methods: {
+				makeSure() {
+					let _this = this;
+					this.$confirm('确定设置吗？')
+						.then(_ => {
+							cheVm.saveCarKehuisShow4 = false;
+						})
+						.catch((event) => {});
+				},
+				canceloff() {
+					let _this = this;
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							cheVm.saveCarKehuisShow4 = false;
+						})
+						.catch(_ => {});
+				},
+			}
+		}).$mount(".updateKehuApp");
+	</script>
+
+</html>

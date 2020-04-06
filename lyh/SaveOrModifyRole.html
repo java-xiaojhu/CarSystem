@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="SaveModifyApp">
+			<el-row :gutter="20" justify="center">
+				<el-col :span="4">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+				<el-col :span="16">
+					<el-form :model="role" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+						<el-form-item label="角色姓名" prop="rname">
+							<el-input v-model="role.rname"></el-input>
+						</el-form-item>
+						<el-form-item label="起拍价" prop="rode">
+							<el-input v-model.number="role.rode"></el-input>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+							<el-button @click="goBack">取消</el-button>
+						</el-form-item>
+					</el-form>
+				</el-col>
+				<el-col :span="4">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+			</el-row>
+		</div>
+	</body>
+	<script>
+		var saveModifyApp = new Vue({
+			data: {
+				role: {
+					rname: '',
+					rode: '',
+					id: 1
+				},
+				rules: {
+					rname: [{
+						required: true,
+						message: '请输入角色名称',
+						trigger: 'blur'
+					}, {
+						validator(rule, value, callback) {
+							if(saveModifyApp.role.id != 2) {
+								$.getJSON(`http://127.0.0.1:8080/lyh/Roles/Verification/${saveModifyApp.role.rode}/${value}`, (data) => {
+									console.log(data)
+									if(data.code == "200") {
+										callback();
+									} else {
+										callback(new Error(`${data.msg}`));
+									}
+								});
+							} else {
+								callback();
+							}
+
+						},
+						trigger: 'blur',
+					}],
+					rode: [{
+						required: true,
+						message: '请输入角色编码',
+						trigger: 'blur'
+					}, {
+						validator(rule, value, callback) {
+							if(saveModifyApp.role.id != 2) {
+								$.getJSON(`http://127.0.0.1:8080/lyh/Roles/Verification/${value}/${saveModifyApp.role.rname}`, (data) => {
+									console.log(data)
+									if(data.code == "200") {
+										callback();
+									} else {
+										callback(new Error(`${data.msg}`));
+									}
+								});
+							} else {
+								callback();
+							}
+						},
+						trigger: 'blur',
+					}]
+				}
+			},
+			methods: {
+				goBack() {
+					rolelimits.rolelimitsisShow3 = false;
+				},
+				submitForm(formName) {
+					let _this = this;
+					//console.log(this.$refs.upload.uploadFiles);  获取图片的url
+					let centent = '';
+					let ajaxtype = '';
+					if(_this.role.id == 2) {
+						centent = "http://127.0.0.1:8080/lyh/Roles/Role/modify";
+						ajaxtype = 'put';
+					} else {
+						centent = "http://127.0.0.1:8080/lyh/Roles/Role";
+						ajaxtype = 'post';
+					}
+					_this.$refs[formName].validate((valid) => {
+						if(valid) {
+							$.ajax({
+								type: ajaxtype,
+								url: centent,
+								data: JSON.stringify(_this.role),
+								contentType: "application/json",
+								dataType: "JSON",
+								success: function(data) {
+									console.log(data);
+									if(data.code == "200") {
+										_this.$message({
+											message: data.msg,
+											type: 'success'
+										});
+										rolelimits.rolelimitsisShow3 = false;
+										rolelimits.roleGoToPage();
+									} else if(data.code == "300") {
+										_this.$message({
+											message: data.msg,
+											type: 'error'
+										});
+									}
+								}
+							});
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					})
+				},
+			},
+			mounted() {
+				let role = JSON.parse(window.sessionStorage.getItem("role"));
+				console.log(role)
+				if(role != null) {
+					this.role = role;
+				}
+			}
+		}).$mount(".SaveModifyApp")
+	</script>
+
+</html>

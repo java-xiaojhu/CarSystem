@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="CarInsertApp">
+			<el-form :model="Car" :rules="rules" ref="ruleForm" :inline="isok" label-width="auto" class="demo-ruleForm">
+				<el-form-item label="车牌号码" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="车辆品牌" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="车辆型号" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="驾驶员" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="驾驶员电话" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="出生日期" required>
+					<el-col :span="11">
+						<el-form-item prop="clientbirthday">
+							<el-date-picker type="date" placeholder="选择日期" v-model="Car.clientbirthday" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="车辆归属" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="驾证到期" required>
+					<el-col :span="11">
+						<el-form-item prop="clientbirthday">
+							<el-date-picker type="date" placeholder="选择日期" v-model="Car.clientbirthday" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="车架号" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="发动机号" prop="name">
+					<el-input v-model="Car.clientid"></el-input>
+				</el-form-item>
+				<el-form-item label="车辆年款" prop="name">
+					<el-input v-model="Car.clientiphone"></el-input>
+				</el-form-item>
+				<el-form-item label="里程" prop="name">
+					<el-input v-model="Car.clientiphone"></el-input>
+				</el-form-item>
+				<el-form-item label="发动机品牌" prop="name">
+					<el-input v-model="Car.clientbz"></el-input>
+				</el-form-item>
+				<el-form-item label="载重" prop="name">
+					<el-input v-model="Car.clientname"></el-input>
+				</el-form-item>
+				<el-form-item label="购买日期" required>
+					<el-col :span="11">
+						<el-form-item prop="clientbirthday">
+							<el-date-picker type="date" placeholder="选择日期" v-model="Car.clientbirthday" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="上牌日期" required>
+					<el-col :span="11">
+						<el-form-item prop="clientbirthday">
+							<el-date-picker type="date" placeholder="选择日期" v-model="Car.clientbirthday" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="车险到期" required>
+					<el-col :span="11">
+						<el-form-item prop="clientbirthday">
+							<el-date-picker type="date" placeholder="选择日期" v-model="Car.clientbirthday" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="燃油类别" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="车系" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="" prop="name">
+					<el-checkbox v-model="checked">在我投保车</el-checkbox>
+				</el-form-item>
+				<el-form-item label="交强险保险公司" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="交强险" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="商业险保险公司" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="商业险到期" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="下次保养里程" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-form-item label="下次保养日期" required>
+					<el-col :span="11">
+						<el-form-item prop="clientbirthday">
+							<el-date-picker type="date" placeholder="选择日期" v-model="Car.clientbirthday" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="客户名称" prop="name">
+					<el-input v-model="Car.clientaddress"></el-input>
+				</el-form-item>
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+					<el-col :span="24">
+						<el-button @click="canceloff" size="mini">取 消</el-button>
+						<el-button type="primary" @click="makeSure" size="mini">确 定</el-button>
+					</el-col>
+				</el-row>
+			</el-form>
+		</div>
+	</body>
+	<script>
+		var CarInsertApp = new Vue({
+			data: {
+				Car: {
+					clientid: "",
+					clientname: "",
+					clientiphone: "",
+					clientbirthday: "",
+					clientbz: "",
+					clientlb: "",
+					clientaddress: "",
+					checked: []
+				},
+				isok: true,
+				checked: '',
+				rules: {
+					clientid: [{
+							required: true,
+							message: '请输入编号',
+							trigger: 'blur'
+						},
+
+					],
+					clientname: [{
+							required: true,
+							message: '请输入客户姓名',
+							trigger: 'blur'
+						},
+
+					],
+					clientiphone: [{
+							required: true,
+							message: '请输入客户电话',
+							trigger: 'blur'
+						},
+
+					],
+					clientbz: [{
+							required: true,
+							message: '请输入活动名称',
+							trigger: 'blur'
+						},
+
+					],
+					clientaddress: [{
+						required: true,
+						message: '请输入地址',
+						trigger: 'change'
+					}],
+					clientbirthday: [{
+						type: 'date',
+						required: true,
+						message: '请选择日期',
+						trigger: 'change'
+					}],
+
+					clientlb: [{
+						type: 'array',
+						required: true,
+						message: '请至少选择一个',
+						trigger: 'change'
+					}]
+				}
+			},
+			methods: {
+				makeSure() {
+					let _this = this;
+					this.$confirm('确定设置吗？')
+						.then(_ => {
+							cheVm.saveCarisShow5 = false;
+							CarApp.CarsaveCarisShow5=false;
+						})
+						.catch((event) => {});
+				},
+				canceloff() {
+					let _this = this;
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							cheVm.saveCarisShow5 = false;
+							CarApp.CarsaveCarisShow5=false;
+						})
+						.catch(_ => {});
+				},
+			}
+		}).$mount(".CarInsertApp");
+	</script>
+
+</html>

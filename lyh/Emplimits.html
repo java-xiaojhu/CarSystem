@@ -8,84 +8,90 @@
 
 	<body>
 		<div class="Emplimits" style="margin: 0px 50px;">
-			<el-table :data="tableData" border stripe style="width: 100%">
-				<el-table-column prop="date" label="日期" width="180">
+			<el-table :data="tableData" border stripe style="width: 100%;">
+				<el-table-column prop="emp.empid" label="员工编号" width="180">
 				</el-table-column>
-				<el-table-column prop="name" label="姓名" width="180">
+				<el-table-column prop="emp.empname" label="员工姓名" width="180">
 				</el-table-column>
-				<el-table-column prop="address" label="地址">
+				<el-table-column prop="emp.positionname" label="职位名称">
 				</el-table-column>
-				<el-table-column label="操作">
+				<el-table-column prop="emp.departmentname" label="部门名称">
+				</el-table-column>
+				<el-table-column prop="role.rname" label="对应的角色名称">
+				</el-table-column>
+				<el-table-column label="操作">					
 					<template slot-scope="temp">
-						<el-button type="success" size="mini" @click="rolelimit(temp.row)">设置</el-button>
+						<el-button type="primary" size="mini" @click="rolelimit(temp.row.role,temp.row.functions)">设置权限</el-button>
+					
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-dialog @opened="handlerOpen" ref="modifdialog" title="功能权限菜单" :visible.sync="isShow2" width="70%" :before-close="handleClose2" center>
+			<template>
+				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="4" layout="prev, pager, next, jumper" :total="pageInfo.total">
+				</el-pagination>
+			</template>
+			<el-dialog @opened="handlerOpen1" ref="modifdialogs" title="功能权限菜单" :visible.sync="EmplimitsisShow2" width="70%" :before-close="handleClose1" center>
 				<div id="cnt">修改商品页</div>
-				<span slot="footer" class="dialog-footer">
-	    			<el-button @click="canceloff" size="mini">取 消</el-button>
-	    			<el-button type="primary" @click="makeSure" size="mini">确 定</el-button>
-  				</span>
 			</el-dialog>
 		</div>
 	</body>
 	<script>
 		var Emplimits = new Vue({
 			data: {
-				tableData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}],
-				isShow2: false,
+				tableData: [],
+				EmplimitsisShow2: false,
+				currentPage3: 0,
+				pageInfo: {},
+				tilte: ''
 			},
 			methods: {
-				handleClose2(done) {
+				//分页
+				handleSizeChange(val) {
+					console.log(`每页 ${val} 条`);
+				},
+				handleCurrentChange(val) {
+					console.log(`当前页: ${val}`);
+					this.empGoToPage(val)
+				},
+				handleClose1(done) {
 					this.$confirm('确认关闭？')
 						.then(_ => {
 							done();
 						})
 						.catch(_ => {});
 				},
-				handlerOpen() {
+				handlerOpen1() {
 					$("#cnt").load("lyh/Meuns.html"); //ajax读取页面
 				},
-				rolelimit(role) {
-					console.log(role);
+				rolelimit(role, functions) {
+					console.log("存入的用户权限" + role + functions);
 					let _this = this;
-					_this.isShow2 = true;
+					role["isok"]=true;
+					window.sessionStorage.setItem("role", JSON.stringify(role));
+					window.sessionStorage.setItem("rolepermissions", JSON.stringify(functions));
+					_this.EmplimitsisShow2 = true;
 				},
-					makeSure() {
+				empGoToPage(n = "1") {
 					let _this = this;
-					this.$confirm('确定设置吗？')
-						.then(_ => {
-							_this.isShow2 = false;
+					$.getJSON(`http://127.0.0.1:8080/lyh/Emps/${n}`, (data) => {
+						console.log(data)
+						_this.pageInfo = data;
+						_this.tableData = [];
+						if(data.curr == data.last) {
+							data.next = data.last + 1;
+						}
+						data.list.forEach((val, index) => {
+							if(((data.curr - 1) * 4) <= index && index < ((data.next - 1) * 4)) {
+								_this.tableData.push(val);
+							}
 						})
-						.catch(_ => {});
-				},
-				canceloff(){
-					let _this = this;
-					this.$confirm('确认关闭？')
-						.then(_ => {
-							_this.isShow2 = false;
-						})
-						.catch(_ => {});
-				},
+					});
+				}
 			},
-			mounted() {}
+			mounted() {
+				let _this = this;
+				this.empGoToPage();
+			}
 		}).$mount(".Emplimits")
 	</script>
 

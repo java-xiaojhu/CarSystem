@@ -16,8 +16,8 @@ var menuMapping = {
 	"b31": "sh/jszx.html",
 	"b322": "sh/hyczk.html",
 	//客服
-	"d321": "ckf/che.html",
-	"d322": "ckf/che1.html",
+	"d321": "ckf/kehu.html",
+	"d322": "ckf/Car.html",
 	//数据
 	"e321": "服务项目",
 	"e322": "车型档案",
