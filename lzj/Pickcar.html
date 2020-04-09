@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #245269;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #096E75;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row,
+			.el-col {
+				padding: 0px;
+				margin: 0px;
+				text-align: center;
+			}
+			
+			.el-col {
+				/*border-radius: 4px;*/
+				background-color: #FFF;
+			}
+			
+			.el-col-bag {
+				background-color: #245269;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #245269;
+			}
+			/*卡片*/
+			
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				margin-bottom: 18px;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both
+			}
+			
+			#allmap {
+				height: 240px;
+				width: 100%;
+				position: relative;
+				/*left: 430px;
+				top: 240px;*/
+			}
+		</style>
+		<link rel="stylesheet" href="../css/index.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/jq_ajax_config.js"></script>
+	</head>
+
+	<body>
+		<div class="PickcarApp">
+			<el-form ref="form" :model="repair" label-width="auto" class="demo-ruleForm">
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+					<el-col :span="6">
+						<el-button type="primary" @click="picktype">{{title}}</el-button>
+					</el-col>
+					<el-col :span="18">
+						<div class="map" v-show="pickisok">
+							<div class="address">
+								<el-form-item label="接车地址">
+									<el-input type="text" name="end" id="endsite" v-model="address" @blur="getXY"></el-input>
+								</el-form-item>
+							</div>
+						</div>
+					</el-col>
+				</el-row>
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;" v-show="pickisok">
+					<el-col :span="24">
+						<div class="show">
+							<div style="border: 1px solid Lightgrey;">
+								<div id="allmap"></div>
+								<div id="r-result" style="overflow: auto;height: 200px;"></div>
+							</div>
+						</div>
+					</el-col>
+				</el-row>
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 15px 0px 0px 0px;">
+					<el-col :span="6">
+						<el-form-item label="维修订单号">
+							<el-input v-model="repair.repairnumber"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="选择技工">
+							<el-select v-model="repair.mechanicname" placeholder="请选择技工">
+								<el-option v-for="item in mechanics" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+								</el-option>
+							</el-select>
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="车牌号">
+							<el-input v-model="repair.carnumber"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="驾驶员姓名">
+							<el-input v-model="repair.username"></el-input>
+						</el-form-item>
+					</el-col>
+				</el-row>
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+					<el-col :span="6">
+						<el-form-item label="制单人">
+							<el-input v-model="repair.salepeople"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="制单时间">
+							<el-date-picker type="datetime" placeholder="选择日期" v-model="repair.makedates" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="维修时间">
+							<el-date-picker type="datetime" placeholder="选择日期" v-model="repair.repairdate" style="width: 100%;"></el-date-picker>
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="维修金额">
+							<el-input v-model="repair.repairprice"></el-input>
+						</el-form-item>
+					</el-col>
+				</el-row>
+				<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+					<el-col :span="24">
+						<el-form-item label="备注" style="width: 100%">
+							<el-input v-model="repair.reamks" style="width: 100%"></el-input>
+						</el-form-item>
+					</el-col>
+				</el-row>
+			</el-form>
+			<el-row :gutter="20" type="flex" justify="center" style="margin: 20px 0px;">
+				<el-col :span="24">
+					<template>
+						<el-table :data="tableData" border style="width: 100%">
+							<el-table-column prop="wxdh" label="维修单号" fixed>
+							</el-table-column>
+							<el-table-column prop="dj" label="单据状态">
+							</el-table-column>
+							<el-table-column prop="yw" label="业务类型">
+							</el-table-column>
+							<el-table-column fixed="right" width="200">
+								<template slot="header" slot-scope="scope">
+									<el-button @click="SaveItems()" type="success" size="small">添加维修项目</el-button>
+								</template>
+								<template slot-scope="temp">
+									<el-button type="danger" size="mini" @click="">删除</el-button>
+								</template>
+							</el-table-column>
+						</el-table>
+					</template>
+				</el-col>
+			</el-row>
+			<el-row :gutter="20" type="flex" justify="center" style="margin: 0px;">
+				<el-button type="primary" @click="onSubmit('form')">立即创建</el-button>
+				<el-button>取消</el-button>
+			</el-row>
+			<el-dialog @opened="handlerOpen" ref="modifdialog" title="添加维修项目" :visible.sync="ItemisShow" width="80%" :before-close="handleClose" center>
+				<div id="item">修改车资料</div>
+			</el-dialog>
+		</div>
+	</body>
+	<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=uYr0vs7KOcs8I5y6e4Y479CyW6xOC3GV"></script>
+	<script type="text/javascript" src="../js/index.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/echarts.js"></script>
+	<script>
+		var PickcarApp = new Vue({
+			data: {
+				repair: {
+					repairnumber: '', //单号
+					makedates: '', //制单时间
+					carnumber: '', //车牌号
+					username: '', //顾客姓名
+					salepeople: '', //制单人
+					mechanicname: '', //技工姓名
+					repairdate: '', //维修时间
+					repairprice: '', //金额
+					reamks: '', //备注
+					restate: '', //单据状态：1.接车2、作业中3、竣工检查4、返工5、已竣工6、结算
+				},
+				address: '',
+				juli:'',
+				shijian:'',
+				mechanics: [{
+					value: '1',
+					label: '一级技工'
+				}],
+				inline: true,
+				tableData: [{
+					wxdh: '1'
+				}],
+				ItemisShow: false,
+				title: '站内',
+				pickisok: false,
+				transit: '',
+			},
+			methods: {
+				onSubmit(formName) {
+					let _this = this;
+					this.$refs[formName].validate((valid) => {
+						if(valid) {
+							_this.show(null)
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+				},
+				SaveItems() {
+					let _this = this;
+					_this.ItemisShow = true;
+
+				},
+				//新增客户
+				handleClose(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen() {
+					$("#item").load("ServiceItems.html"); //ajax读取页面
+				},
+				picktype() {
+					if(this.title != "站内") {
+						console.log("站内")
+						this.title = "站内";
+						this.pickisok = false;
+					} else {
+						console.log("站外")
+						this.title = "站外";
+						this.pickisok = true;
+					}
+				},
+				getXY() {
+					//根据地址的名称获取经纬度
+					var start = '北京市朝阳区来广营西路8号国创产业园6号楼东一区02号';
+					this.transit.search(start, this.address);
+				}
+
+			},
+			mounted() {
+				let _this=this;
+				//百度地图API功能(地图配置)
+				var map = new BMap.Map("allmap"); //实 例化地图
+				map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
+				map.enableScrollWheelZoom();
+				//启 用滚轮放大缩小，默认禁用
+				map.enableContinuousZoom();
+				//启 用地图惯性拖拽，默认禁用
+				//表单下拉选择(起始地)
+				//表单下拉选择(目的地)
+				// 建 立一个自动完成的对象
+				var ac1 = new BMap.Autocomplete({
+					"input": "endsite",
+					"location": map
+				});
+				ac1.addEventListener("onhighlight", function(e) {
+					//鼠标放在 下拉列表上的事件
+					var str = "";
+					str = `FromItem<br/>index =${e.fromitem.index}<br/>value=${e.fromitem.value}`;
+					str += `<br/>ToItem<br/>index = ${e.toitem.index}<br/>value=${e.fromitem.value}`;
+					$("#searchResultPanel").innerHTML = str;
+				});
+				//计算两地之间的驾车距离、所需时间、途径地点 
+				var searchComplete = function(results) {
+					if(transit.getStatus() != BMAP_STATUS_SUCCESS) {
+						return;
+					}
+					var plan = results.getPlan(0);
+					var duration = plan.getDuration(false) / 3600;
+					//获取时间数值(小时) 
+					var distance = plan.getDistance(false) / 1000;
+					//获取距离数值(公里)
+					alert(`时间:${duration.toFixed(1)}小时`);
+					alert(`距离:${distance.toFixed(2)}公里`);
+					_this.juli=distance.toFixed(2);
+					_this.shijian=duration.toFixed(1),
+				}
+				var transit = new BMap.DrivingRoute(map, {
+					renderOptions: {
+						map: map,
+						panel: "r-result",
+						enableDragging: true
+					},
+					//起终点可进行拖拽 
+					onSearchComplete: searchComplete,
+					onPolylinesSet: function() {
+						setTimeout(function() {
+						}, "1000");
+					}
+				});
+				this.transit = transit;
+			}
+		}).$mount(".PickcarApp");
+	</script>
+
+</html>

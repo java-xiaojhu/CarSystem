@@ -4,7 +4,7 @@ var menuMapping = {
 	"g321": "lyh/Rolelimits.html",
 	"g322": "lyh/Emplimits.html",
 	//维修
-	"a321": "lzj/jieche.html",
+	"a321": "lzj/repairList.html",
 	"a322": "lzj/jungong.html",
 	//商品
 	"c321": "商品资料",

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="SaveOrModifyItems">
+			<el-row :gutter="20" justify="center">
+				<el-col :span="4">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+				<el-col :span="16">
+					<el-form :model="item" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+						<el-form-item label="项目名称" prop="servicename">
+							<el-input v-model="item.servicename"></el-input>
+						</el-form-item>
+						<el-form-item label="项目类别" prop="itemid">
+							<el-select v-model="item.itemid" placeholder="请选择" style="width: 100%;">
+								<el-option v-for="its in items" :key="its.itemid" :label="its.itemname" :value="its.itemid" :disabled="its.disabled">
+								</el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item label="备注" prop="servicremks">
+							<el-input v-model="item.servicremks"></el-input>
+						</el-form-item>
+						<el-form-item label="售价" prop="serviceprice">
+							<el-input v-model="item.serviceprice" @blur="vipprice"></el-input>
+						</el-form-item>
+						<el-form-item label="会员价" prop="servicepricevip">
+							<el-input v-model="item.servicepricevip" :disabled="true"></el-input>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+							<el-button @click="goBack">取消</el-button>
+						</el-form-item>
+					</el-form>
+				</el-col>
+				<el-col :span="4">
+					<div class="grid-content bg-purple"></div>
+				</el-col>
+			</el-row>
+		</div>
+	</body>
+
+	<script>
+		var saveOrModifyItems = new Vue({
+			data: {
+				item: {
+					servicename: '',
+					serviceprice: 0,
+					servicepricevip: 0,
+					itemid: '',
+					servicremks: ''
+				},
+				items: [],
+				rules:{},
+			},
+			methods: {
+				goBack(){
+					itemsApp.saveItemisShow1 = false;
+				},
+				vipprice(){
+					this.item.servicepricevip=parseInt(this.item.serviceprice*0.7);
+				},
+				submitForm(formName) {
+					let _this = this;
+					let centent = '';
+					let ajaxtype = '';
+					if(_this.item.id == 2) {
+						centent = "http://127.0.0.1:8080/lyh/Items/modify/item";
+						ajaxtype = 'put';
+					} else {
+						centent = "http://127.0.0.1:8080/lyh/Items/Save/item";
+						ajaxtype = 'post';
+					}
+					console.log(_this.item)
+					_this.$refs[formName].validate((valid) => {
+						if(valid) {
+							$.ajax({
+								type: ajaxtype,
+								url: centent,
+								data: JSON.stringify(_this.item),
+								contentType: "application/json",
+								dataType: "JSON",
+								success: function(data) {
+									console.log(data);
+									if(data.code == "200") {
+										_this.$message({
+											message: data.msg,
+											type: 'success'
+										});
+										itemsApp.saveItemisShow1 = false;
+										itemsApp.goToPage(_this.item.itemid,1,4);
+									} else if(data.code == "300") {
+										_this.$message({
+											message: data.msg,
+											type: 'error'
+										});
+									}
+								}
+							});
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					})
+				},
+			},
+			mounted() {
+				let _this = this;
+				$.getJSON(`http://127.0.0.1:8080/lyh/Items/getItemytpes`, (data) => {
+					console.log(data)
+					_this.items = data;
+				});
+				let item = JSON.parse(window.sessionStorage.getItem("item"));
+				console.log(item)
+				if(item != null) {
+					this.item = item;
+				}
+			}
+		}).$mount(".SaveOrModifyItems");
+	</script>
+
+</html>

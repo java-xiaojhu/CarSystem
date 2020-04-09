@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #245269;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #096E75;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row,
+			.el-col {
+				padding: 0px;
+				margin: 0px;
+				text-align: center;
+			}
+			
+			.el-col {
+				/*border-radius: 4px;*/
+				background-color: #FFF;
+			}
+			
+			.el-col-bag {
+				background-color: #245269;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #245269;
+			}
+			/*卡片*/
+			
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				margin-bottom: 18px;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both
+			}
+		</style>
+		<link rel="stylesheet" href="../css/index.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/jq_ajax_config.js"></script>
+	</head>
+
+	<body>
+		<div class="jiecheApp">
+			<el-row :gutter="20" type="flex" justify="center" style="margin: 20px 0px;">
+				<el-form ref="form" :model="form" label-width="auto" :inline="inline" >
+					<el-form-item label="维修状态">
+						<el-select v-model="value" placeholder="请选择">
+							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+							</el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item>
+						<el-input v-model="form.name" placeholder="匹配车牌号/车架号/手机号/客户"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary">搜索</el-button>
+					</el-form-item>
+				</el-form>
+			</el-row>
+			<el-row :gutter="20" type="flex" justify="center" style="margin: 20px 0px;">
+				<el-col :span="24">
+					<template>
+						<el-table :data="tableData" border style="width: 100%">
+							<el-table-column prop="wxdh" label="维修单号" fixed>
+							</el-table-column>
+							<el-table-column prop="dj" label="单据状态">
+							</el-table-column>
+							<el-table-column prop="yw" label="业务类型">
+							</el-table-column>
+							<el-table-column prop="khname" label="客户名称">
+							</el-table-column>
+							<el-table-column prop="cph" label="车牌号">
+							</el-table-column>
+							<el-table-column prop="sj" label="手机">
+							</el-table-column>
+							<el-table-column prop="hyk" label="会员卡好">
+							</el-table-column>
+							<el-table-column prop="djlx" label="单据类型">
+							</el-table-column>
+							<el-table-column prop="kdsj" label="开单时间">
+							</el-table-column>
+							<el-table-column prop="yjwg" label="预计完工">
+							</el-table-column>
+							<el-table-column prop="wgsj" label="完工时间">
+							</el-table-column>
+							<el-table-column prop="wgsj" label="结算时间">
+							</el-table-column>
+							<el-table-column prop="wgsj" label="接车人">
+							</el-table-column>
+							<el-table-column fixed="right" width="200">
+								<template slot="header" slot-scope="scope">
+									<el-button @click="SaveRepair(temp.row)" type="success" size="small">维修接车</el-button>
+								</template>
+								<template slot-scope="temp">
+									<el-button @click="RepairHistory(temp.row)" type="text" size="small">维修历史</el-button>
+									<el-button @click="RepairItem(temp.row)" type="text" size="small">维修项目</el-button>
+									<el-button @click="HistoryConsumption(temp.row)" type="text" size="small">历史消费</el-button>
+									<el-button @click="HistoryConsumption(temp.row)" type="text" size="small">基本信息</el-button>
+								</template>
+							</el-table-column>
+						</el-table>
+					</template>
+					<el-drawer :title="titile" :visible.sync="drawer" direction="btt" :before-close="handleClose">
+						<template>
+							<el-table :data="tabledata" border style="width: 100%">
+								<el-table-column v-for="(column,index) in columns" :prop="column.val" :label="column.title">
+								</el-table-column>
+							</el-table>
+						</template>
+					</el-drawer>
+				</el-col>
+			</el-row>
+
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/index.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/echarts.js"></script>
+	<script type="text/javascript">
+		var jiecheApp = new Vue({
+			data: {
+				tableData: [{
+					wxdh: '1'
+
+				}],
+				form: {},
+				inline:true,
+				drawer: false,
+				titile: '',
+				tabledata: [],
+				columns: [],
+				options: [{
+					value: '1',
+					label: '接车'
+				}, {
+					value: '2',
+					label: '作业中'
+				}, {
+					value: '3',
+					label: '竣工检查'
+				}, {
+					value: '4',
+					label: '返工'
+				}, {
+					value: '5',
+					label: '已竣工'
+				}, {
+					value: '6',
+					label: '结算'
+				}],
+				value: ''
+
+			},
+			methods: {
+				handleClose(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				HistoryConsumption() {
+					let _this = this;
+					this.titile = "历史消费"
+					_this.tabledata = [{
+						name: '王小虎'
+					}]
+					_this.columns = [{
+						val: "name",
+						title: "维修单号"
+					}, {
+						val: "name",
+						title: "接车时间"
+					}, {
+						val: "name",
+						title: "完工类型"
+					}, {
+						val: "name",
+						title: "业务类型"
+					}, {
+						val: "name",
+						title: "顾客姓名"
+					}, {
+						val: "name",
+						title: "车牌号"
+					}, {
+						val: "name",
+						title: "手机号"
+					}, {
+						val: "name",
+						title: "会员卡号"
+					}, {
+						val: "name",
+						title: "结算时间"
+					}, {
+						val: "name",
+						title: "消费金额"
+					}];
+					_this.drawer = true;
+				},
+				RepairItem() {
+					let _this = this;
+					this.titile = "维修项目";
+					_this.tabledata = [{
+						name: '王小虎'
+					}]
+					_this.columns = [{
+						val: "name",
+						title: "维修单号"
+					}, {
+						val: "name",
+						title: "接车时间"
+					}, {
+						val: "name",
+						title: "完工类型"
+					}, {
+						val: "name",
+						title: "业务类型"
+					}, {
+						val: "name",
+						title: "顾客姓名"
+					}, {
+						val: "name",
+						title: "车牌号"
+					}, {
+						val: "name",
+						title: "手机号"
+					}, {
+						val: "name",
+						title: "会员卡号"
+					}, {
+						val: "name",
+						title: "结算时间"
+					}, {
+						val: "name",
+						title: "消费金额"
+					}];
+					_this.drawer = true;
+				},
+				RepairHistory() {
+					let _this = this;
+					this.titile = "维修历史";
+					_this.tabledata = [{
+						name: '王小虎'
+					}]
+					_this.columns = [{
+						val: "name",
+						title: "维修单号"
+					}, {
+						val: "name",
+						title: "接车时间"
+					}, {
+						val: "name",
+						title: "完工类型"
+					}, {
+						val: "name",
+						title: "业务类型"
+					}, {
+						val: "name",
+						title: "顾客姓名"
+					}, {
+						val: "name",
+						title: "车牌号"
+					}, {
+						val: "name",
+						title: "手机号"
+					}, {
+						val: "name",
+						title: "会员卡号"
+					}, {
+						val: "name",
+						title: "结算时间"
+					}, {
+						val: "name",
+						title: "消费金额"
+					}];
+					_this.drawer = true;
+				},
+				repairGoToPage(n = "1", s = "4") {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/lyh/Emps/${n}/${s}`, (data) => {
+						console.log(data)
+					});
+				}
+			},
+			mounted() {
+				//				this.repairGoToPage();
+			}
+		}).$mount(".jiecheApp");
+	</script>
+
+</html>

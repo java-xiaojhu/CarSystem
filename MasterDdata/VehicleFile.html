@@ -1,9 +1,418 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>维修项目</title>
+		<style type="text/css">
+			.el-header,
+			.el-footer {
+				background-color: #245269;
+				color: #333;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+			
+			.el-aside {
+				background-color: #096E75;
+				color: #333;
+				text-align: center;
+				line-height: 200px;
+			}
+			
+			.el-main {
+				background-color: #FFF;
+				color: #333;
+				text-align: center;
+				/*line-height: 160px;*/
+			}
+			
+			body>.el-container {
+				margin-bottom: 40px;
+			}
+			
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.el-row,
+			.el-col {
+				padding: 0px;
+				margin: 0px;
+				text-align: center;
+			}
+			
+			.el-col {
+				/*border-radius: 4px;*/
+				background-color: #FFF;
+			}
+			
+			.el-col-bag {
+				background-color: #245269;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.row-bg {
+				padding: 10px 0;
+				background-color: #245269;
+			}
+			/*卡片*/
+			
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				margin-bottom: 18px;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both
+			}
+			
+			.withe {
+				background: #fff;
+			}
+		</style>
+		<link rel="stylesheet" href="../css/index.css" />
+		<link rel="stylesheet" href="../css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/jq_ajax_config.js"></script>
 	</head>
+
 	<body>
+		<div class="itemsApp">
+			<el-container class="withe" style='height:100vh; '>
+				<el-aside width="200px" class="withe">
+					<template>
+						<el-tree :data="data" ref="tree" node-key="id" :props="defaultProps" :highlight-current="curr" @node-click="handleNodeClick"></el-tree>
+					</template>
+				</el-aside>
+				<el-container class="withe">
+					<el-main class="withe">
+						<el-row :gutter="20" type="flex" justify="left" style="margin: 0px;">
+							<el-col :span="24" class="text-left">
+								<el-button type="text" size="mini" @click="SaveItemType('1')">添加同级</el-button>
+								<el-button type="text" size="mini" @click="SaveItemType('2')">添加子级</el-button>
+								<el-button type="text" size="mini" @click="SaveItemType('3')">修改子级</el-button>
+								<el-button type="text" size="mini" @click="removeItemtype">删除服务类别</el-button>
+							</el-col>
+						</el-row>
+						<template>
+							<el-table :data="pageInfo.list" border style="width: 100%">
+								<el-table-column prop="itemname" label="项目类别" fixed>
+								</el-table-column>
+								<el-table-column prop="servicename" label="项目名称">
+								</el-table-column>
+								<el-table-column prop="serviceprice" label="售价">
+								</el-table-column>
+								<el-table-column prop="servicepricevip" label="会员价">
+								</el-table-column>
+								<el-table-column prop="servicremks" label="备注">
+								</el-table-column>
+								<el-table-column fixed="right" width="200">
+									<template slot="header" slot-scope="scope">
+										<el-button @click="SaveItem" type="success" size="small">新增维修项目</el-button>
+									</template>
+									<template slot-scope="temp">
+										<el-button @click="modifyItem(temp.row)" type="primary" size="small">修改</el-button>
+										<el-button @click="removeItem(temp.row)" type="danger" size="small">删除</el-button>
+									</template>
+								</el-table-column>
+							</el-table>
+						</template>
+						<template>
+							<div class="block" v-if="listlength>0">
+								<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="pageInfo.pageSize" layout="prev, pager, next, jumper" :total="pageInfo.total">
+								</el-pagination>
+							</div>
+						</template>
+					</el-main>
+				</el-container>
+			</el-container>
+			<el-dialog @opened="handlerOpen" ref="saveItem" :title="tilte" :visible.sync="saveItemisShow1" width="50%" :before-close="handleClose" center>
+				<div id="SaveModify">修改商品页</div>
+			</el-dialog>
+			<el-dialog @opened="handlerOpen1" ref="saveItem" :title="tilte" :visible.sync="saveItemisShow2" width="50%" :before-close="handleClose1" center>
+				<el-form :model="itemtype" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+					<el-form-item label="项目名称" prop="itemname">
+						<el-input v-model="itemtype.itemname"></el-input>
+					</el-form-item>
+				</el-form>
+				<span slot="footer" class="dialog-footer">
+	    			<el-button @click="saveItemisShow2 = false">取 消</el-button>
+	    			<el-button type="primary" @click="goSave">确 定</el-button>
+  				</span>
+			</el-dialog>
+		</div>
 	</body>
+	<script type="text/javascript" src="../js/index.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/echarts.js"></script>
+	<script>
+		var itemsApp = new Vue({
+			data: {
+				data: [],
+				defaultProps: {
+					children: 'children',
+					label: 'label'
+				},
+				isok: false,
+				curr: true,
+				saveItemisShow1: false,
+				saveItemisShow2: false,
+				tilte: '',
+				//分页属性
+				pageInfo: {},
+				listlength: 0,
+				currentPage3: 0,
+				checked: {},
+				itemtype: {
+					itemname: ''
+				},
+				rules: {},
+				jibie: '',
+			},
+			methods: {
+				//分页
+				handleSizeChange(val) {
+					console.log(`每页 ${val} 条`);
+				},
+				handleCurrentChange(val) {
+					console.log(`当前页: ${val}`);
+					this.goToPage(val)
+				},
+				handlerOpen() {
+					$("#SaveModify").load("/CarSystem/MasterDdata/SaveOrModifyItems.html"); //ajax读取页面
+				},
+				handleClose(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handleClose1(done) {
+					this.$confirm('确认关闭？')
+						.then(_ => {
+							done();
+						})
+						.catch(_ => {});
+				},
+				handlerOpen1() {
+					$("#SaveitemType").load("/CarSystem/MasterDdata/SaveModifyItemtype.html"); //ajax读取页面
+				},
+				handleNodeClick(data) {
+					console.log(data)
+					let _this = this;
+					this.checked = data;
+					_this.goToPage(data.id);
+
+				},
+				goToPage(limit, n = "1", s = "3") {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/lyh/Items/${n}/${s}/${limit}`, (data) => {
+						console.log(data)
+						_this.pageInfo = data;
+						_this.listlength = data.list.length;
+						_this.currentPage3 = _this.pageInfo.pageNum;
+					});
+				},
+				modifyItem(item) {
+					//修改服务项目
+					let _this = this;
+					item["id"] = 2;
+					window.sessionStorage.removeItem("item");
+					window.sessionStorage.setItem("item", JSON.stringify(item));
+					_this.saveItemisShow1 = true;
+				},
+				removeItem(item) {
+					let _this = this;
+					//删除
+					$.ajax({
+						type: 'delete',
+						url: `http://127.0.0.1:8080/lyh/Items/item/${item.serviceitemid}`,
+						contentType: "application/json",
+						dataType: "JSON",
+						success: function(data) {
+							console.log(data);
+							if(data.code == "200") {
+								_this.$message({
+									message: data.msg,
+									type: 'success'
+								});
+								_this.goToPage(item.itemid, 1, 4);
+							} else if(data.code == "300") {
+								_this.$message({
+									message: data.msg,
+									type: 'error'
+								});
+							}
+						}
+					});
+				},
+				SaveItem() {
+					//获取树形的id
+					let _this = this;
+					_this.tilte = '新增维修项目',
+						window.sessionStorage.removeItem("item");
+					window.sessionStorage.setItem("item", JSON.stringify(null));
+					_this.saveItemisShow1 = true;
+
+				},
+				SaveItemType(jibie) {
+					console.log(this.checked)
+					if(JSON.stringify(this.checked) != "{}") {
+						if(jibie == 1) {
+
+						} else {
+							console.log("子级")
+							if(this.checked.fid != 0) {
+								alert("只能添加二级菜单");
+								return false;
+							}
+						}
+						this.jibie = jibie;
+						this.saveItemisShow2 = true;
+					} else {
+						alert("请选择服务类别")
+					}
+				},
+				goSave() {
+					let _this = this;
+					let ajaxtype = "post";
+					let centent = "http://127.0.0.1:8080/lyh/Items/Save/itemtype";
+					if(_this.jibie == 1) {
+						if(this.checked.fid == 0) {
+							console.log("同级")
+							_this.itemtype["itemfid"] = '0';
+						} else {
+							console.log("子级的同级")
+							_this.itemtype["itemfid"] = this.checked.fid;
+							ajaxtype = "post";
+						}
+					}else if(_this.jibie == 3){
+						
+					} else {
+						console.log("子级")
+						_this.itemtype["itemfid"] = this.checked.id;
+					}
+					
+					console.log(_this.itemtype)
+					$.ajax({
+						type: ajaxtype,
+						url: centent,
+						data: JSON.stringify(_this.itemtype),
+						contentType: "application/json",
+						dataType: "JSON",
+						success: function(data) {
+							console.log(data);
+							if(data.code == "200") {
+								_this.$message({
+									message: data.msg,
+									type: 'success'
+								});
+								_this.saveItemisShow2 = false;
+								_this.gotoLeft();
+							} else if(data.code == "300") {
+								_this.$message({
+									message: data.msg,
+									type: 'error'
+								});
+							}
+						}
+					});
+				},
+				modifyItemtype() {
+					console.log(this.checked)
+					if(JSON.stringify(this.checked) != "{}") {
+						_this.itemtype["itemid"] = this.checked.id;
+						$.ajax({
+							type: ajaxtype,
+							url: centent,
+							data: JSON.stringify(_this.itemtype),
+							contentType: "application/json",
+							dataType: "JSON",
+							success: function(data) {
+								console.log(data);
+								if(data.code == "200") {
+									_this.$message({
+										message: data.msg,
+										type: 'success'
+									});
+									_this.saveItemisShow2 = false;
+									_this.gotoLeft();
+								} else if(data.code == "300") {
+									_this.$message({
+										message: data.msg,
+										type: 'error'
+									});
+								}
+							}
+						});
+					} else {
+						alert("请选择服务类别")
+					}
+				},
+				removeItemtype(itemid) {
+					console.log(this.checked)
+					if(JSON.stringify(this.checked) != "{}") {
+						$.ajax({
+							type: "delete",
+							url: `http://127.0.0.1:8080/lyh/Items/itemtype/${itemid}`,
+							contentType: "application/json",
+							dataType: "JSON",
+							success: function(data) {
+								console.log(data);
+								if(data.code == "200") {
+									_this.$message({
+										message: data.msg,
+										type: 'success'
+									});
+									_this.gotoLeft();
+								} else if(data.code == "300") {
+									_this.$message({
+										message: data.msg,
+										type: 'error'
+									});
+								}
+							}
+						});
+					} else {
+						alert("请选择服务类别")
+					}
+				},
+				gotoLeft() {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/lyh/Items/getItemytpe`, (data) => {
+						console.log(data)
+						_this.data = data;
+					});
+				}
+
+			},
+			mounted() {
+				this.gotoLeft();
+
+			}
+		}).$mount(".itemsApp")
+	</script>
+
 </html>
