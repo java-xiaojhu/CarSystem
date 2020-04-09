@@ -25,6 +25,10 @@
 		<div id="classMechanicApp">
 			<el-row class="tac">
 				<div>
+<<<<<<< HEAD
+=======
+					<h1 id="addH1">班组技工</h1>
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 					<el-form id="addForm" :inline="true" class="demo-form-inline">
 						<el-form-item>
 							<el-input v-model="optionName" placeholder="部门/员工编号/姓名" clearable></el-input>
@@ -39,13 +43,18 @@
 					<div>
 						<el-popover placement="bottom" @show="clearObj" trigger="click">
 							<h1>增加车间或班组</h1>
+<<<<<<< HEAD
 							<el-form v-if="radio1=='车间'" label-width="80px" :model="workObj" ref="ruleForm1">
+=======
+							<el-form label-width="70px" :model="addObj">
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 								<el-form-item label="新增结构">
 									<el-radio-group v-model="radio1" size="medium" @change="clearObj">
 										<el-radio-button label="车间"></el-radio-button>
 										<el-radio-button label="班组"></el-radio-button>
 									</el-radio-group>
 								</el-form-item>
+<<<<<<< HEAD
 								<el-form-item label="车间名称" prop="name">
 									<el-input v-model="workObj.name" clearable></el-input>
 								</el-form-item>
@@ -71,11 +80,38 @@
 								</el-form-item>
 								<el-form-item>
 									<el-button type="primary" @click="addTeamObj()">确定</el-button>
+=======
+								<div v-if="radio1=='车间'">
+									<el-form-item label="车间编码">
+										<el-input v-model="addObj.no" clearable></el-input>
+									</el-form-item>
+									<el-form-item label="车间名称">
+										<el-input v-model="addObj.name" clearable></el-input>
+									</el-form-item>
+								</div>
+								<div v-if="radio1=='班组'">
+									<el-form-item label="班组编码">
+										<el-input v-model="addObj.no" clearable></el-input>
+									</el-form-item>
+									<el-form-item label="班组名称">
+										<el-input v-model="addObj.name" clearable></el-input>
+									</el-form-item>
+									<el-form-item label="所属车间">
+										<el-select v-model="checkValue" clearable placeholder="请选择">
+											<el-option v-for="item in treeData" :key="item.id" :label="item.label" :value="item.id">
+											</el-option>
+										</el-select>
+									</el-form-item>
+								</div>
+								<el-form-item>
+									<el-button @click="">确定</el-button>
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 								</el-form-item>
 							</el-form>
 							<el-button type="primary" slot="reference">新增</el-button>
 						</el-popover>
 						<el-popover placement="bottom" trigger="click">
+<<<<<<< HEAD
 							<h1 v-if="nodeLevel==0">修改车间或班组</h1>
 							<h1 v-if="nodeLevel==1">修改车间</h1>
 							<h1 v-if="nodeLevel==2">修改班组</h1>
@@ -102,11 +138,40 @@
 								</el-form-item>
 								<el-form-item>
 									<el-button type="primary" @click="updateTeamObj">确定</el-button>
+=======
+							<h1>修改车间或班组</h1>
+							<span v-if="nodeLevel==0" style="color: red;">
+								请选择一个机构!
+							</span>
+							<el-form v-if="nodeLevel!=0" label-width="70px" :model="checkObj">
+								<div v-if="nodeLevel==1">
+									<el-form-item label="车间编码">
+										<el-input v-model="checkObj.no" clearable></el-input>
+									</el-form-item>
+									<el-form-item label="车间名称">
+										<el-input v-model="checkObj.name" clearable></el-input>
+									</el-form-item>
+								</div>
+								<div v-if="nodeLevel==2">
+									<el-form-item label="班组编码">
+										<el-input v-model="checkObj.no" clearable></el-input>
+									</el-form-item>
+									<el-form-item label="班组名称">
+										<el-input v-model="checkObj.name" clearable></el-input>
+									</el-form-item>
+								</div>
+								<el-form-item>
+									<el-button @click="">确定</el-button>
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 								</el-form-item>
 							</el-form>
 							<el-button type="warning" slot="reference">修改</el-button>
 						</el-popover>
+<<<<<<< HEAD
 						<el-button type="danger" @click="delWorkOrTeam">删除</el-button>
+=======
+						<el-button type="danger" @delObj>删除</el-button>
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 					</div>
 					<el-input placeholder="输入关键字进行过滤" clearable v-model="filterText" style="width: 90%;margin-top: 10px;">
 					</el-input>
@@ -120,9 +185,12 @@
 						<el-button type="danger" @click="delMec">删除技工</el-button>
 					</div>
 					<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+<<<<<<< HEAD
 						<el-table-column slot="index" label="序号" align="center">
 							<template slot-scope="scope">{{scope.$index+1}}</template>
 						</el-table-column>
+=======
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 					</mytable>
 					<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
 					</mypagination>
@@ -143,6 +211,7 @@
 				optionName: '',
 				filterText: '',
 				mecObj: {
+<<<<<<< HEAD
 					mechanicname: ''
 				},
 				teamObj: {
@@ -152,10 +221,14 @@
 				workObj: {
 					id: 0,
 					name: ''
+=======
+					a: ''
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 				},
 				pageNum: 1,
 				pageSize: 5,
 				tableHead: [{
+<<<<<<< HEAD
 					label: '技工名称',
 					property: 'mechanicname'
 				}, {
@@ -186,12 +259,141 @@
 				},
 				treeData: [],
 				radio1: '车间',
+=======
+					label: '机构',
+					property: 'b'
+				}, {
+					label: '部门代码',
+					property: 'b'
+				}, {
+					label: '部门名称',
+					property: 'c'
+				}, {
+					label: '工号',
+					property: 'd'
+				}, {
+					label: '姓名',
+					property: 'e'
+				}, {
+					label: '性别',
+					property: 'f'
+				}, {
+					label: '岗位名称',
+					property: 'g'
+				}, {
+					label: '身体状况',
+					property: 'h'
+				}, {
+					label: '身高',
+					property: 'i'
+				}, {
+					label: '籍贯',
+					property: 'j'
+				}],
+				pageList: {
+					pageNum: 1,
+					pageSize: 5,
+					total: 50,
+					list: [{
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}, {
+						a: '成高',
+						b: '21',
+						c: '管钱部',
+						d: '0EM0001',
+						e: '11',
+						f: '0',
+						g: '前端',
+						h: '良好',
+						i: '1.83',
+						j: '北京朝阳区'
+					}]
+				},
+				defaultProps: {
+					children: 'children',
+					label: 'label'
+				},
+				treeData: [{
+					id: 1,
+					label: '自建',
+					children: [{
+						id: 2,
+						label: '机修1组'
+					}, {
+						id: 3,
+						label: '珠光五组'
+					}]
+				}, {
+					id: 4,
+					label: '加盟',
+					children: [{
+						id: 5,
+						label: '华山队'
+					}]
+				}, {
+					id: 5,
+					label: '合作'
+				}],
+				radio1: '车间',
+				addObj: {
+					no: '',
+					name: ''
+				},
+				checkObj: {
+					no: '',
+					name: ''
+				},
+				checkValue: '',
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 				nodeLevel: 0
 			},
 			watch: {
 				filterText(val) {
 					this.$refs.tree.filter(val);
 				}
+<<<<<<< HEAD
 			},
 			methods: {
 				updateObj(obj) {
@@ -440,6 +642,78 @@
 			updated: function() { //v-if执行后加载页面
 				$("#load2").load(this.loadUrl + '.html');
 			},
+=======
+			},
+			methods: {
+				updateObj(obj) {
+					this.mecObj = obj;
+				},
+				filterNode(value, data) {
+					if(!value) return true;
+					return data.label.indexOf(value) !== -1;
+				},
+				handleNodeClick(data, nodes, tree) {
+					console.log("date", data);
+					console.log("nodes", nodes);
+					console.log("tree", tree);
+					this.nodeLevel = nodes.level;
+					this.$message.success('选择成功!' + JSON.stringify(data));
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + data.id);
+				},
+				selectPageList(num, size) {
+					this.pageNum = num;
+					this.pageSize = size;
+					this.selectPage();
+				},
+				selectPage() {
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName);
+				},
+				clearObj() {
+					this.addObj = {};
+					this.checkValue = '';
+				},
+				addMec() {
+					if(this.nodeLevel != 2) {
+						this.$message.error('请选择一个班组!');
+					} else {
+						this.load('新增技工', 'AddMechanic');
+					}
+				},
+				delMec() {
+					if(this.mecObj.a == '') {
+						this.$message.error('请选择一名技工!');
+					} else {
+						this.$confirm('此操作将删除数据, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							this.$message.success('删除成功!');
+						}).catch(() => {
+							this.$message.info('已取消删除!');
+						});
+					}
+				},
+				updateMec() {
+					if(this.mecObj.a == '') {
+						this.$message.error('请选择一名技工!');
+					} else {
+						this.load('技工修改', 'UpdateMechanic');
+					}
+				},
+				load(title, loadUrl) { //dialog对话框加载方法
+					this.title = title;
+					this.loadUrl = loadUrl;
+					this.dialogVisible = true;
+				},
+				handleClose(done) {
+					done();
+				}
+			},
+			updated: function() { //v-if执行后加载页面
+				$("#load2").load(this.loadUrl + '.html');
+			},
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 			mounted() {
 				let _this = this;
 				const loading = _this.$loading({

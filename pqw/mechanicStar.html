@@ -62,9 +62,12 @@
 				addurl: 'http://127.0.0.1:8080/pqw/Starclass/addStarClass',
 				delurl: 'http://127.0.0.1:8080/pqw/Starclass/deleteStarClass',
 				updateurl: 'http://127.0.0.1:8080/pqw/Starclass/updateStarClass',
+<<<<<<< HEAD
 				pageNum: 1,
 				pageSize: 5,
 				optionName: '',
+=======
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 				mechanicStarObj: {
 					starclassid: 0,
 					starclassname: '',
@@ -127,6 +130,7 @@
 					this.optionName = '';
 				},
 				selectPageList(num, size) {
+<<<<<<< HEAD
 					this.pageNum = num;
 					this.pageSize = size;
 					this.selectPage();
@@ -136,11 +140,39 @@
 					$.getJSON(`http://127.0.0.1:8080/pqw/Starclass/pageList/${this.pageNum}/${this.pageSize}` + `${loadUrl}`, (data) => {
 						this.pageList = data;
 					});
+=======
 					this.mechanicStarObj = {
 						starclassid: 0,
 						starclassname: '',
 						royalty: 0.0
 					};
+					$.getJSON(`http://127.0.0.1:8080/pqw/Starclass/pageList/${num}/${size}`, (data) => {
+						this.pageList = data;
+					});
+				},
+				saveObj(obj) {
+					if(this.pageList.list.length < this.pageList.pageSize) {
+						this.pageList.list.push(obj);
+					}
+					this.mechanicStarObj = {
+						starclassid: 0,
+						starclassname: '',
+						royalty: 0.0
+					};
+				},
+				changeObj(obj) {
+					this.pageList.list.forEach((item, index) => {
+						if(item.starclassid == obj.starclassid) {
+							this.pageList.list.splice(index, 1, obj);
+						}
+					});
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
+					this.mechanicStarObj = {
+						starclassid: 0,
+						starclassname: '',
+						royalty: 0.0
+					};
+<<<<<<< HEAD
 				}
 			},
 			mounted() {
@@ -156,6 +188,27 @@
 						_this.pageList = data;
 						loading.close(); //关闭加载块【非常重要】
 					}
+=======
+				},
+				deleteObj(obj) {
+					if(this.pageList.list.length == 1 && this.pageList.pageNum > 1) {
+						this.pageList.list.splice(1, 1);
+						$.getJSON(`http://127.0.0.1:8080/pqw/Starclass/pageList/${this.pageList.pageNum-1}/${this.pageList.pageSize}`, (data) => {
+							this.pageList = data;
+						});
+					}
+					this.pageList.list.forEach((item, index) => {
+						if(item.starclassid == obj.starclassid) {
+							this.pageList.list.splice(index, 1);
+						}
+					});
+				}
+			},
+			mounted() {
+				_this = this;
+				$.getJSON(`http://127.0.0.1:8080/pqw/Starclass/pageList/1/5`, (data) => {
+					_this.pageList = data;
+>>>>>>> 210536341c86206b7b7b9e23aa63cf97a3f44144
 				});
 			}
 		}).$mount("#mechanicStarApp");
