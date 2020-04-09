@@ -11,17 +11,31 @@ Vue.component('mybuttonlist', {
 	},
 	methods: {
 		add(obj, addurl, isnull) {
-			this.objs = JSON.parse(JSON.stringify(obj));
 			if(isnull) {
 				this.$message.error('所有项不能为空!');
 				return;
 			}
+			this.objs = JSON.parse(JSON.stringify(obj));
 			this.$confirm('此操作将增加新数据, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				this.$message.success('新增成功!' + addurl);
+				_this = this;
+				$.ajax(addurl, {
+					type: "post",
+					contentType: "application/json",
+					data: JSON.stringify(_this.objs),
+					dataType: "json",
+					success(msg) {
+						if(msg > 0) {
+							_this.$message.success('新增成功!');
+							_this.$emit('saveobj', _this.objs);
+						} else {
+							_this.$message.error('新增失败!');
+						}
+					}
+				});
 			}).catch(() => {
 				this.$message.info('已取消新增!');
 			});
@@ -37,7 +51,21 @@ Vue.component('mybuttonlist', {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				this.$message.success('修改成功!' + updateurl);
+				_this = this;
+				$.ajax(updateurl, {
+					type: "post",
+					contentType: "application/json",
+					data: JSON.stringify(_this.objs),
+					dataType: "json",
+					success(msg) {
+						if(msg > 0) {
+							_this.$message.success('修改成功!');
+							_this.$emit('changeobj', _this.objs);
+						} else {
+							_this.$message.error('修改失败!');
+						}
+					}
+				});
 			}).catch(() => {
 				this.$message.info('已取消修改!');
 			});
@@ -53,7 +81,21 @@ Vue.component('mybuttonlist', {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				this.$message.success('删除成功!' + delurl);
+				_this = this;
+				$.ajax(delurl, {
+					type: "post",
+					contentType: "application/json",
+					data: JSON.stringify(_this.objs),
+					dataType: "json",
+					success(msg) {
+						if(msg > 0) {
+							_this.$message.success('删除成功!');
+							_this.$emit('deleteobj', _this.objs);
+						} else {
+							_this.$message.error('删除失败!');
+						}
+					}
+				});
 			}).catch(() => {
 				this.$message.info('已取消删除!');
 			});

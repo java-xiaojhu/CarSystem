@@ -3,60 +3,457 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<title>班组技工</title>
 		<style type="text/css">
-
+			#addH1 {
+				display: inline-block;
+			}
+			
+			#addForm {
+				float: right;
+				padding-top: 21px;
+			}
+			
+			#addBottonList {
+				float: right;
+				margin-bottom: 20px;
+			}
 		</style>
 	</head>
 
 	<body>
 		<div id="classMechanicApp">
-			<mytable :tablehead="tableHead" :pagelist="pageList.list"></mytable>
+			<el-row class="tac">
+				<div>
+					<el-form id="addForm" :inline="true" class="demo-form-inline">
+						<el-form-item>
+							<el-input v-model="optionName" placeholder="部门/员工编号/姓名" clearable></el-input>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="warning" @click="selectPage">搜索</el-button>
+						</el-form-item>
+						</mybuttonlist>
+					</el-form>
+				</div>
+				<el-col :span="5">
+					<div>
+						<el-popover placement="bottom" @show="clearObj" trigger="click">
+							<h1>增加车间或班组</h1>
+							<el-form v-if="radio1=='车间'" label-width="80px" :model="workObj" ref="ruleForm1">
+								<el-form-item label="新增结构">
+									<el-radio-group v-model="radio1" size="medium" @change="clearObj">
+										<el-radio-button label="车间"></el-radio-button>
+										<el-radio-button label="班组"></el-radio-button>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item label="车间名称" prop="name">
+									<el-input v-model="workObj.name" clearable></el-input>
+								</el-form-item>
+								<el-form-item>
+									<el-button type="primary" @click="addWorkObj()">确定</el-button>
+								</el-form-item>
+							</el-form>
+							<el-form v-if="radio1=='班组'" label-width="80px" :model="teamObj" ref="ruleForm2">
+								<el-form-item label="新增结构">
+									<el-radio-group v-model="radio1" size="medium" @change="clearObj">
+										<el-radio-button label="车间"></el-radio-button>
+										<el-radio-button label="班组"></el-radio-button>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item label="班组名称" prop="name">
+									<el-input v-model="teamObj.name" clearable></el-input>
+								</el-form-item>
+								<el-form-item label="所属车间" prop="workshopid">
+									<el-select v-model="teamObj.workshopid" clearable placeholder="请选择">
+										<el-option v-for="item in treeData" :key="item.id" :label="item.name" :value="item.id">
+										</el-option>
+									</el-select>
+								</el-form-item>
+								<el-form-item>
+									<el-button type="primary" @click="addTeamObj()">确定</el-button>
+								</el-form-item>
+							</el-form>
+							<el-button type="primary" slot="reference">新增</el-button>
+						</el-popover>
+						<el-popover placement="bottom" trigger="click">
+							<h1 v-if="nodeLevel==0">修改车间或班组</h1>
+							<h1 v-if="nodeLevel==1">修改车间</h1>
+							<h1 v-if="nodeLevel==2">修改班组</h1>
+							<span v-if="nodeLevel==0" style="color: red;">
+								请选择一个机构!
+							</span>
+							<el-form v-if="nodeLevel==1" label-width="70px" :model="workObj">
+								<el-form-item label="车间名称">
+									<el-input v-model="workObj.name" clearable></el-input>
+								</el-form-item>
+								<el-form-item>
+									<el-button type="primary" @click="updateWorkObj">确定</el-button>
+								</el-form-item>
+							</el-form>
+							<el-form v-if="nodeLevel==2" label-width="70px" :model="teamObj">
+								<el-form-item label="班组名称">
+									<el-input v-model="teamObj.name" clearable></el-input>
+								</el-form-item>
+								<el-form-item label="所属车间">
+									<el-select v-model="teamObj.workshopid" clearable placeholder="请选择">
+										<el-option v-for="item in treeData" :key="item.id" :label="item.name" :value="item.id">
+										</el-option>
+									</el-select>
+								</el-form-item>
+								<el-form-item>
+									<el-button type="primary" @click="updateTeamObj">确定</el-button>
+								</el-form-item>
+							</el-form>
+							<el-button type="warning" slot="reference">修改</el-button>
+						</el-popover>
+						<el-button type="danger" @click="delWorkOrTeam">删除</el-button>
+					</div>
+					<el-input placeholder="输入关键字进行过滤" clearable v-model="filterText" style="width: 90%;margin-top: 10px;">
+					</el-input>
+					<el-tree class="filter-tree" icon-class="el-icon-arrow-right" :data="treeData" :props="defaultProps" highlight-current accordion @node-click="handleNodeClick" :filter-node-method="filterNode" ref="tree">
+					</el-tree>
+				</el-col>
+				<el-col :span="19">
+					<div>
+						<el-button type="primary" @click="addMec">新增技工</el-button>
+						<el-button type="warning" @click="updateMec">修改技工</el-button>
+						<el-button type="danger" @click="delMec">删除技工</el-button>
+					</div>
+					<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+						<el-table-column slot="index" label="序号" align="center">
+							<template slot-scope="scope">{{scope.$index+1}}</template>
+						</el-table-column>
+					</mytable>
+					<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
+					</mypagination>
+				</el-col>
+			</el-row>
+			<el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :before-close="handleClose" center>
+				<div id='load2'>这是一段信息</div>
+				<!--slot="footer" class="dialog-footer" -->
+			</el-dialog>
 		</div>
 	</body>
 	<script type="text/javascript">
-		var homePageApp = new Vue({
+		var classMechanicApp = new Vue({
 			data: {
+				dialogVisible: false,
+				title: '',
+				loadUrl: '',
+				optionName: '',
+				filterText: '',
+				mecObj: {
+					mechanicname: ''
+				},
+				teamObj: {
+					id: 0,
+					name: ''
+				},
+				workObj: {
+					id: 0,
+					name: ''
+				},
+				pageNum: 1,
+				pageSize: 5,
 				tableHead: [{
-						label: '等级编码',
-						property: 'levelNumber'
-					},
-					{
-						label: '等级名称',
-						property: 'levelName'
-					}, {
-						label: '工资',
-						property: 'wage'
-					}
-				],
+					label: '技工名称',
+					property: 'mechanicname'
+				}, {
+					label: '性别',
+					property: 'mechanicsex'
+				}, {
+					label: '手机电话',
+					property: 'mechanicphone'
+				}, {
+					label: '班组名称',
+					property: 'team'
+				}, {
+					label: '星级名称',
+					property: 'starClass'
+				}, {
+					label: '备注',
+					property: 'remarks'
+				}],
 				pageList: {
-					list: [{
-						levelNumber: 1,
-						levelName: '一级学徒',
-						wage: '1000'
-					}, {
-						levelNumber: 1,
-						levelName: '一级学徒',
-						wage: '1000'
-					}, {
-						levelNumber: 1,
-						levelName: '一级学徒',
-						wage: '1000'
-					}, {
-						levelNumber: 1,
-						levelName: '一级学徒',
-						wage: '1000'
-					}, {
-						levelNumber: 1,
-						levelName: '一级学徒',
-						label: '10%'
-					}]
-				}
-
+					pageNum: 1,
+					pageSize: 1,
+					total: 1,
+					list: []
+				},
+				defaultProps: {
+					children: 'children',
+					label: 'name'
+				},
+				treeData: [],
+				radio1: '车间',
+				nodeLevel: 0
 			},
-			methods: {},
-			mounted() {
+			watch: {
+				filterText(val) {
+					this.$refs.tree.filter(val);
+				}
+			},
+			methods: {
+				updateObj(obj) {
+					this.mecObj = obj;
+				},
+				filterNode(value, data) {
+					if(!value) return true;
+					return data.name.indexOf(value) !== -1;
+				},
+				handleNodeClick(data, nodes, tree) {
+					//					console.log("date", data);
+					//					console.log("nodes", nodes);
+					//					console.log("tree", tree);
+					if(nodes.level == 1) {
+						this.workObj = data;
+					} else {
+						this.teamObj = data;
+					}
+					this.nodeLevel = nodes.level;
+					if(nodes.level == 2) {
+						let _this = this;
+						$.getJSON(`http://127.0.0.1:8080/pqw/Mechanic/pageList/1/5/${data.id}`, (data) => {
+							_this.pageList = data;
+						});
+					}
+					this.mecObj = {
+						mechanicname: ''
+					};
+					this.$message.success('选择成功!');
+				},
+				selectPageList(num, size) {
+					this.pageNum = num;
+					this.pageSize = size;
+					this.selectPage();
+				},
+				selectPage() {
+					alert(this.pageNum + "\t" + this.pageSize + "\t" + this.optionName);
+				},
+				clearObj() {
+					this.teamObj = {
+						id: 0,
+						name: '',
 
+					};
+					this.workObj = {
+						id: 0,
+						name: ''
+					};
+				},
+				addMec() {
+					this.load('新增技工', 'AddMechanic');
+				},
+				delMec() {
+					if(this.mecObj.mechanicname == '') {
+						this.$message.error('请选择一名技工!');
+					} else {
+						this.$confirm('此操作将删除数据, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							this.$message.success('删除成功!');
+						}).catch(() => {
+							this.$message.info('已取消删除!');
+						});
+					}
+				},
+				updateMec() {
+					if(this.mecObj.mechanicname == '') {
+						this.$message.error('请选择一名技工!');
+					} else {
+						this.load('技工修改', 'UpdateMechanic');
+					}
+				},
+				load(title, loadUrl) { //dialog对话框加载方法
+					this.title = title;
+					this.loadUrl = loadUrl;
+					this.dialogVisible = true;
+				},
+				handleClose(done) {
+					done();
+				},
+				addWorkObj() {
+					if(this.workObj.name == '') {
+						this.$message.error('车间名称为空，新增失败!');
+						return;
+					}
+					this.$confirm('此操作将增加新车间, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						let _this = this;
+						$.ajax(`http://127.0.0.1:8080/pqw/WorkShopVo/addWorkShop`, {
+							type: "post",
+							contentType: "application/json",
+							data: JSON.stringify(_this.workObj),
+							dataType: "json",
+							success(msg) {
+								if(msg > 0) {
+									_this.$message.success('新增成功!');
+									$.getJSON(`http://127.0.0.1:8080/pqw/WorkShopVo/selectList`, (data) => {
+										_this.treeData = JSON.parse(data);
+									});
+								} else if(msg == -1) {
+									_this.$message.error('车间不允许同名，新增失败!');
+								} else {
+									_this.$message.error('新增失败!');
+								}
+							}
+						});
+					}).catch(() => {
+						this.$message.info('已取消新增!');
+					});
+				},
+				updateWorkObj() {
+					if(this.workObj.name == '') {
+						this.$message.error('车间名称为空，修改失败!');
+						return;
+					}
+					this.$confirm('此操作将修改车间, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						let _this = this;
+						$.ajax(`http://127.0.0.1:8080/pqw/WorkShopVo/updateWorkShop`, {
+							type: "post",
+							contentType: "application/json",
+							data: JSON.stringify(_this.workObj),
+							dataType: "json",
+							success(msg) {
+								if(msg > 0) {
+									_this.$message.success('修改成功!');
+									$.getJSON(`http://127.0.0.1:8080/pqw/WorkShopVo/selectList`, (data) => {
+										_this.treeData = JSON.parse(data);
+									});
+								} else {
+									_this.$message.error('修改失败!');
+								}
+							}
+						});
+					}).catch(() => {
+						this.$message.info('已取消修改!');
+					});
+				},
+				addTeamObj() {
+					if(this.teamObj.name == '') {
+						this.$message.error('班组名称为空，新增失败!');
+						return;
+					}
+					if(this.teamObj.workshopid == null || this.teamObj.workshopid == '') {
+						this.$message.error('没有选择所在班组，新增失败!');
+						return;
+					}
+					this.$confirm('此操作将增加新班组, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						let _this = this;
+						$.post(`http://127.0.0.1:8080/pqw/Team/addTeam/` + `${JSON.stringify(_this.teamObj)}`, (data) => {
+							if(data > 0) {
+								_this.$message.success('新增成功!');
+								$.getJSON(`http://127.0.0.1:8080/pqw/WorkShopVo/selectList`, (data) => {
+									_this.treeData = JSON.parse(data);
+								});
+							} else if(data == -1) {
+								_this.$message.error('班组不允许同名，新增失败!');
+							} else {
+								_this.$message.error('新增失败!');
+							}
+						});
+					}).catch(() => {
+						this.$message.info('已取消新增!');
+					});
+				},
+				updateTeamObj() {
+					if(this.teamObj.name == '') {
+						this.$message.error('班组名称为空，修改失败!');
+						return;
+					}
+					if(this.teamObj.workshopid == '') {
+						this.$message.error('没有选择所在班组，修改失败!');
+						return;
+					}
+					this.$confirm('此操作将修改班组, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						_this = this;
+						$.post(`http://127.0.0.1:8080/pqw/Team/updateTeam/` + `${JSON.stringify(_this.teamObj)}`, (data) => {
+							if(data > 0) {
+								_this.$message.success('修改成功!');
+								$.getJSON(`http://127.0.0.1:8080/pqw/WorkShopVo/selectList`, (data) => {
+									_this.treeData = JSON.parse(data);
+								});
+							} else {
+								_this.$message.error('修改失败!');
+							}
+						});
+					}).catch(() => {
+						this.$message.info('已取消修改!');
+					});
+				},
+				delWorkOrTeam() {
+					if(this.nodeLevel == 0) {
+						this.$message.error('请选择一个机构!');
+					} else {
+						this.$confirm('此操作将删除机构, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							let delUrl = this.nodeLevel == 1 ? `http://127.0.0.1:8080/pqw/WorkShopVo/deleteWorkShop/${this.workObj.id}` : `http://127.0.0.1:8080/pqw/Team/deleteTeam/${this.teamObj.id}`;
+							_this = this;
+							$.post(delUrl, (data) => {
+								_this.$message.success('删除成功!');
+								$.getJSON(`http://127.0.0.1:8080/pqw/WorkShopVo/selectList`, (data) => {
+									_this.treeData = JSON.parse(data);
+								});
+							});
+						}).catch(() => {
+							this.$message.info('已取消删除!');
+						});
+					}
+				},
+				selectTree() {
+					let _this = this;
+					const loading = _this.$loading({
+						lock: true,
+						text: '努力更新中....',
+						spinner: 'el-icon-loading',
+						background: 'rgba(0, 0, 0, 0.5)'
+					});
+					$.getJSON(`http://127.0.0.1:8080/pqw/WorkShopVo/selectList`, (data) => {
+						if(data != '') {
+							_this.treeData = JSON.parse(data);
+							_this.pageList.list = [];
+							loading.close(); //关闭加载块【非常重要】
+						}
+					});
+				}
+			},
+			updated: function() { //v-if执行后加载页面
+				$("#load2").load(this.loadUrl + '.html');
+			},
+			mounted() {
+				let _this = this;
+				const loading = _this.$loading({
+					lock: true,
+					text: '努力更新中....',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.5)'
+				});
+				$.getJSON(`http://127.0.0.1:8080/pqw/WorkShopVo/selectList`, (data) => {
+					if(data != '') {
+						_this.treeData = JSON.parse(data);
+						loading.close(); //关闭加载块【非常重要】
+					}
+				});
 			}
 		}).$mount("#classMechanicApp");
 	</script>

@@ -19,18 +19,18 @@ var menuMapping = {
 	"d321": "ckf/kehu.html",
 	"d322": "ckf/Car.html",
 	//数据
-	"e321": "服务项目",
+	"e321": "MasterDdata/VehicleFile.html",
 	"e322": "车型档案",
 	"e323": "供货单位",
 	"e324": "发动机品牌",
 	//人事
-	"h321": "组织机构",
-	"h322": "pqw/jobDescription.html",
-	"h323": "pqw/exitRegistration.html",
-	"h324": "pqw/addressList.html",
-	"h325": "pqw/mechanicStar.html",
-	"h326": "pqw/classMechanic.html",
-	"h327": "pqw/fieldVehicle.html",
+	"h321": "pqw/Organization.html",//组织机构
+	"h322": "pqw/jobDescription.html",//岗位定义
+	"h323": "pqw/exitRegistration.html",//离职登记
+	"h324": "pqw/addressList.html",//通讯名录
+	"h325": "pqw/mechanicStar.html",//技工星级
+	"h326": "pqw/classMechanic.html",//班组技工
+	"h327": "pqw/fieldVehicle.html",//外勤车辆
 	//财务
 	"f": ""
 }

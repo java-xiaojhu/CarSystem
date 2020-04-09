@@ -16,8 +16,10 @@ Vue.component('mytable', {
 	methods: {
 		handleCurrentChange(obj) {
 			this.objs = JSON.parse(JSON.stringify(obj));
-			this.$message.success('选择成功!' + JSON.stringify(obj));
-			this.$emit('updateobj', this.objs);
+			if(this.objs != null) {
+				this.$message.success('选择成功!');
+				this.$emit('updateobj', this.objs);
+			}
 		}
 	},
 	props: ['tablehead', 'pagelist']

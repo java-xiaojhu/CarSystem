@@ -3,23 +3,48 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<title>岗位定义</title>
+		<style type="text/css">
+			#addH1 {
+				display: inline-block;
+			}
+			
+			#addForm {
+				float: right;
+				padding-top: 21px;
+			}
+			
+			#addBottonList {
+				float: right;
+				margin-bottom: 20px;
+			}
+		</style>
 	</head>
 
 	<body>
-		<h1>岗位定义</h1>
 		<div id="jobDescriptionApp">
+			<div>
+				<el-form id="addForm" :inline="true" class="demo-form-inline">
+					<el-form-item>
+						<el-input v-model="optionName" placeholder="名称" clearable></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="warning" @click="selectPage">搜索</el-button>
+					</el-form-item>
+					</mybuttonlist>
+				</el-form>
+			</div>
 			<el-form :inline="true" :model="jobObj" class="demo-form-inline">
-				<el-form-item label="等级编码">
-					<el-input v-model="jobObj.jobNumber" placeholder="等级编码" clearable></el-input>
+				<el-form-item label="岗位名称">
+					<el-input v-model="jobObj.positionname" placeholder="等级名称" clearable></el-input>
 				</el-form-item>
-				<el-form-item label="等级名称">
-					<el-input v-model="jobObj.jobName" placeholder="等级名称" clearable></el-input>
-				</el-form-item>
-				<mybuttonlist :obj="jobObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="jobObj.jobNumber==''||jobObj.jobName==''">
+				<mybuttonlist @deleteobj="deleteObj" @changeobj="changeObj" @saveobj="saveObj" :obj="jobObj" :addurl="addurl" :delurl="delurl" :updateurl="updateurl" :isnull="jobObj.positionname==''">
 				</mybuttonlist>
 			</el-form>
 			<mytable :tablehead="tableHead" :pagelist="pageList.list" @updateobj="updateObj">
+				<el-table-column slot="index" label="序号" align="center">
+					<template slot-scope="scope">{{scope.$index+1}}</template>
+				</el-table-column>
 			</mytable>
 			<mypagination :pagenum="pageList.pageNum" :pagesize="pageList.pageSize" :total="pageList.total" @selectpagelist="selectPageList">
 			</mypagination>
@@ -28,43 +53,24 @@
 	<script type="text/javascript">
 		var jobDescriptionApp = new Vue({
 			data: {
-				addurl: '/api/objs/add(新增url)',
-				delurl: '/api/objs/del(删除url)',
-				updateurl: '/api/objs/update(修改url)',
+				addurl: 'http://127.0.0.1:8080/pqw/Position/addPosition',
+				delurl: 'http://127.0.0.1:8080/pqw/Position/deletePosition',
+				updateurl: 'http://127.0.0.1:8080/pqw/Position/updatePosition',
+				pageNum: 1,
+				pageSize: 5,
+				optionName: '',
 				jobObj: {
-					jobNumber: '',
-					jobName: ''
+					positionid: 0,
+					positionname: ''
 				},
 				tableHead: [{
-						label: '岗位编码',
-						property: 'jobNumber'
-					},
-					{
-						label: '岗位名称',
-						property: 'jobName'
-					}
-				],
-				pageList: {
-					pageNum: 1,
-					pageSize: 5,
-					total: 50,
-					list: [{
-						jobNumber: 1,
-						jobName: '质检'
-					}, {
-						jobNumber: 2,
-						jobName: '质检'
-					}, {
-						jobNumber: 3,
-						jobName: '质检'
-					}, {
-						jobNumber: 4,
-						jobName: '质检'
-					}, {
-						jobNumber: 5,
-						jobName: '质检'
-					}]
-				}
+					label: '岗位编号',
+					property: 'positionid'
+				}, {
+					label: '岗位名称',
+					property: 'positionname'
+				}],
+				pageList: {}
 
 			},
 			methods: {
@@ -72,11 +78,79 @@
 					this.jobObj = obj;
 				},
 				selectPageList(num, size) {
-					alert(num + "\t" + size);
+					this.pageNum = num;
+					this.pageSize = size;
+					this.selectPage();
+				},
+				selectPage() {
+					let loadUrl = this.optionName == '' ? '' : '/' + this.optionName;
+					$.getJSON(`http://127.0.0.1:8080/pqw/Position/pageList/${this.pageNum}/${this.pageSize}` + `${loadUrl}`, (data) => {
+						this.pageList = data;
+					});
+					this.jobObj = {
+						positionid: 0,
+						positionname: ''
+					};
+				},
+				saveObj(obj) {
+					if(this.pageList.list.length < this.pageList.pageSize) {
+						this.pageList.list.push(obj);
+					}
+					this.jobObj = {
+						positionid: 0,
+						positionname: ''
+					};
+					this.optionName = '';
+					$.getJSON(`http://127.0.0.1:8080/pqw/Position/pageList/1/5`, (data) => {
+						this.pageList = data;
+					});
+				},
+				changeObj(obj) {
+					this.pageList.list.forEach((item, index) => {
+						if(item.positionid == obj.positionid) {
+							this.pageList.list.splice(index, 1, obj);
+						}
+					});
+					this.jobObj = {
+						positionid: 0,
+						positionname: ''
+					};
+					this.optionName = '';
+				},
+				deleteObj(obj) {
+					if(this.pageList.list.length == 1 && this.pageList.pageNum > 1) {
+						this.pageList.list.splice(1, 1);
+						$.getJSON(`http://127.0.0.1:8080/pqw/Position/pageList/${this.pageList.pageNum-1}/${this.pageList.pageSize}`, (data) => {
+							this.pageList = data;
+						});
+						this.optionName = '';
+						return;
+					}
+					this.pageList.list.forEach((item, index) => {
+						if(item.positionid == obj.positionid) {
+							this.pageList.list.splice(index, 1);
+							$.getJSON(`http://127.0.0.1:8080/pqw/Position/pageList/${this.pageList.pageNum}/${this.pageList.pageSize}`, (data) => {
+								this.pageList = data;
+							});
+						}
+					});
+					this.optionName = '';
 				}
 			},
 			mounted() {
-
+				let _this = this;
+				const loading = _this.$loading({
+					lock: true,
+					text: '努力更新中....',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.5)'
+				});
+				$.getJSON(`http://127.0.0.1:8080/pqw/Position/pageList/1/5`, (data) => {
+					if(data != null) {
+						_this.pageList = data;
+						loading.close(); //关闭加载块【非常重要】
+					}
+				});
 			}
 		}).$mount("#jobDescriptionApp");
 	</script>
