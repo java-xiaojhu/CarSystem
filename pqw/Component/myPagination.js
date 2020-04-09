@@ -10,12 +10,10 @@ Vue.component('mypagination', {
 	methods: {
 		handleSizeChange(size) {
 			this.pageSize = size;
-			this.$message.success(`第${this.pageNum}页,每页${this.pageSize}条`);
 			this.$emit('selectpagelist', this.pageNum, this.pageSize);
 		},
 		handleCurrentChange(page) {
 			this.pageNum = page;
-			this.$message.success(`第${this.pageNum}页,每页${this.pageSize}条`);
 			this.$emit('selectpagelist', this.pageNum, this.pageSize);
 		}
 	},
